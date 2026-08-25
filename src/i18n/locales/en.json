@@ -312,7 +312,7 @@
       "passwordMismatch": "Passwords do not match.",
       "nameRequired": "Enter your full name.",
       "passwordHint": "At least 8 characters.",
-      "phoneInvalid": "Enter a valid phone number."
+      "phoneInvalid": "Phone number must contain only digits."
     },
     "errors": {
       "invalidCredentials": "Incorrect email or password.",
