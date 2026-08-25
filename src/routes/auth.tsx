@@ -207,7 +207,7 @@ function SignUpCard() {
         emailRedirectTo: `${window.location.origin}/account`,
         data: {
           full_name: fullName.trim(),
-          phone: trimmedPhone,
+          phone: phone || null,
           country: country.trim(),
         },
       },
