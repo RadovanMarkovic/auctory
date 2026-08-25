@@ -154,7 +154,16 @@ function EditProductPage() {
           initialValues={initialValues}
           submitting={saveMutation.isPending}
           onSubmit={(values) => saveMutation.mutate(values)}
+          provenanceSlot={
+            <ProvenanceAttachment
+              productId={product.id}
+              sellerId={product.seller_id}
+              path={product.provenance_document_path}
+              name={product.provenance_document_name}
+            />
+          }
         />
+
 
         <ProductImageManager productId={product.id} sellerId={product.seller_id} images={images} />
 
