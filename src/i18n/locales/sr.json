@@ -275,6 +275,10 @@
       "countryPlaceholder": "Izaberite državu",
       "optional": "(opciono)"
     },
+    "password": {
+      "show": "Prikaži lozinku",
+      "hide": "Sakrij lozinku"
+    },
     "signIn": {
       "tab": "Prijava",
       "title": "Dobrodošli nazad",
