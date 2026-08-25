@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PasswordInput } from "@/components/ui/password-input";
 import { supabase } from "@/integrations/supabase/client";
+import { RequiredMark } from "@/components/ui/required-mark";
 
 const title = "Set a new password — Auctory";
 const description = "Choose a new password for your Auctory account.";
@@ -86,7 +87,7 @@ function ResetPasswordPage() {
             <CardContent>
               <form className="space-y-5" onSubmit={onSubmit} noValidate>
                 <div>
-                  <Label htmlFor="new-password">{t("auth.fields.newPassword")}</Label>
+                  <Label htmlFor="new-password">{t("auth.fields.newPassword")}<RequiredMark /></Label>
                   <PasswordInput
                     id="new-password"
                     autoComplete="new-password"
@@ -99,7 +100,7 @@ function ResetPasswordPage() {
                   ) : null}
                 </div>
                 <div>
-                  <Label htmlFor="confirm-password">{t("auth.fields.confirmPassword")}</Label>
+                  <Label htmlFor="confirm-password">{t("auth.fields.confirmPassword")}<RequiredMark /></Label>
                   <PasswordInput
                     id="confirm-password"
                     autoComplete="new-password"

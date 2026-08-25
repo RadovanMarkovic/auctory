@@ -16,6 +16,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { COUNTRIES } from "@/lib/countries";
 import { PRODUCT_CONDITIONS, categoryName, useBrands, useCategories } from "@/lib/products";
+import { RequiredMark } from "@/components/ui/required-mark";
 
 export interface ProductFormValues {
   category_id: string | null;
@@ -148,7 +149,7 @@ export function ProductForm({
           </div>
 
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="title">{t("products.fields.title")}</Label>
+            <Label htmlFor="title">{t("products.fields.title")}<RequiredMark /></Label>
             <Input
               id="title"
               value={values.title}

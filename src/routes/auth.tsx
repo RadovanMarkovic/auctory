@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { COUNTRIES } from "@/lib/countries";
+import { RequiredMark } from "@/components/ui/required-mark";
 
 const title = "Sign in — Auctory";
 const description = "Sign in or create your Auctory account to bid, sell, and track provenance.";
@@ -140,7 +141,7 @@ function SignInCard({ onDone }: { onDone: () => void }) {
       <CardContent>
         <form className="space-y-5" onSubmit={onSubmit} noValidate>
           <div>
-            <Label htmlFor="signin-email">{t("auth.fields.email")}</Label>
+            <Label htmlFor="signin-email">{t("auth.fields.email")}<RequiredMark /></Label>
             <Input
               id="signin-email"
               type="email"
@@ -152,7 +153,7 @@ function SignInCard({ onDone }: { onDone: () => void }) {
             <FieldError message={errors["email"]} />
           </div>
           <div>
-            <Label htmlFor="signin-password">{t("auth.fields.password")}</Label>
+            <Label htmlFor="signin-password">{t("auth.fields.password")}<RequiredMark /></Label>
             <PasswordInput
               id="signin-password"
               autoComplete="current-password"
@@ -256,7 +257,7 @@ function SignUpCard() {
       <CardContent>
         <form className="space-y-5" onSubmit={onSubmit} noValidate>
           <div>
-            <Label htmlFor="signup-name">{t("auth.fields.fullName")}</Label>
+            <Label htmlFor="signup-name">{t("auth.fields.fullName")}<RequiredMark /></Label>
             <Input
               id="signup-name"
               autoComplete="name"
@@ -267,7 +268,7 @@ function SignUpCard() {
             <FieldError message={errors["fullName"]} />
           </div>
           <div>
-            <Label htmlFor="signup-email">{t("auth.fields.email")}</Label>
+            <Label htmlFor="signup-email">{t("auth.fields.email")}<RequiredMark /></Label>
             <Input
               id="signup-email"
               type="email"
@@ -279,7 +280,7 @@ function SignUpCard() {
             <FieldError message={errors["email"]} />
           </div>
           <div>
-            <Label htmlFor="signup-password">{t("auth.fields.password")}</Label>
+            <Label htmlFor="signup-password">{t("auth.fields.password")}<RequiredMark /></Label>
             <PasswordInput
               id="signup-password"
               autoComplete="new-password"

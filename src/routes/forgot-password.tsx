@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
+import { RequiredMark } from "@/components/ui/required-mark";
 
 const title = "Reset your password — Auctory";
 const description = "Request a secure password reset link for your Auctory account.";
@@ -68,7 +69,7 @@ function ForgotPasswordPage() {
             <CardContent>
               <form className="space-y-5" onSubmit={onSubmit} noValidate>
                 <div>
-                  <Label htmlFor="forgot-email">{t("auth.fields.email")}</Label>
+                  <Label htmlFor="forgot-email">{t("auth.fields.email")}<RequiredMark /></Label>
                   <Input
                     id="forgot-email"
                     type="email"
