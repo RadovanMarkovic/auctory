@@ -74,16 +74,20 @@ export function ProductForm({
   submitting,
   onSubmit,
   actions,
+  provenanceSlot,
 }: {
   initialValues: ProductFormValues;
   submitting?: boolean;
   onSubmit: (values: ProductFormValues) => void;
   /** Extra buttons rendered next to the save button. */
   actions?: ReactNode;
+  /** Optional content rendered inside the provenance card (e.g. attachment upload). */
+  provenanceSlot?: ReactNode;
 }) {
+
   const { t, i18n } = useTranslation();
   const [values, setValues] = useState<ProductFormValues>(initialValues);
-  const [titleError, setTitleError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const categoriesQuery = useCategories();
   const brandsQuery = useBrands();
@@ -94,11 +98,15 @@ export function ProductForm({
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    if (!values.title.trim()) {
-      setTitleError(t("products.form.titleRequired"));
-      return;
-    }
-    setTitleError(null);
+    const nextErrors: Record<string, string> = {};
+    const required = t("products.form.requiredField");
+    if (!values.title.trim()) nextErrors["title"] = t("products.form.titleRequired");
+    if (!values.category_id) nextErrors["category_id"] = required;
+    if (!values.brand_id) nextErrors["brand_id"] = required;
+    if (!values.model.trim()) nextErrors["model"] = required;
+    if (!values.serial_number.trim()) nextErrors["serial_number"] = required;
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
     onSubmit(values);
   }
 
@@ -111,12 +119,15 @@ export function ProductForm({
         </CardHeader>
         <CardContent className="grid gap-6 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="category">{t("products.fields.category")}</Label>
+            <Label htmlFor="category">
+              {t("products.fields.category")}
+              <RequiredMark />
+            </Label>
             <Select
               value={values.category_id ?? ""}
               onValueChange={(value) => set("category_id", value || null)}
             >
-              <SelectTrigger id="category">
+              <SelectTrigger id="category" aria-invalid={Boolean(errors["category_id"])}>
                 <SelectValue placeholder={t("products.form.selectPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
@@ -127,15 +138,21 @@ export function ProductForm({
                 ))}
               </SelectContent>
             </Select>
+            {errors["category_id"] ? (
+              <p className="text-sm text-destructive">{errors["category_id"]}</p>
+            ) : null}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="brand">{t("products.fields.brand")}</Label>
+            <Label htmlFor="brand">
+              {t("products.fields.brand")}
+              <RequiredMark />
+            </Label>
             <Select
               value={values.brand_id ?? ""}
               onValueChange={(value) => set("brand_id", value || null)}
             >
-              <SelectTrigger id="brand">
+              <SelectTrigger id="brand" aria-invalid={Boolean(errors["brand_id"])}>
                 <SelectValue placeholder={t("products.form.selectPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
@@ -146,37 +163,59 @@ export function ProductForm({
                 ))}
               </SelectContent>
             </Select>
+            {errors["brand_id"] ? (
+              <p className="text-sm text-destructive">{errors["brand_id"]}</p>
+            ) : null}
           </div>
 
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="title">{t("products.fields.title")}<RequiredMark /></Label>
+            <Label htmlFor="title">
+              {t("products.fields.title")}
+              <RequiredMark />
+            </Label>
             <Input
               id="title"
               value={values.title}
               onChange={(event) => set("title", event.target.value)}
-              aria-invalid={Boolean(titleError)}
-              required
+              aria-invalid={Boolean(errors["title"])}
             />
-            {titleError ? <p className="text-sm text-destructive">{titleError}</p> : null}
+            {errors["title"] ? (
+              <p className="text-sm text-destructive">{errors["title"]}</p>
+            ) : null}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="model">{t("products.fields.model")}</Label>
+            <Label htmlFor="model">
+              {t("products.fields.model")}
+              <RequiredMark />
+            </Label>
             <Input
               id="model"
               value={values.model}
               onChange={(event) => set("model", event.target.value)}
+              aria-invalid={Boolean(errors["model"])}
             />
+            {errors["model"] ? (
+              <p className="text-sm text-destructive">{errors["model"]}</p>
+            ) : null}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="serial">{t("products.fields.serialNumber")}</Label>
+            <Label htmlFor="serial">
+              {t("products.fields.serialNumber")}
+              <RequiredMark />
+            </Label>
             <Input
               id="serial"
               value={values.serial_number}
               onChange={(event) => set("serial_number", event.target.value)}
+              aria-invalid={Boolean(errors["serial_number"])}
             />
+            {errors["serial_number"] ? (
+              <p className="text-sm text-destructive">{errors["serial_number"]}</p>
+            ) : null}
           </div>
+
 
           <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="description">{t("products.fields.description")}</Label>
@@ -281,7 +320,7 @@ export function ProductForm({
           <CardTitle>{t("products.form.sections.provenance")}</CardTitle>
           <CardDescription>{t("products.form.sections.provenanceHint")}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="provenance">{t("products.fields.provenanceNotes")}</Label>
             <Textarea
@@ -291,7 +330,9 @@ export function ProductForm({
               onChange={(event) => set("provenance_notes", event.target.value)}
             />
           </div>
+          {provenanceSlot}
         </CardContent>
+
       </Card>
 
       <div className="flex flex-wrap items-center gap-3">

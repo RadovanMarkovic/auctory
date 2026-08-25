@@ -455,7 +455,8 @@
         "detailsHint": "Reference data buyers rely on.",
         "provenance": "Provenance",
         "provenanceHint": "Ownership history and accompanying items."
-      }
+      },
+      "requiredField": "This field is required"
     },
     "images": {
       "title": "Product images",
@@ -510,6 +511,17 @@
       "imageCount_other": "{{count}} images",
       "notSellerTitle": "Seller access required",
       "notSellerDescription": "Request the seller role from your profile to start listing products."
+    },
+    "attachment": {
+      "label": "Provenance attachment",
+      "hint": "Optionally attach a supporting document (invoice, certificate, service record). Max 10 MB.",
+      "add": "Attach document",
+      "replace": "Replace document",
+      "open": "Open",
+      "remove": "Remove",
+      "uploaded": "Attachment uploaded",
+      "deleted": "Attachment removed",
+      "tooLarge": "File is too large"
     }
   }
 }

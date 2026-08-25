@@ -123,6 +123,8 @@ export type Database = {
           material: string | null
           model: string | null
           production_year: number | null
+          provenance_document_name: string | null
+          provenance_document_path: string | null
           provenance_notes: string | null
           seller_id: string
           serial_number: string | null
@@ -143,6 +145,8 @@ export type Database = {
           material?: string | null
           model?: string | null
           production_year?: number | null
+          provenance_document_name?: string | null
+          provenance_document_path?: string | null
           provenance_notes?: string | null
           seller_id: string
           serial_number?: string | null
@@ -163,6 +167,8 @@ export type Database = {
           material?: string | null
           model?: string | null
           production_year?: number | null
+          provenance_document_name?: string | null
+          provenance_document_path?: string | null
           provenance_notes?: string | null
           seller_id?: string
           serial_number?: string | null
