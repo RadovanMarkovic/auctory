@@ -61,7 +61,6 @@ function EditProductPage() {
   function invalidate() {
     void queryClient.invalidateQueries({ queryKey: ["seller-product", productId] });
     void queryClient.invalidateQueries({ queryKey: ["my-products", user?.id] });
-    void queryClient.invalidateQueries({ queryKey: ["catalogue"] });
   }
 
   const saveMutation = useMutation({

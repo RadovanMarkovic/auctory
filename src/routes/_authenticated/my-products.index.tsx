@@ -63,7 +63,6 @@ function MyProductsPage() {
     onSuccess: () => {
       toast.success(t("products.manage.statusUpdated"));
       void queryClient.invalidateQueries({ queryKey: ["my-products", user?.id] });
-      void queryClient.invalidateQueries({ queryKey: ["catalogue"] });
     },
     onError: () => toast.error(t("common.errorTitle")),
   });
