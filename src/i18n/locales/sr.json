@@ -1,0 +1,167 @@
+{
+  "common": {
+    "brand": "Auctory",
+    "established": "Osn. MMXXVI",
+    "retry": "Pokušajte ponovo",
+    "loading": "Učitavanje",
+    "step": "Korak {{number}}"
+  },
+  "nav": {
+    "main": "Glavna navigacija",
+    "mobile": "Mobilna navigacija",
+    "openMenu": "Otvori meni",
+    "auctions": "Aukcije",
+    "categories": "Kategorije",
+    "sell": "Prodaja",
+    "howItWorks": "Kako funkcioniše",
+    "liveAuctions": "Aktivne aukcije",
+    "sellWithUs": "Prodajte kod nas",
+    "account": "Nalog",
+    "groups": {
+      "marketplace": "Tržište",
+      "company": "Kompanija"
+    }
+  },
+  "language": {
+    "label": "Jezik",
+    "change": "Promeni jezik",
+    "en": "English",
+    "sr": "Srpski"
+  },
+  "account": {
+    "menu": "Meni naloga",
+    "label": "Nalog",
+    "signIn": "Prijava",
+    "createAccount": "Otvori nalog",
+    "myBids": "Moje ponude",
+    "myListings": "Moji predmeti"
+  },
+  "wallet": {
+    "connect": "Poveži novčanik"
+  },
+  "footer": {
+    "tagline": "Dvojezična aukcijska kuća za luksuzne satove, fini nakit, kolekcionarske predmete i modu u ograničenom izdanju — uz proverljive sertifikate porekla na blokčejnu.",
+    "rights": "© {{year}} Auctory. Sva prava zadržana.",
+    "network": "Sertifikati na Sepolia test mreži"
+  },
+  "categories": {
+    "watches": {
+      "name": "Satovi",
+      "blurb": "Vintidž i savremeni satovi renomiranih kuća."
+    },
+    "jewelry": {
+      "name": "Nakit",
+      "blurb": "Potpisani komadi, retko drago kamenje i porodične kolekcije."
+    },
+    "collectibles": {
+      "name": "Kolekcionarski predmeti",
+      "blurb": "Dizajnerski predmeti, memorabilije i retka štampana građa."
+    },
+    "fashion": {
+      "name": "Moda",
+      "blurb": "Komadi iz ograničenih izdanja i arhive u kolekcionarskom stanju."
+    }
+  },
+  "lot": {
+    "live": "Uživo",
+    "endingSoon": "Uskoro se zatvara",
+    "certified": "Sertifikovano",
+    "currentBid": "Trenutna ponuda",
+    "bids_one": "{{count}} ponuda",
+    "bids_few": "{{count}} ponude",
+    "bids_other": "{{count}} ponuda",
+    "closed": "Zatvoreno",
+    "certificateNote": "ERC-721 sertifikat po završetku prodaje",
+    "ariaLabel": "{{brand}} — {{title}}, trenutna ponuda {{price}}",
+    "lotCount_one": "{{count}} predmet",
+    "lotCount_few": "{{count}} predmeta",
+    "lotCount_other": "{{count}} predmeta",
+    "browse": "Pogledajte: {{category}}"
+  },
+  "home": {
+    "meta": {
+      "title": "Auctory — Kurirane aukcije satova, nakita i kolekcionarskih predmeta",
+      "description": "Auctory je dvojezična aukcijska kuća za luksuzne satove, fini nakit, kolekcionarske predmete i modu u ograničenom izdanju, sa sertifikatima porekla na blokčejnu."
+    },
+    "hero": {
+      "badge": "Dvojezična aukcijska kuća",
+      "titleLine1": "Izuzetni predmeti,",
+      "titleLine2": "temeljno provereni.",
+      "browse": "Pregledaj aukcije",
+      "consign": "Pošalji predmet",
+      "imageAlt": "Zlatni ručni sat i dijamantski prsten na svetloplavoj podlozi"
+    },
+    "featured": {
+      "eyebrow": "Aktuelne prodaje",
+      "title": "Izdvojene aktivne aukcije",
+      "description": "Izbor naših stručnjaka iz svih odeljenja.",
+      "viewAll": "Prikaži sve predmete",
+      "emptyTitle": "Trenutno nema izdvojenih predmeta",
+      "emptyDescription": "Naša sledeća kurirana prodaja se katalogizuje. Navratite uskoro."
+    },
+    "endingSoon": {
+      "eyebrow": "Zatvara se danas",
+      "title": "Uskoro se zatvara",
+      "description": "Predmeti u poslednjim satima. Ponude u završnim minutima produžavaju vreme.",
+      "emptyTitle": "Danas se ništa ne zatvara",
+      "emptyDescription": "Trenutno nijedan predmet nije u poslednjim satima."
+    },
+    "categories": {
+      "eyebrow": "Odeljenja",
+      "title": "Luksuzne kategorije",
+      "description": "Četiri odeljenja, svako sa svojim stručnjacima i procesom autentifikacije."
+    },
+    "steps": {
+      "eyebrow": "Proces",
+      "title": "Kako Auctory funkcioniše",
+      "description": "Tri koraka od registracije do predmeta sa proverljivim poreklom.",
+      "guide": "Pročitaj ceo vodič",
+      "register": {
+        "title": "Registrujte se i verifikujte nalog",
+        "body": "Otvorite nalog, potvrdite identitet i dobijte limit za licitiranje."
+      },
+      "bid": {
+        "title": "Licitirajte na rastućim aukcijama",
+        "body": "Transparentni koraci, istorija ponuda uživo i produženje vremena protiv snajpinga."
+      },
+      "settle": {
+        "title": "Platite i preuzmite poreklo",
+        "body": "Platite bezbedno, a zatim primite predmet sa sertifikatom na blokčejnu."
+      }
+    },
+    "provenance": {
+      "eyebrow": "Poreklo na blokčejnu",
+      "title": "Svaki prodati predmet nosi sopstveni sertifikat",
+      "body": "Kada se prodaja završi, Auctory kreira ERC-721 sertifikat na Sepolia mreži sa referencom predmeta, izveštajem stručnjaka i datumom prodaje. Sertifikat se prenosi zajedno sa predmetom, pa svaki naredni vlasnik nasleđuje potpunu istoriju vlasništva otpornu na izmene.",
+      "cta": "Pogledajte kako sertifikati rade",
+      "minted": { "title": "Kreiran po završetku prodaje", "body": "Bez ručne papirologije." },
+      "log": { "title": "Evidencija vlasništva na lancu", "body": "Svaki prenos se beleži." },
+      "report": { "title": "Izveštaj stručnjaka", "body": "Povezan u metapodacima." },
+      "permanent": { "title": "Trajni zapis", "body": "Nezavisan od Auctory-ja." }
+    },
+    "sell": {
+      "eyebrow": "Konsignacija",
+      "title": "Imate predmet dostojan kataloga?",
+      "body": "Pošaljite predmet na besplatnu procenu stručnjaka. Odobreni prodavci dobijaju fotografisanje, katalogizaciju i pisano dogovorenu minimalnu cenu pre početka prodaje.",
+      "cta": "Pošalji predmet",
+      "terms": "Uslovi za prodavce"
+    },
+    "stats": {
+      "lotsSold": "Prodatih predmeta",
+      "certificatesMinted": "Izdatih sertifikata",
+      "sellThrough": "Prosečna prodaja",
+      "bidders": "Registrovanih licitanata"
+    },
+    "trust": {
+      "vetted": "Predmeti provereni od strane stručnjaka",
+      "escrow": "Plaćanje preko escrow-a",
+      "certificates": "Sepolia ERC-721 sertifikati",
+      "support": "Dvojezična podrška, EN i SR"
+    },
+    "lots": {
+      "loading": "Učitavanje predmeta",
+      "errorTitle": "Nije moguće učitati predmete",
+      "errorDescription": "Katalog nije odgovorio. Pokušajte ponovo."
+    }
+  }
+}
