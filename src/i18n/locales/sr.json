@@ -4,7 +4,9 @@
     "established": "Osn. MMXXVI",
     "retry": "Pokušajte ponovo",
     "loading": "Učitavanje",
-    "step": "Korak {{number}}"
+    "step": "Korak {{number}}",
+    "errorTitle": "Nešto je pošlo naopako",
+    "errorDescription": "Nismo uspeli da učitamo sadržaj. Pokušajte ponovo."
   },
   "nav": {
     "main": "Glavna navigacija",
@@ -34,7 +36,34 @@
     "signIn": "Prijava",
     "createAccount": "Otvori nalog",
     "myBids": "Moje ponude",
-    "myListings": "Moji predmeti"
+    "myListings": "Moji predmeti",
+    "signOut": "Odjava",
+    "myProfile": "Moj profil",
+    "signedInAs": "Prijavljeni ste kao",
+    "profile": {
+      "title": "Profil",
+      "description": "Ažurirajte svoje lične podatke. Samo vi ih vidite i menjate.",
+      "save": "Sačuvaj izmene",
+      "saved": "Profil je ažuriran."
+    },
+    "status": {
+      "title": "Nalog",
+      "role": "Uloga",
+      "accountStatus": "Status",
+      "emailVerified": "Email potvrđen",
+      "yes": "Da",
+      "no": "Ne"
+    },
+    "roles": {
+      "buyer": "Kupac",
+      "seller": "Prodavac",
+      "admin": "Administrator"
+    },
+    "statuses": {
+      "active": "Aktivan",
+      "pending": "Na čekanju",
+      "suspended": "Suspendovan"
+    }
   },
   "wallet": {
     "connect": "Poveži novčanik"
@@ -232,6 +261,64 @@
       "description": "Upravljajte svojim licitacijama, oglasima, porudžbinama i povezanim novčanikom.",
       "emptyTitle": "Nalozi još nisu omogućeni",
       "emptyDescription": "Autentifikacija i povezivanje novčanika biće dodati u narednom koraku."
+    }
+  },
+  "auth": {
+    "fields": {
+      "email": "Email",
+      "password": "Lozinka",
+      "newPassword": "Nova lozinka",
+      "confirmPassword": "Potvrdite lozinku",
+      "fullName": "Ime i prezime",
+      "phone": "Telefon",
+      "country": "Država"
+    },
+    "signIn": {
+      "tab": "Prijava",
+      "title": "Dobrodošli nazad",
+      "description": "Prijavite se da licitirate, prodajete i pratite lotove.",
+      "submit": "Prijavi se",
+      "success": "Uspešno ste prijavljeni."
+    },
+    "signUp": {
+      "tab": "Registracija",
+      "title": "Napravite nalog",
+      "description": "Svaki novi nalog počinje sa ulogom kupca.",
+      "submit": "Napravi nalog",
+      "checkEmail": "Proverite email da biste potvrdili adresu.",
+      "verifyTitle": "Potvrdite email",
+      "verifyDescription": "Poslali smo link za potvrdu na {{email}}. Otvorite ga da aktivirate nalog."
+    },
+    "forgot": {
+      "link": "Zaboravljena lozinka?",
+      "title": "Resetovanje lozinke",
+      "description": "Unesite email i poslaćemo vam link za resetovanje.",
+      "submit": "Pošalji link",
+      "sent": "Link je poslat.",
+      "sentDescription": "Ako nalog za {{email}} postoji, link za resetovanje stiže uskoro.",
+      "backToSignIn": "Nazad na prijavu"
+    },
+    "reset": {
+      "title": "Postavite novu lozinku",
+      "description": "Izaberite novu lozinku za svoj nalog.",
+      "submit": "Sačuvaj lozinku",
+      "success": "Lozinka je promenjena.",
+      "invalidLink": "Ovaj link je nevažeći ili je istekao. Zatražite novi."
+    },
+    "validation": {
+      "emailRequired": "Email je obavezan.",
+      "emailInvalid": "Unesite ispravnu email adresu.",
+      "passwordRequired": "Lozinka je obavezna.",
+      "passwordShort": "Lozinka mora imati najmanje 8 karaktera.",
+      "passwordMismatch": "Lozinke se ne poklapaju.",
+      "nameRequired": "Unesite ime i prezime.",
+      "passwordHint": "Najmanje 8 karaktera."
+    },
+    "errors": {
+      "invalidCredentials": "Pogrešan email ili lozinka.",
+      "emailNotConfirmed": "Potvrdite email adresu pre prijave.",
+      "emailTaken": "Nalog sa ovom email adresom već postoji.",
+      "generic": "Nešto je pošlo naopako. Pokušajte ponovo."
     }
   }
 }

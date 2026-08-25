@@ -4,7 +4,9 @@
     "established": "Est. MMXXVI",
     "retry": "Try again",
     "loading": "Loading",
-    "step": "Step {{number}}"
+    "step": "Step {{number}}",
+    "errorTitle": "Something went wrong",
+    "errorDescription": "We couldn't load this content. Please try again."
   },
   "nav": {
     "main": "Main",
@@ -34,7 +36,34 @@
     "signIn": "Sign in",
     "createAccount": "Create account",
     "myBids": "My bids",
-    "myListings": "My listings"
+    "myListings": "My listings",
+    "signOut": "Sign out",
+    "myProfile": "My profile",
+    "signedInAs": "Signed in as",
+    "profile": {
+      "title": "Profile",
+      "description": "Update your personal details. Only you can see and edit them.",
+      "save": "Save changes",
+      "saved": "Profile updated."
+    },
+    "status": {
+      "title": "Account",
+      "role": "Role",
+      "accountStatus": "Status",
+      "emailVerified": "Email verified",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "roles": {
+      "buyer": "Buyer",
+      "seller": "Seller",
+      "admin": "Admin"
+    },
+    "statuses": {
+      "active": "Active",
+      "pending": "Pending",
+      "suspended": "Suspended"
+    }
   },
   "wallet": {
     "connect": "Connect wallet"
@@ -229,6 +258,64 @@
       "description": "Manage your Auctory bids, listings, orders, and wallet connection.",
       "emptyTitle": "Accounts are not enabled yet",
       "emptyDescription": "Authentication and wallet linking will be added in a later step."
+    }
+  },
+  "auth": {
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm password",
+      "fullName": "Full name",
+      "phone": "Phone",
+      "country": "Country"
+    },
+    "signIn": {
+      "tab": "Sign in",
+      "title": "Welcome back",
+      "description": "Sign in to bid, sell, and follow your lots.",
+      "submit": "Sign in",
+      "success": "Signed in."
+    },
+    "signUp": {
+      "tab": "Create account",
+      "title": "Create your account",
+      "description": "Every new account starts with buyer access.",
+      "submit": "Create account",
+      "checkEmail": "Check your inbox to confirm your email.",
+      "verifyTitle": "Confirm your email",
+      "verifyDescription": "We sent a confirmation link to {{email}}. Open it to activate your account."
+    },
+    "forgot": {
+      "link": "Forgot your password?",
+      "title": "Reset your password",
+      "description": "Enter your email and we'll send you a reset link.",
+      "submit": "Send reset link",
+      "sent": "Reset link sent.",
+      "sentDescription": "If an account exists for {{email}}, a reset link is on its way.",
+      "backToSignIn": "Back to sign in"
+    },
+    "reset": {
+      "title": "Set a new password",
+      "description": "Choose a new password for your account.",
+      "submit": "Update password",
+      "success": "Password updated.",
+      "invalidLink": "This reset link is invalid or has expired. Request a new one."
+    },
+    "validation": {
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordShort": "Password must be at least 8 characters.",
+      "passwordMismatch": "Passwords do not match.",
+      "nameRequired": "Enter your full name.",
+      "passwordHint": "At least 8 characters."
+    },
+    "errors": {
+      "invalidCredentials": "Incorrect email or password.",
+      "emailNotConfirmed": "Confirm your email address before signing in.",
+      "emailTaken": "An account with this email already exists.",
+      "generic": "Something went wrong. Please try again."
     }
   }
 }
