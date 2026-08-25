@@ -426,6 +426,24 @@ function ProfilePage() {
                     {profile?.created_at ? dateFormatter.format(new Date(profile.created_at)) : "—"}
                   </span>
                 </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-muted-foreground">{t("seller.requestLabel")}</span>
+                  <Badge variant={sellerStatus === "approved" ? "success" : sellerStatus === "pending" ? "gold" : "muted"}>
+                    {t(`seller.status.${sellerStatus}`)}
+                  </Badge>
+                </div>
+                {isSellerAlready ? null : (
+                  <div className="space-y-2 border-t border-border pt-4">
+                    <Button
+                      className="w-full"
+                      disabled={sellerStatus === "pending" || becomeSellerMutation.isPending}
+                      onClick={() => becomeSellerMutation.mutate()}
+                    >
+                      {sellerStatus === "rejected" ? t("seller.resend") : t("seller.become")}
+                    </Button>
+                    <p className="text-xs text-muted-foreground">{t("seller.hint")}</p>
+                  </div>
+                )}
                 <Button variant="outline" className="w-full" onClick={() => void onSignOut()}>
                   {t("account.signOut")}
                 </Button>
