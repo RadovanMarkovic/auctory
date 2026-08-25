@@ -1,4 +1,5 @@
 import { UserRound } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,20 +13,22 @@ import {
 
 /** Placeholder: authentication is not implemented yet. */
 export function AccountMenu() {
+  const { t } = useTranslation();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Account menu">
+        <Button variant="ghost" size="icon" aria-label={t("account.menu")}>
           <UserRound />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52">
-        <DropdownMenuLabel className="eyebrow">Account</DropdownMenuLabel>
-        <DropdownMenuItem disabled>Sign in</DropdownMenuItem>
-        <DropdownMenuItem disabled>Create account</DropdownMenuItem>
+        <DropdownMenuLabel className="eyebrow">{t("account.label")}</DropdownMenuLabel>
+        <DropdownMenuItem disabled>{t("account.signIn")}</DropdownMenuItem>
+        <DropdownMenuItem disabled>{t("account.createAccount")}</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem disabled>My bids</DropdownMenuItem>
-        <DropdownMenuItem disabled>My listings</DropdownMenuItem>
+        <DropdownMenuItem disabled>{t("account.myBids")}</DropdownMenuItem>
+        <DropdownMenuItem disabled>{t("account.myListings")}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
