@@ -132,13 +132,15 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <I18nProvider>
-        <AppShell>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </AppShell>
-        <Toaster />
-      </I18nProvider>
+      <AuthProvider>
+        <I18nProvider>
+          <AppShell>
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </AppShell>
+          <Toaster />
+        </I18nProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
