@@ -19,7 +19,7 @@ import { useRoles } from "@/lib/use-roles";
 export function AccountMenu() {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { isAdmin } = useRoles();
+  const { isAdmin, isSeller } = useRoles();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
