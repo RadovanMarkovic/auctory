@@ -341,7 +341,7 @@ function ProfilePage() {
               <CardContent className="space-y-4 text-sm">
                 <div className="flex items-center justify-between gap-4">
                   <span className="text-muted-foreground">{t("profilePage.wallet.status")}</span>
-                  <Badge variant={walletConnected ? "success" : "secondary"}>
+                  <Badge variant={walletConnected ? "success" : "muted"}>
                     {walletConnected
                       ? t("profilePage.wallet.connected")
                       : t("profilePage.wallet.notConnected")}
