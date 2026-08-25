@@ -304,13 +304,18 @@ function SignUpCard() {
                 {t("auth.fields.country")}{" "}
                 <span className="text-xs text-muted-foreground">{t("auth.fields.optional")}</span>
               </Label>
-              <Input
-                id="signup-country"
-                autoComplete="country-name"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                className="mt-2"
-              />
+              <Select value={country} onValueChange={setCountry}>
+                <SelectTrigger id="signup-country" className="mt-2" aria-label={t("auth.fields.country")}>
+                  <SelectValue placeholder={t("auth.fields.countryPlaceholder")} />
+                </SelectTrigger>
+                <SelectContent>
+                  {COUNTRIES.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {c}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={busy}>
