@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 import { primaryNav } from "@/config/navigation";
 import { AccountMenu } from "./AccountMenu";
@@ -7,19 +8,23 @@ import { MobileNav } from "./MobileNav";
 import { WalletButton } from "./WalletButton";
 
 export function Header() {
+  const { t } = useTranslation();
+
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex h-18 max-w-7xl items-center gap-4 px-5 py-4 sm:px-8">
         <MobileNav />
 
         <Link to="/" className="flex items-baseline gap-2">
-          <span className="font-display text-2xl tracking-[0.16em] uppercase">Auctory</span>
+          <span className="font-display text-2xl tracking-[0.16em] uppercase">
+            {t("common.brand")}
+          </span>
           <span className="hidden text-[0.625rem] tracking-[0.24em] text-gold uppercase sm:inline">
-            Est. MMXXVI
+            {t("common.established")}
           </span>
         </Link>
 
-        <nav aria-label="Main" className="ml-8 hidden items-center gap-8 lg:flex">
+        <nav aria-label={t("nav.main")} className="ml-8 hidden items-center gap-8 lg:flex">
           {primaryNav.map((item) => (
             <Link
               key={item.to}
@@ -27,7 +32,7 @@ export function Header() {
               className="text-sm tracking-wide text-muted-foreground transition-colors hover:text-foreground"
               activeProps={{ className: "text-foreground" }}
             >
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           ))}
         </nav>

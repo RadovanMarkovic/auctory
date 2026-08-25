@@ -1,33 +1,34 @@
 /**
  * Central navigation map for the Auctory shell.
  * Route paths must stay in sync with files under src/routes.
+ * `labelKey` refers to a key in the i18n translation files.
  */
 export interface NavItem {
-  label: string;
+  labelKey: string;
   to: string;
 }
 
 export const primaryNav: NavItem[] = [
-  { label: "Auctions", to: "/auctions" },
-  { label: "Categories", to: "/categories" },
-  { label: "Sell", to: "/sell" },
-  { label: "How it works", to: "/how-it-works" },
+  { labelKey: "nav.auctions", to: "/auctions" },
+  { labelKey: "nav.categories", to: "/categories" },
+  { labelKey: "nav.sell", to: "/sell" },
+  { labelKey: "nav.howItWorks", to: "/how-it-works" },
 ];
 
-export const footerNav: { title: string; items: NavItem[] }[] = [
+export const footerNav: { titleKey: string; items: NavItem[] }[] = [
   {
-    title: "Marketplace",
+    titleKey: "nav.groups.marketplace",
     items: [
-      { label: "Live auctions", to: "/auctions" },
-      { label: "Categories", to: "/categories" },
-      { label: "Sell with us", to: "/sell" },
+      { labelKey: "nav.liveAuctions", to: "/auctions" },
+      { labelKey: "nav.categories", to: "/categories" },
+      { labelKey: "nav.sellWithUs", to: "/sell" },
     ],
   },
   {
-    title: "Company",
+    titleKey: "nav.groups.company",
     items: [
-      { label: "How it works", to: "/how-it-works" },
-      { label: "Account", to: "/account" },
+      { labelKey: "nav.howItWorks", to: "/how-it-works" },
+      { labelKey: "nav.account", to: "/account" },
     ],
   },
 ];
