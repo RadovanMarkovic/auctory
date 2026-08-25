@@ -156,10 +156,9 @@ function AccountPage() {
                     <Input
                       id="account-phone"
                       type="tel"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
+                      inputMode="tel"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+                      onChange={(e) => setPhone(e.target.value.replace(/[^+\d\s()-]/g, ""))}
                       className="mt-2"
                     />
                   </div>
