@@ -1,3 +1,4 @@
+import type React from "react";
 import { Check } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -44,7 +45,7 @@ function FlagRS({ className }: { className?: string }) {
   );
 }
 
-const FLAGS: Record<AppLanguage, (props: { className?: string }) => JSX.Element> = {
+const FLAGS: Record<AppLanguage, (props: { className?: string }) => React.ReactElement> = {
   en: FlagGB,
   sr: FlagRS,
 };
