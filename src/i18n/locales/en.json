@@ -131,10 +131,22 @@
       "title": "Every sold piece carries its own certificate",
       "body": "When a lot settles, Auctory mints an ERC-721 certificate on the Sepolia network containing the lot reference, specialist report, and sale date. The certificate transfers with the object, so each future owner inherits a complete, tamper-evident ownership history.",
       "cta": "See how certificates work",
-      "minted": { "title": "Minted at settlement", "body": "No manual paperwork." },
-      "log": { "title": "On-chain ownership log", "body": "Each transfer is recorded." },
-      "report": { "title": "Specialist report", "body": "Linked in the metadata." },
-      "permanent": { "title": "Permanent record", "body": "Independent of Auctory." }
+      "minted": {
+        "title": "Minted at settlement",
+        "body": "No manual paperwork."
+      },
+      "log": {
+        "title": "On-chain ownership log",
+        "body": "Each transfer is recorded."
+      },
+      "report": {
+        "title": "Specialist report",
+        "body": "Linked in the metadata."
+      },
+      "permanent": {
+        "title": "Permanent record",
+        "body": "Independent of Auctory."
+      }
     },
     "sell": {
       "eyebrow": "Consignment",
@@ -159,6 +171,64 @@
       "loading": "Loading lots",
       "errorTitle": "Couldn't load these lots",
       "errorDescription": "The catalogue didn't respond. Please try again."
+    }
+  },
+  "pages": {
+    "auctions": {
+      "eyebrow": "Catalogue",
+      "title": "Auctions",
+      "description": "Browse Auctory's timed English auctions for luxury watches, jewelry, collectibles, and limited-edition fashion.",
+      "emptyTitle": "Catalogue coming soon",
+      "emptyDescription": "Auction listings and bidding will be connected in a later step."
+    },
+    "lot": {
+      "eyebrow": "Lot {{id}}",
+      "title": "Lot details",
+      "description": "Lot details, bidding history, and certificate provenance on Auctory.",
+      "emptyTitle": "Lot view not built yet",
+      "emptyDescription": "Bidding, payment, and certificate panels will render here."
+    },
+    "categories": {
+      "eyebrow": "Departments",
+      "title": "Categories",
+      "description": "Explore Auctory departments: luxury watches, fine jewelry, collectibles, and limited-edition fashion."
+    },
+    "sell": {
+      "eyebrow": "Consignment",
+      "title": "Sell with Auctory",
+      "description": "Consign luxury watches, jewelry, collectibles, and fashion to Auctory. Every seller and lot is reviewed before going live.",
+      "emptyTitle": "Submission flow coming soon",
+      "emptyDescription": "Seller onboarding, lot submission, and approval workflow arrive in a later step."
+    },
+    "howItWorks": {
+      "eyebrow": "Process",
+      "title": "How it works",
+      "description": "From vetted consignment to English ascending bidding, settlement, and an ERC-721 certificate of provenance.",
+      "steps": {
+        "consign": {
+          "name": "Consign",
+          "body": "Sellers submit a lot; specialists review and approve it."
+        },
+        "bid": {
+          "name": "Bid",
+          "body": "Timed English ascending auction with clear bid increments."
+        },
+        "settle": {
+          "name": "Settle",
+          "body": "The winner completes a simulated post-auction payment."
+        },
+        "certify": {
+          "name": "Certify",
+          "body": "An ERC-721 certificate records ownership on Sepolia."
+        }
+      }
+    },
+    "account": {
+      "eyebrow": "Private",
+      "title": "Account",
+      "description": "Manage your Auctory bids, listings, orders, and wallet connection.",
+      "emptyTitle": "Accounts are not enabled yet",
+      "emptyDescription": "Authentication and wallet linking will be added in a later step."
     }
   }
 }
