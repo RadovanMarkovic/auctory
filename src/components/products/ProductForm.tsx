@@ -338,7 +338,9 @@ export function ProductForm({
 
       </Card>
 
-      <div className="flex flex-wrap items-center gap-3">
+      {footerSlot}
+
+      <div className="flex flex-wrap items-center gap-3 border-t border-border pt-6">
         <Button type="submit" disabled={submitting}>
           {t("products.form.save")}
         </Button>
