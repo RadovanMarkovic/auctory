@@ -77,7 +77,7 @@ function Index() {
       <Hero />
 
       <PageContainer className="space-y-24">
-        <section aria-labelledby="featured-heading">
+        <section>
           <SectionHeading
             eyebrow="Current sales"
             title="Featured live auctions"
@@ -88,9 +88,6 @@ function Index() {
               </Button>
             }
           />
-          <h2 id="featured-heading" className="sr-only">
-            Featured live auctions
-          </h2>
           <div className="mt-10">
             <LotGrid
               lots={data?.featured}
@@ -103,15 +100,12 @@ function Index() {
           </div>
         </section>
 
-        <section aria-labelledby="ending-heading">
+        <section>
           <SectionHeading
             eyebrow="Closing today"
             title="Ending soon"
             description="Lots entering their final hours. Bids in the last minutes extend the clock."
           />
-          <h2 id="ending-heading" className="sr-only">
-            Ending soon
-          </h2>
           <div className="mt-10">
             <LotGrid
               lots={data?.endingSoon}
@@ -125,15 +119,12 @@ function Index() {
           </div>
         </section>
 
-        <section aria-labelledby="categories-heading">
+        <section>
           <SectionHeading
             eyebrow="Departments"
             title="Luxury categories"
             description="Four departments, each with its own specialists and authentication process."
           />
-          <h2 id="categories-heading" className="sr-only">
-            Luxury categories
-          </h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {isPending
               ? Array.from({ length: 4 }).map((_, i) => (
@@ -159,7 +150,7 @@ function Index() {
           </div>
         </section>
 
-        <section aria-labelledby="how-heading">
+        <section>
           <SectionHeading
             eyebrow="Process"
             title="How Auctory works"
@@ -170,9 +161,6 @@ function Index() {
               </Button>
             }
           />
-          <h2 id="how-heading" className="sr-only">
-            How Auctory works
-          </h2>
           <ol className="mt-10 grid gap-6 md:grid-cols-3">
             {steps.map(({ icon: Icon, title: t, body }, index) => (
               <li key={t}>
@@ -253,10 +241,7 @@ function Index() {
           </div>
         </section>
 
-        <section aria-labelledby="trust-heading">
-          <h2 id="trust-heading" className="sr-only">
-            Trust indicators
-          </h2>
+        <section>
           <dl className="grid gap-6 border-y border-border py-10 sm:grid-cols-2 lg:grid-cols-4">
             <Stat label="Lots sold" value={data ? `${data.stats.lotsSold.toLocaleString()}+` : null} />
             <Stat
