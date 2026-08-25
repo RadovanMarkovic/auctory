@@ -90,7 +90,8 @@ function useValidators() {
     fullName: (value: string) => (value.trim().length < 2 ? t("auth.validation.nameRequired") : null),
     phone: (value: string) => {
       if (!value) return null;
-      return /^[0-9]{6,20}$/.test(value) ? null : t("auth.validation.phoneInvalid");
+      const digitsOnly = value.replace(/\D/g, "");
+      return digitsOnly.length >= 6 && digitsOnly.length <= 20 ? null : t("auth.validation.phoneInvalid");
     },
   };
 }
