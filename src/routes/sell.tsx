@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PackageOpen } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { EmptyState, PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -21,14 +22,20 @@ export const Route = createFileRoute("/sell")({
 });
 
 function SellPage() {
+  const { t } = useTranslation();
+
   return (
     <PageContainer>
-      <PageHeader eyebrow="Consignment" title="Sell with Auctory" description={description} />
+      <PageHeader
+        eyebrow={t("pages.sell.eyebrow")}
+        title={t("pages.sell.title")}
+        description={t("pages.sell.description")}
+      />
       <div className="mt-12">
         <EmptyState
           icon={PackageOpen}
-          title="Submission flow coming soon"
-          description="Seller onboarding, lot submission, and approval workflow arrive in a later step."
+          title={t("pages.sell.emptyTitle")}
+          description={t("pages.sell.emptyDescription")}
         />
       </div>
     </PageContainer>
