@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 import { PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -19,23 +20,28 @@ export const Route = createFileRoute("/how-it-works")({
   component: HowItWorksPage,
 });
 
-const steps = [
-  { step: "01", name: "Consign", body: "Sellers submit a lot; specialists review and approve it." },
-  { step: "02", name: "Bid", body: "Timed English ascending auction with clear bid increments." },
-  { step: "03", name: "Settle", body: "The winner completes a simulated post-auction payment." },
-  { step: "04", name: "Certify", body: "An ERC-721 certificate records ownership on Sepolia." },
-];
+const steps = ["consign", "bid", "settle", "certify"] as const;
 
 function HowItWorksPage() {
+  const { t } = useTranslation();
+
   return (
     <PageContainer>
-      <PageHeader eyebrow="Process" title="How it works" description={description} />
+      <PageHeader
+        eyebrow={t("pages.howItWorks.eyebrow")}
+        title={t("pages.howItWorks.title")}
+        description={t("pages.howItWorks.description")}
+      />
       <ol className="mt-12 divide-y divide-border border-y border-border">
-        {steps.map((s) => (
-          <li key={s.step} className="grid gap-3 py-8 sm:grid-cols-[6rem_1fr_2fr] sm:items-baseline">
-            <span className="font-display text-3xl text-gold">{s.step}</span>
-            <h2 className="font-display text-2xl">{s.name}</h2>
-            <p className="leading-relaxed text-muted-foreground">{s.body}</p>
+        {steps.map((key, index) => (
+          <li key={key} className="grid gap-3 py-8 sm:grid-cols-[6rem_1fr_2fr] sm:items-baseline">
+            <span className="font-display text-3xl text-gold">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <h2 className="font-display text-2xl">{t(`pages.howItWorks.steps.${key}.name`)}</h2>
+            <p className="leading-relaxed text-muted-foreground">
+              {t(`pages.howItWorks.steps.${key}.body`)}
+            </p>
           </li>
         ))}
       </ol>
