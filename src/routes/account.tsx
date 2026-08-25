@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { UserRound } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { EmptyState, PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -21,14 +22,20 @@ export const Route = createFileRoute("/account")({
 });
 
 function AccountPage() {
+  const { t } = useTranslation();
+
   return (
     <PageContainer>
-      <PageHeader eyebrow="Private" title="Account" description={description} />
+      <PageHeader
+        eyebrow={t("pages.account.eyebrow")}
+        title={t("pages.account.title")}
+        description={t("pages.account.description")}
+      />
       <div className="mt-12">
         <EmptyState
           icon={UserRound}
-          title="Accounts are not enabled yet"
-          description="Authentication and wallet linking will be added in a later step."
+          title={t("pages.account.emptyTitle")}
+          description={t("pages.account.emptyDescription")}
         />
       </div>
     </PageContainer>

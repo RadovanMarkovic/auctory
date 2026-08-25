@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Gavel } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { EmptyState, PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -21,14 +22,20 @@ export const Route = createFileRoute("/auctions/")({
 });
 
 function AuctionsPage() {
+  const { t } = useTranslation();
+
   return (
     <PageContainer>
-      <PageHeader eyebrow="Catalogue" title="Auctions" description={description} />
+      <PageHeader
+        eyebrow={t("pages.auctions.eyebrow")}
+        title={t("pages.auctions.title")}
+        description={t("pages.auctions.description")}
+      />
       <div className="mt-12">
         <EmptyState
           icon={Gavel}
-          title="Catalogue coming soon"
-          description="Auction listings and bidding will be connected in a later step."
+          title={t("pages.auctions.emptyTitle")}
+          description={t("pages.auctions.emptyDescription")}
         />
       </div>
     </PageContainer>

@@ -134,10 +134,22 @@
       "title": "Svaki prodati predmet nosi sopstveni sertifikat",
       "body": "Kada se prodaja završi, Auctory kreira ERC-721 sertifikat na Sepolia mreži sa referencom predmeta, izveštajem stručnjaka i datumom prodaje. Sertifikat se prenosi zajedno sa predmetom, pa svaki naredni vlasnik nasleđuje potpunu istoriju vlasništva otpornu na izmene.",
       "cta": "Pogledajte kako sertifikati rade",
-      "minted": { "title": "Kreiran po završetku prodaje", "body": "Bez ručne papirologije." },
-      "log": { "title": "Evidencija vlasništva na lancu", "body": "Svaki prenos se beleži." },
-      "report": { "title": "Izveštaj stručnjaka", "body": "Povezan u metapodacima." },
-      "permanent": { "title": "Trajni zapis", "body": "Nezavisan od Auctory-ja." }
+      "minted": {
+        "title": "Kreiran po završetku prodaje",
+        "body": "Bez ručne papirologije."
+      },
+      "log": {
+        "title": "Evidencija vlasništva na lancu",
+        "body": "Svaki prenos se beleži."
+      },
+      "report": {
+        "title": "Izveštaj stručnjaka",
+        "body": "Povezan u metapodacima."
+      },
+      "permanent": {
+        "title": "Trajni zapis",
+        "body": "Nezavisan od Auctory-ja."
+      }
     },
     "sell": {
       "eyebrow": "Konsignacija",
@@ -162,6 +174,64 @@
       "loading": "Učitavanje predmeta",
       "errorTitle": "Nije moguće učitati predmete",
       "errorDescription": "Katalog nije odgovorio. Pokušajte ponovo."
+    }
+  },
+  "pages": {
+    "auctions": {
+      "eyebrow": "Katalog",
+      "title": "Aukcije",
+      "description": "Pregledajte Auctory vremenski ograničene engleske aukcije luksuznih satova, nakita, kolekcionarskih predmeta i limitirane mode.",
+      "emptyTitle": "Katalog uskoro",
+      "emptyDescription": "Aukcijski oglasi i licitiranje biće povezani u narednom koraku."
+    },
+    "lot": {
+      "eyebrow": "Lot {{id}}",
+      "title": "Detalji lota",
+      "description": "Detalji lota, istorija licitacija i poreklo sertifikata na Auctory platformi.",
+      "emptyTitle": "Prikaz lota još nije napravljen",
+      "emptyDescription": "Paneli za licitiranje, plaćanje i sertifikat pojaviće se ovde."
+    },
+    "categories": {
+      "eyebrow": "Odeljenja",
+      "title": "Kategorije",
+      "description": "Istražite Auctory odeljenja: luksuzni satovi, fini nakit, kolekcionarski predmeti i limitirana moda."
+    },
+    "sell": {
+      "eyebrow": "Konsignacija",
+      "title": "Prodajte uz Auctory",
+      "description": "Poverite nam luksuzne satove, nakit, kolekcionarske predmete i modu. Svaki prodavac i lot se proveravaju pre objave.",
+      "emptyTitle": "Proces prijave uskoro",
+      "emptyDescription": "Registracija prodavaca, prijava lota i odobravanje stižu u narednom koraku."
+    },
+    "howItWorks": {
+      "eyebrow": "Proces",
+      "title": "Kako funkcioniše",
+      "description": "Od proverene konsignacije do rastuće engleske aukcije, isplate i ERC-721 sertifikata o poreklu.",
+      "steps": {
+        "consign": {
+          "name": "Konsignacija",
+          "body": "Prodavci prijavljuju lot; stručnjaci ga pregledaju i odobravaju."
+        },
+        "bid": {
+          "name": "Licitiranje",
+          "body": "Vremenski ograničena rastuća aukcija sa jasnim koracima licitacije."
+        },
+        "settle": {
+          "name": "Isplata",
+          "body": "Pobednik završava simulirano plaćanje nakon aukcije."
+        },
+        "certify": {
+          "name": "Sertifikat",
+          "body": "ERC-721 sertifikat beleži vlasništvo na Sepolia mreži."
+        }
+      }
+    },
+    "account": {
+      "eyebrow": "Privatno",
+      "title": "Nalog",
+      "description": "Upravljajte svojim licitacijama, oglasima, porudžbinama i povezanim novčanikom.",
+      "emptyTitle": "Nalozi još nisu omogućeni",
+      "emptyDescription": "Autentifikacija i povezivanje novčanika biće dodati u narednom koraku."
     }
   }
 }
