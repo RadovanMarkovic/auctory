@@ -1,20 +1,16 @@
 import { Link } from "@tanstack/react-router";
 import { Gavel, ShieldCheck, Timer } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatMoney, formatTimeLeft } from "@/lib/format";
 import type { HomeLot } from "@/mocks/home";
 
-const categoryLabel: Record<HomeLot["category"], string> = {
-  watches: "Watches",
-  jewelry: "Jewelry",
-  collectibles: "Collectibles",
-  fashion: "Fashion",
-};
-
 export function LotCard({ lot, urgent = false }: { lot: HomeLot; urgent?: boolean }) {
-  const timeLeft = formatTimeLeft(lot.endsAt);
+  const { t, i18n } = useTranslation();
+  const timeLeft = formatTimeLeft(lot.endsAt, Date.now(), t("lot.closed"));
+  const price = formatMoney(lot.currentBid, i18n.language === "sr" ? "sr-RS" : "en-GB");
 
   return (
     <Card interactive className="group h-full overflow-hidden">
@@ -22,7 +18,7 @@ export function LotCard({ lot, urgent = false }: { lot: HomeLot; urgent?: boolea
         to="/auctions/$auctionId"
         params={{ auctionId: lot.id }}
         className="flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        aria-label={`${lot.brand} — ${lot.title}, current bid ${formatMoney(lot.currentBid)}`}
+        aria-label={t("lot.ariaLabel", { brand: lot.brand, title: lot.title, price })}
       >
         <div
           className="surface-gradient relative flex aspect-4/3 items-center justify-center border-b border-border"
@@ -33,15 +29,15 @@ export function LotCard({ lot, urgent = false }: { lot: HomeLot; urgent?: boolea
           </span>
           <div className="absolute top-3 left-3 flex gap-2">
             <Badge variant={urgent ? "live" : "upcoming"}>
-              {urgent ? "Ending soon" : "Live"}
+              {urgent ? t("lot.endingSoon") : t("lot.live")}
             </Badge>
-            {lot.certified ? <Badge variant="gold">Certified</Badge> : null}
+            {lot.certified ? <Badge variant="gold">{t("lot.certified")}</Badge> : null}
           </div>
         </div>
 
         <CardContent className="flex flex-1 flex-col gap-3 p-5">
           <p className="eyebrow">
-            {categoryLabel[lot.category]} · {lot.brand}
+            {t(`categories.${lot.category}.name`)} · {lot.brand}
           </p>
           <h3 className="font-display text-xl leading-snug transition-colors group-hover:text-primary">
             {lot.title}
@@ -49,13 +45,13 @@ export function LotCard({ lot, urgent = false }: { lot: HomeLot; urgent?: boolea
 
           <div className="mt-auto flex items-end justify-between gap-3 pt-3">
             <div>
-              <p className="eyebrow">Current bid</p>
-              <p className="font-display text-2xl">{formatMoney(lot.currentBid)}</p>
+              <p className="eyebrow">{t("lot.currentBid")}</p>
+              <p className="font-display text-2xl">{price}</p>
             </div>
             <div className="space-y-1 text-right text-xs text-muted-foreground">
               <p className="flex items-center justify-end gap-1.5">
                 <Gavel className="size-3.5" aria-hidden="true" />
-                {lot.bidCount} bids
+                {t("lot.bids", { count: lot.bidCount })}
               </p>
               <p
                 className={`flex items-center justify-end gap-1.5 ${urgent ? "text-destructive" : ""}`}
@@ -69,7 +65,7 @@ export function LotCard({ lot, urgent = false }: { lot: HomeLot; urgent?: boolea
           {lot.certified ? (
             <p className="flex items-center gap-1.5 border-t border-border pt-3 text-xs text-muted-foreground">
               <ShieldCheck className="size-3.5 text-success" aria-hidden="true" />
-              ERC-721 certificate on settlement
+              {t("lot.certificateNote")}
             </p>
           ) : null}
         </CardContent>
