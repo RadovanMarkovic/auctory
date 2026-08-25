@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as AuctionsIndexRouteImport } from './routes/auctions.index'
 import { Route as AuctionsAuctionIdRouteImport } from './routes/auctions.$auctionId'
@@ -49,6 +50,11 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
   path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SellRoute = SellRouteImport.update({
   id: '/sell',
   path: '/sell',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/categories': typeof CategoriesRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sell': typeof SellRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
   '/auctions/': typeof AuctionsIndexRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/categories': typeof CategoriesRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sell': typeof SellRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
   '/auctions': typeof AuctionsIndexRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/categories': typeof CategoriesRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sell': typeof SellRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
   '/auctions/': typeof AuctionsIndexRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/forgot-password'
     | '/how-it-works'
+    | '/reset-password'
     | '/sell'
     | '/auctions/$auctionId'
     | '/auctions/'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/forgot-password'
     | '/how-it-works'
+    | '/reset-password'
     | '/sell'
     | '/auctions/$auctionId'
     | '/auctions'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/forgot-password'
     | '/how-it-works'
+    | '/reset-password'
     | '/sell'
     | '/auctions/$auctionId'
     | '/auctions/'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   CategoriesRoute: typeof CategoriesRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SellRoute: typeof SellRoute
   AuctionsAuctionIdRoute: typeof AuctionsAuctionIdRoute
   AuctionsIndexRoute: typeof AuctionsIndexRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sell': {
       id: '/sell'
       path: '/sell'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesRoute: CategoriesRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   HowItWorksRoute: HowItWorksRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SellRoute: SellRoute,
   AuctionsAuctionIdRoute: AuctionsAuctionIdRoute,
   AuctionsIndexRoute: AuctionsIndexRoute,
