@@ -55,17 +55,10 @@ function shortenAddress(address: string) {
 function ProfilePage() {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
+  const userId = user?.id;
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  if (!user) {
-    return (
-      <PageContainer>
-        <LoadingState />
-      </PageContainer>
-    );
-  }
 
   async function onSignOut() {
     await queryClient.cancelQueries();
@@ -76,18 +69,19 @@ function ProfilePage() {
 
 
   const profileQuery = useQuery({
-    queryKey: ["profile", user?.id],
-    enabled: Boolean(user?.id),
+    queryKey: ["profile", userId],
+    enabled: Boolean(userId),
     queryFn: async () => {
+      if (!userId) throw new Error("Missing authenticated user");
       const [{ data: profile, error }, { data: roles, error: rolesError }] = await Promise.all([
         supabase
           .from("profiles")
           .select(
             "full_name, avatar_url, phone, country, account_status, created_at, wallet_address, wallet_network, wallet_verified_at",
           )
-          .eq("id", user.id)
+          .eq("id", userId)
           .maybeSingle(),
-        supabase.from("user_roles").select("role").eq("user_id", user.id),
+        supabase.from("user_roles").select("role").eq("user_id", userId),
       ]);
       if (error) throw error;
       if (rolesError) throw rolesError;
@@ -125,6 +119,7 @@ function ProfilePage() {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
+      if (!userId) throw new Error("Missing authenticated user");
       const { error } = await supabase
         .from("profiles")
         .update({
@@ -132,7 +127,7 @@ function ProfilePage() {
           phone: phone.trim() || null,
           country: country.trim() || null,
         })
-        .eq("id", user.id);
+        .eq("id", userId);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -144,10 +139,11 @@ function ProfilePage() {
 
   const avatarMutation = useMutation({
     mutationFn: async (file: File) => {
+      if (!userId) throw new Error("Missing authenticated user");
       if (!file.type.startsWith("image/")) throw new Error("type");
       if (file.size > 5 * 1024 * 1024) throw new Error("size");
       const extension = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
-      const path = `${user.id}/avatar-${Date.now()}.${extension}`;
+      const path = `${userId}/avatar-${Date.now()}.${extension}`;
       const { error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(path, file, { upsert: true, contentType: file.type });
@@ -155,7 +151,7 @@ function ProfilePage() {
       const { error } = await supabase
         .from("profiles")
         .update({ avatar_url: path })
-        .eq("id", user.id);
+        .eq("id", userId);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -171,13 +167,14 @@ function ProfilePage() {
 
   const removeAvatarMutation = useMutation({
     mutationFn: async () => {
+      if (!userId) throw new Error("Missing authenticated user");
       if (avatarPath && !/^https?:\/\//.test(avatarPath)) {
         await supabase.storage.from("avatars").remove([avatarPath]);
       }
       const { error } = await supabase
         .from("profiles")
         .update({ avatar_url: null })
-        .eq("id", user.id);
+        .eq("id", userId);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -205,6 +202,14 @@ function ProfilePage() {
   const dateFormatter = new Intl.DateTimeFormat(i18n.language === "sr" ? "sr-RS" : "en-GB", {
     dateStyle: "medium",
   });
+
+  if (!user) {
+    return (
+      <PageContainer>
+        <LoadingState />
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>
