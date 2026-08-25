@@ -60,9 +60,6 @@ export function AccountMenu() {
             <DropdownMenuItem asChild>
               <Link to="/auth">{t("account.signIn")}</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/auth">{t("account.createAccount")}</Link>
-            </DropdownMenuItem>
           </>
         )}
       </DropdownMenuContent>
