@@ -404,7 +404,11 @@ function ProfilePage() {
                     {profile?.created_at ? dateFormatter.format(new Date(profile.created_at)) : "—"}
                   </span>
                 </div>
+                <Button variant="outline" className="w-full" onClick={() => void onSignOut()}>
+                  {t("account.signOut")}
+                </Button>
               </CardContent>
+
             </Card>
           </div>
         </div>
