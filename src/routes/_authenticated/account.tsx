@@ -162,12 +162,18 @@ function AccountPage() {
                   </div>
                   <div>
                     <Label htmlFor="account-country">{t("auth.fields.country")}</Label>
-                    <Input
-                      id="account-country"
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      className="mt-2"
-                    />
+                    <Select value={country} onValueChange={setCountry}>
+                      <SelectTrigger id="account-country" className="mt-2" aria-label={t("auth.fields.country")}>
+                        <SelectValue placeholder={t("auth.fields.countryPlaceholder")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {COUNTRIES.map((c) => (
+                          <SelectItem key={c} value={c}>
+                            {c}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <Button type="submit" disabled={saveMutation.isPending}>
