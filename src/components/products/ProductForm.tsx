@@ -243,8 +243,8 @@ export function ProductForm({
               </SelectTrigger>
               <SelectContent>
                 {COUNTRIES.map((country) => (
-                  <SelectItem key={country.code} value={country.name}>
-                    {country.name}
+                  <SelectItem key={country} value={country}>
+                    {country}
                   </SelectItem>
                 ))}
               </SelectContent>
