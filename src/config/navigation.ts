@@ -28,7 +28,7 @@ export const footerNav: { titleKey: string; items: NavItem[] }[] = [
     titleKey: "nav.groups.company",
     items: [
       { labelKey: "nav.howItWorks", to: "/how-it-works" },
-      { labelKey: "nav.account", to: "/account" },
+      { labelKey: "nav.account", to: "/profile" },
     ],
   },
 ];
