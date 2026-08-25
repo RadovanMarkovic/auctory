@@ -10,18 +10,22 @@ export interface NavItem {
 
 export const primaryNav: NavItem[] = [
   { labelKey: "nav.auctions", to: "/auctions" },
+  { labelKey: "nav.products", to: "/products" },
   { labelKey: "nav.categories", to: "/categories" },
   { labelKey: "nav.sell", to: "/sell" },
   { labelKey: "nav.howItWorks", to: "/how-it-works" },
 ];
+
 
 export const footerNav: { titleKey: string; items: NavItem[] }[] = [
   {
     titleKey: "nav.groups.marketplace",
     items: [
       { labelKey: "nav.liveAuctions", to: "/auctions" },
+      { labelKey: "nav.products", to: "/products" },
       { labelKey: "nav.categories", to: "/categories" },
       { labelKey: "nav.sellWithUs", to: "/sell" },
+
     ],
   },
   {
