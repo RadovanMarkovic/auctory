@@ -367,5 +367,43 @@
       "readOnly": "Uloga i status naloga su pod kontrolom Auctory tima i ne mogu se menjati ovde.",
       "memberSince": "Član od"
     }
+  },
+  "seller": {
+    "become": "Postani prodavac",
+    "requestSent": "Zahtev je poslat. Naš tim će ga uskoro pregledati.",
+    "requestLabel": "Zahtev za prodavca",
+    "hint": "Zatraži pristup prodavca da bi izlagao predmete na Auctory.",
+    "status": {
+      "none": "Nije zatraženo",
+      "pending": "Na čekanju",
+      "approved": "Odobreno",
+      "rejected": "Odbijeno"
+    },
+    "resend": "Pošalji zahtev ponovo"
+  },
+  "admin": {
+    "nav": "Admin panel",
+    "eyebrow": "Administracija",
+    "title": "Korisnici i uloge",
+    "description": "Pregledaj zahteve za prodavca i upravljaj ulogama kupca i prodavca.",
+    "empty": {
+      "title": "Još nema korisnika",
+      "description": "Registrovani korisnici će se pojaviti ovde."
+    },
+    "table": {
+      "roles": "Uloge",
+      "request": "Zahtev za prodavca"
+    },
+    "actions": {
+      "approve": "Odobri",
+      "reject": "Odbij",
+      "addSeller": "Dodaj ulogu prodavca",
+      "removeSeller": "Ukloni ulogu prodavca"
+    },
+    "toast": {
+      "updated": "Zahtev je ažuriran.",
+      "sellerGranted": "Uloga prodavca je dodeljena.",
+      "sellerRevoked": "Uloga prodavca je uklonjena."
+    }
   }
 }

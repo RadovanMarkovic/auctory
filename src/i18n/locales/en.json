@@ -364,5 +364,43 @@
       "readOnly": "Role and account status are managed by Auctory and cannot be changed here.",
       "memberSince": "Member since"
     }
+  },
+  "seller": {
+    "become": "Become a seller",
+    "requestSent": "Seller request sent. Our team will review it shortly.",
+    "requestLabel": "Seller request",
+    "hint": "Request seller access to list items on Auctory.",
+    "status": {
+      "none": "Not requested",
+      "pending": "Pending review",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "resend": "Request again"
+  },
+  "admin": {
+    "nav": "Admin panel",
+    "eyebrow": "Administration",
+    "title": "Users & roles",
+    "description": "Review seller requests and manage buyer and seller roles.",
+    "empty": {
+      "title": "No users yet",
+      "description": "Registered users will appear here."
+    },
+    "table": {
+      "roles": "Roles",
+      "request": "Seller request"
+    },
+    "actions": {
+      "approve": "Approve",
+      "reject": "Reject",
+      "addSeller": "Add seller role",
+      "removeSeller": "Remove seller role"
+    },
+    "toast": {
+      "updated": "Request updated.",
+      "sellerGranted": "Seller role granted.",
+      "sellerRevoked": "Seller role removed."
+    }
   }
 }
