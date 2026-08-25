@@ -22,8 +22,10 @@ export const footerNav: { titleKey: string; items: NavItem[] }[] = [
     titleKey: "nav.groups.marketplace",
     items: [
       { labelKey: "nav.liveAuctions", to: "/auctions" },
+      { labelKey: "nav.products", to: "/products" },
       { labelKey: "nav.categories", to: "/categories" },
       { labelKey: "nav.sellWithUs", to: "/sell" },
+
     ],
   },
   {
