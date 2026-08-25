@@ -88,6 +88,10 @@ function useValidators() {
       return null;
     },
     fullName: (value: string) => (value.trim().length < 2 ? t("auth.validation.nameRequired") : null),
+    phone: (value: string) => {
+      if (!value) return null;
+      return /^[0-9]{6,20}$/.test(value) ? null : t("auth.validation.phoneInvalid");
+    },
   };
 }
 
@@ -186,15 +190,11 @@ function SignUpCard() {
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    const trimmedPhone = phone.trim();
     const next = {
       fullName: v.fullName(fullName),
       email: v.email(email),
       password: v.password(password),
-      phone:
-        trimmedPhone.length > 0 && !/^\+?[0-9\s()-]{6,20}$/.test(trimmedPhone)
-          ? t("auth.validation.phoneInvalid")
-          : null,
+      phone: v.phone(phone),
     };
     setErrors(next);
     if (next.fullName || next.email || next.password || next.phone) return;
@@ -207,7 +207,7 @@ function SignUpCard() {
         emailRedirectTo: `${window.location.origin}/account`,
         data: {
           full_name: fullName.trim(),
-          phone: trimmedPhone,
+          phone: phone || null,
           country: country.trim(),
         },
       },
@@ -292,9 +292,11 @@ function SignUpCard() {
               <Input
                 id="signup-phone"
                 type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 autoComplete="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                 className="mt-2"
               />
               <FieldError message={errors["phone"]} />

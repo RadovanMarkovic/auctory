@@ -315,7 +315,7 @@
       "passwordMismatch": "Lozinke se ne poklapaju.",
       "nameRequired": "Unesite ime i prezime.",
       "passwordHint": "Najmanje 8 karaktera.",
-      "phoneInvalid": "Unesite ispravan broj telefona."
+      "phoneInvalid": "Broj telefona može sadržati samo cifre."
     },
     "errors": {
       "invalidCredentials": "Pogrešan email ili lozinka.",
