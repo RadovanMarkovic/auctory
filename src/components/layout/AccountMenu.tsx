@@ -1,3 +1,5 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { UserRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -10,10 +12,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth-context";
 
-/** Placeholder: authentication is not implemented yet. */
 export function AccountMenu() {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  async function onSignOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    void navigate({ to: "/auth", replace: true });
+  }
 
   return (
     <DropdownMenu>
@@ -22,13 +35,33 @@ export function AccountMenu() {
           <UserRound />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-52">
-        <DropdownMenuLabel className="eyebrow">{t("account.label")}</DropdownMenuLabel>
-        <DropdownMenuItem disabled>{t("account.signIn")}</DropdownMenuItem>
-        <DropdownMenuItem disabled>{t("account.createAccount")}</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem disabled>{t("account.myBids")}</DropdownMenuItem>
-        <DropdownMenuItem disabled>{t("account.myListings")}</DropdownMenuItem>
+      <DropdownMenuContent align="end" className="w-56">
+        {user ? (
+          <>
+            <DropdownMenuLabel className="eyebrow">{t("account.signedInAs")}</DropdownMenuLabel>
+            <DropdownMenuLabel className="truncate pt-0 text-sm font-normal">
+              {user.email}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/account">{t("account.myProfile")}</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => void onSignOut()}>
+              {t("account.signOut")}
+            </DropdownMenuItem>
+          </>
+        ) : (
+          <>
+            <DropdownMenuLabel className="eyebrow">{t("account.label")}</DropdownMenuLabel>
+            <DropdownMenuItem asChild>
+              <Link to="/auth">{t("account.signIn")}</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/auth">{t("account.createAccount")}</Link>
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
