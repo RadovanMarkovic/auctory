@@ -292,9 +292,11 @@ function SignUpCard() {
               <Input
                 id="signup-phone"
                 type="tel"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 autoComplete="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                 className="mt-2"
               />
               <FieldError message={errors["phone"]} />
