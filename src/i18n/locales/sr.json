@@ -22,7 +22,9 @@
     "groups": {
       "marketplace": "Tržište",
       "company": "Kompanija"
-    }
+    },
+    "products": "Predmeti",
+    "myProducts": "Moji predmeti"
   },
   "language": {
     "label": "Jezik",
@@ -405,6 +407,113 @@
       "updated": "Zahtev je ažuriran.",
       "sellerGranted": "Uloga prodavca je dodeljena.",
       "sellerRevoked": "Uloga prodavca je uklonjena."
+    }
+  },
+  "products": {
+    "disclaimer": "Sve informacije o predmetu unosi prodavac. Auctory ne vrši stručnu autentifikaciju i ne garantuje tačnost navoda prodavca.",
+    "status": {
+      "draft": "Nacrt",
+      "published": "Objavljeno",
+      "archived": "Arhivirano"
+    },
+    "conditions": {
+      "new": "Novo",
+      "unworn": "Nenošeno",
+      "excellent": "Odlično",
+      "very_good": "Vrlo dobro",
+      "good": "Dobro",
+      "fair": "Zadovoljavajuće",
+      "restored": "Restaurirano"
+    },
+    "fields": {
+      "brand": "Brend",
+      "brandUnknown": "Bez brenda",
+      "category": "Kategorija",
+      "title": "Naziv predmeta",
+      "model": "Model",
+      "description": "Opis",
+      "serialNumber": "Serijski ili referentni broj",
+      "productionYear": "Godina proizvodnje",
+      "condition": "Stanje",
+      "material": "Materijal",
+      "countryOfOrigin": "Zemlja porekla",
+      "provenanceNotes": "Poreklo i vlasništvo",
+      "hasOriginalBox": "Originalna kutija",
+      "hasDocuments": "Dokumentacija"
+    },
+    "form": {
+      "newTitle": "Novi predmet",
+      "newDescription": "Opišite predmet. Možete sačuvati nacrt, a slike dodati zatim.",
+      "editDescription": "Izmenite podatke, uredite slike i objavite kada budete spremni.",
+      "save": "Sačuvaj",
+      "saved": "Predmet sačuvan",
+      "draftSaved": "Nacrt kreiran",
+      "saveFailed": "Čuvanje predmeta nije uspelo",
+      "titleRequired": "Naziv predmeta je obavezan",
+      "selectPlaceholder": "Izaberite",
+      "sections": {
+        "basics": "Osnovno",
+        "basicsHint": "Kategorija, brend i osnovni podaci.",
+        "details": "Specifikacija",
+        "detailsHint": "Podaci na koje se kupci oslanjaju.",
+        "provenance": "Poreklo",
+        "provenanceHint": "Istorija vlasništva i prateći predmeti."
+      }
+    },
+    "images": {
+      "title": "Slike predmeta",
+      "hint": "Dodajte jednu ili više fotografija i izaberite naslovnu sliku. Pre objave je potrebna bar jedna slika.",
+      "add": "Dodaj slike",
+      "empty": "Još nema slika.",
+      "cover": "Naslovna",
+      "makeCover": "Postavi kao naslovnu",
+      "coverSet": "Naslovna slika izmenjena",
+      "delete": "Obriši",
+      "deleted": "Slika obrisana",
+      "uploaded": "Slike otpremljene",
+      "invalidType": "Dozvoljene su samo slike",
+      "tooLarge": "Slika je prevelika",
+      "alt": "Fotografija predmeta"
+    },
+    "catalogue": {
+      "eyebrow": "Katalog",
+      "title": "Predmeti",
+      "description": "Objavljeni predmeti koje su opisali prodavci, pre početka aukcija.",
+      "emptyTitle": "Još nema predmeta",
+      "emptyDescription": "Objavljeni predmeti će se pojaviti ovde."
+    },
+    "detail": {
+      "information": "Podaci o predmetu",
+      "seller": "Prodavac",
+      "sellerHint": "Podatke je uneo prodavac.",
+      "sellerAnonymous": "Privatni prodavac",
+      "passportTitle": "Digitalni pasoš predmeta",
+      "passportDescription": "Blockchain sertifikat biće izdat nakon završetka aukcije.",
+      "passportPending": "Još nije izdat",
+      "notFoundTitle": "Predmet nije dostupan",
+      "notFoundDescription": "Ovaj predmet nije objavljen ili više ne postoji.",
+      "viewImage": "Prikaži sliku {{number}}"
+    },
+    "manage": {
+      "eyebrow": "Prodavac",
+      "title": "Moji predmeti",
+      "description": "Upravljajte nacrtima, objavljenim predmetima i arhivom.",
+      "new": "Novi predmet",
+      "edit": "Izmeni",
+      "archive": "Arhiviraj",
+      "restore": "Vrati",
+      "publish": "Objavi",
+      "unpublish": "Skloni objavu",
+      "needImage": "Dodajte bar jednu sliku za objavu.",
+      "statusUpdated": "Status je izmenjen",
+      "backToList": "Nazad na moje predmete",
+      "emptyTitle": "Ovde još nema ničega",
+      "emptyDescription": "Predmeti sa ovim statusom pojaviće se ovde.",
+      "imageCount": "{{count}} slika",
+      "imageCount_few": "{{count}} slike",
+      "imageCount_other": "{{count}} slika",
+      "notSellerTitle": "Potreban je nalog prodavca",
+      "notSellerDescription": "Zatražite ulogu prodavca na svom profilu da biste dodavali predmete."
     }
   }
 }

@@ -22,7 +22,9 @@
     "groups": {
       "marketplace": "Marketplace",
       "company": "Company"
-    }
+    },
+    "products": "Products",
+    "myProducts": "My products"
   },
   "language": {
     "label": "Language",
@@ -402,6 +404,112 @@
       "updated": "Request updated.",
       "sellerGranted": "Seller role granted.",
       "sellerRevoked": "Seller role removed."
+    }
+  },
+  "products": {
+    "disclaimer": "All product information is provided by the seller. Auctory does not perform expert authentication and does not guarantee the accuracy of seller statements.",
+    "status": {
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived"
+    },
+    "conditions": {
+      "new": "New",
+      "unworn": "Unworn",
+      "excellent": "Excellent",
+      "very_good": "Very good",
+      "good": "Good",
+      "fair": "Fair",
+      "restored": "Restored"
+    },
+    "fields": {
+      "brand": "Brand",
+      "brandUnknown": "Unbranded",
+      "category": "Category",
+      "title": "Product title",
+      "model": "Model",
+      "description": "Description",
+      "serialNumber": "Serial or reference number",
+      "productionYear": "Production year",
+      "condition": "Condition",
+      "material": "Material",
+      "countryOfOrigin": "Country of origin",
+      "provenanceNotes": "Provenance and ownership",
+      "hasOriginalBox": "Original box included",
+      "hasDocuments": "Documents included"
+    },
+    "form": {
+      "newTitle": "New product",
+      "newDescription": "Describe the item. You can save a draft now and add images next.",
+      "editDescription": "Update the details, manage images, and publish when ready.",
+      "save": "Save",
+      "saved": "Product saved",
+      "draftSaved": "Draft created",
+      "saveFailed": "Could not save the product",
+      "titleRequired": "Product title is required",
+      "selectPlaceholder": "Select",
+      "sections": {
+        "basics": "Basics",
+        "basicsHint": "Category, brand and the headline details.",
+        "details": "Specification",
+        "detailsHint": "Reference data buyers rely on.",
+        "provenance": "Provenance",
+        "provenanceHint": "Ownership history and accompanying items."
+      }
+    },
+    "images": {
+      "title": "Product images",
+      "hint": "Upload one or more photographs and choose a cover image. At least one image is required before publishing.",
+      "add": "Add images",
+      "empty": "No images yet.",
+      "cover": "Cover",
+      "makeCover": "Set as cover",
+      "coverSet": "Cover image updated",
+      "delete": "Delete",
+      "deleted": "Image deleted",
+      "uploaded": "Images uploaded",
+      "invalidType": "Only image files are allowed",
+      "tooLarge": "Image is too large",
+      "alt": "Product photograph"
+    },
+    "catalogue": {
+      "eyebrow": "Catalogue",
+      "title": "Products",
+      "description": "Published items described by their sellers, ahead of their auctions.",
+      "emptyTitle": "No products yet",
+      "emptyDescription": "Published products will appear here."
+    },
+    "detail": {
+      "information": "Product information",
+      "seller": "Seller",
+      "sellerHint": "Information provided by the seller.",
+      "sellerAnonymous": "Private seller",
+      "passportTitle": "Digital product passport",
+      "passportDescription": "A blockchain certificate will be issued for this item after its auction settles.",
+      "passportPending": "Not issued yet",
+      "notFoundTitle": "Product unavailable",
+      "notFoundDescription": "This product is not published or no longer exists.",
+      "viewImage": "View image {{number}}"
+    },
+    "manage": {
+      "eyebrow": "Seller area",
+      "title": "My products",
+      "description": "Manage your drafts, published listings and archive.",
+      "new": "New product",
+      "edit": "Edit",
+      "archive": "Archive",
+      "restore": "Restore",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "needImage": "Add at least one image to publish.",
+      "statusUpdated": "Status updated",
+      "backToList": "Back to my products",
+      "emptyTitle": "Nothing here yet",
+      "emptyDescription": "Products with this status will appear here.",
+      "imageCount": "{{count}} image",
+      "imageCount_other": "{{count}} images",
+      "notSellerTitle": "Seller access required",
+      "notSellerDescription": "Request the seller role from your profile to start listing products."
     }
   }
 }
