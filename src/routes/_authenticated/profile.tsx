@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -56,7 +56,16 @@ function ProfilePage() {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function onSignOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    void navigate({ to: "/auth", replace: true });
+  }
+
 
   const profileQuery = useQuery({
     queryKey: ["profile", user?.id],
@@ -404,7 +413,11 @@ function ProfilePage() {
                     {profile?.created_at ? dateFormatter.format(new Date(profile.created_at)) : "—"}
                   </span>
                 </div>
+                <Button variant="outline" className="w-full" onClick={() => void onSignOut()}>
+                  {t("account.signOut")}
+                </Button>
               </CardContent>
+
             </Card>
           </div>
         </div>
