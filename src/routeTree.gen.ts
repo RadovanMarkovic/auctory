@@ -24,6 +24,7 @@ import { Route as AuctionsIndexRouteImport } from './routes/auctions.index'
 import { Route as AuctionsAuctionIdRouteImport } from './routes/auctions.$auctionId'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsProductIdRouteImport } from './routes/products.$productId'
+import { Route as AuthenticatedMyProductsIndexRouteImport } from './routes/_authenticated/my-products.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -99,6 +100,12 @@ const ProductsProductIdRoute = ProductsProductIdRouteImport.update({
   path: '/products/$productId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMyProductsIndexRoute =
+  AuthenticatedMyProductsIndexRouteImport.update({
+    id: '/my-products/',
+    path: '/my-products/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/products/$productId': typeof ProductsProductIdRoute
   '/auctions/': typeof AuctionsIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/my-products/': typeof AuthenticatedMyProductsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -131,6 +139,7 @@ export interface FileRoutesByTo {
   '/products/$productId': typeof ProductsProductIdRoute
   '/auctions': typeof AuctionsIndexRoute
   '/products': typeof ProductsIndexRoute
+  '/my-products': typeof AuthenticatedMyProductsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -149,6 +158,7 @@ export interface FileRoutesById {
   '/products/$productId': typeof ProductsProductIdRoute
   '/auctions/': typeof AuctionsIndexRoute
   '/products/': typeof ProductsIndexRoute
+  '/_authenticated/my-products/': typeof AuthenticatedMyProductsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/products/$productId'
     | '/auctions/'
     | '/products/'
+    | '/my-products/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/products/$productId'
     | '/auctions'
     | '/products'
+    | '/my-products'
   id:
     | '__root__'
     | '/'
@@ -200,6 +212,7 @@ export interface FileRouteTypes {
     | '/products/$productId'
     | '/auctions/'
     | '/products/'
+    | '/_authenticated/my-products/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -324,6 +337,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsProductIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/my-products/': {
+      id: '/_authenticated/my-products/'
+      path: '/my-products'
+      fullPath: '/my-products/'
+      preLoaderRoute: typeof AuthenticatedMyProductsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -331,12 +351,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedMyProductsIndexRoute: typeof AuthenticatedMyProductsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedMyProductsIndexRoute: AuthenticatedMyProductsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
