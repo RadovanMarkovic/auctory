@@ -352,7 +352,7 @@ function LotGrid({
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {lots.map((lot) => (
-        <LotCard key={lot.id} lot={lot} urgent={urgent} />
+        <LotCard key={lot.id} lot={lot} urgent={urgent ?? false} />
       ))}
     </div>
   );
