@@ -123,7 +123,7 @@ function ProductDetailPage() {
       <PageHeader
         eyebrow={product.brands?.name ?? t("products.catalogue.eyebrow")}
         title={product.title}
-        description={product.model ?? undefined}
+        {...(product.model ? { description: product.model } : {})}
       />
 
       <div className="mt-12 grid gap-10 lg:grid-cols-[1.2fr_1fr]">
