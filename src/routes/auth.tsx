@@ -275,6 +275,36 @@ function SignUpCard() {
             <FieldError message={errors["password"]} />
             <p className="mt-1 text-xs text-muted-foreground">{t("auth.validation.passwordHint")}</p>
           </div>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <Label htmlFor="signup-phone">
+                {t("auth.fields.phone")}{" "}
+                <span className="text-xs text-muted-foreground">{t("auth.fields.optional")}</span>
+              </Label>
+              <Input
+                id="signup-phone"
+                type="tel"
+                autoComplete="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="mt-2"
+              />
+              <FieldError message={errors["phone"]} />
+            </div>
+            <div>
+              <Label htmlFor="signup-country">
+                {t("auth.fields.country")}{" "}
+                <span className="text-xs text-muted-foreground">{t("auth.fields.optional")}</span>
+              </Label>
+              <Input
+                id="signup-country"
+                autoComplete="country-name"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className="mt-2"
+              />
+            </div>
+          </div>
           <Button type="submit" className="w-full" disabled={busy}>
             {busy ? t("common.loading") : t("auth.signUp.submit")}
           </Button>
