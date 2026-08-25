@@ -271,7 +271,8 @@
       "confirmPassword": "Potvrdite lozinku",
       "fullName": "Ime i prezime",
       "phone": "Telefon",
-      "country": "Država"
+      "country": "Država",
+      "optional": "(opciono)"
     },
     "signIn": {
       "tab": "Prijava",
@@ -312,7 +313,8 @@
       "passwordShort": "Lozinka mora imati najmanje 8 karaktera.",
       "passwordMismatch": "Lozinke se ne poklapaju.",
       "nameRequired": "Unesite ime i prezime.",
-      "passwordHint": "Najmanje 8 karaktera."
+      "passwordHint": "Najmanje 8 karaktera.",
+      "phoneInvalid": "Unesite ispravan broj telefona."
     },
     "errors": {
       "invalidCredentials": "Pogrešan email ili lozinka.",

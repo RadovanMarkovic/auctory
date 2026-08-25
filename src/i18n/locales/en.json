@@ -268,7 +268,8 @@
       "confirmPassword": "Confirm password",
       "fullName": "Full name",
       "phone": "Phone",
-      "country": "Country"
+      "country": "Country",
+      "optional": "(optional)"
     },
     "signIn": {
       "tab": "Sign in",
@@ -309,7 +310,8 @@
       "passwordShort": "Password must be at least 8 characters.",
       "passwordMismatch": "Passwords do not match.",
       "nameRequired": "Enter your full name.",
-      "passwordHint": "At least 8 characters."
+      "passwordHint": "At least 8 characters.",
+      "phoneInvalid": "Enter a valid phone number."
     },
     "errors": {
       "invalidCredentials": "Incorrect email or password.",
