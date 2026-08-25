@@ -170,7 +170,7 @@ function MyProductsPage() {
                                     {t("products.manage.edit")}
                                   </Link>
                                 </Button>
-                                {status === "published" ? (
+                                {status === "draft" ? (
                                   <Button
                                     variant="ghost"
                                     size="sm"
