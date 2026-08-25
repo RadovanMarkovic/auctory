@@ -23,6 +23,7 @@ export type Database = {
           full_name: string | null
           id: string
           phone: string | null
+          seller_request_status: Database["public"]["Enums"]["seller_request_status"]
           updated_at: string
           wallet_address: string | null
           wallet_network: string | null
@@ -36,6 +37,7 @@ export type Database = {
           full_name?: string | null
           id: string
           phone?: string | null
+          seller_request_status?: Database["public"]["Enums"]["seller_request_status"]
           updated_at?: string
           wallet_address?: string | null
           wallet_network?: string | null
@@ -49,6 +51,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           phone?: string | null
+          seller_request_status?: Database["public"]["Enums"]["seller_request_status"]
           updated_at?: string
           wallet_address?: string | null
           wallet_network?: string | null
@@ -82,6 +85,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_list_users: {
+        Args: never
+        Returns: {
+          account_status: Database["public"]["Enums"]["account_status"]
+          country: string
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          roles: Database["public"]["Enums"]["app_role"][]
+          seller_request_status: Database["public"]["Enums"]["seller_request_status"]
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -93,6 +109,7 @@ export type Database = {
     Enums: {
       account_status: "active" | "pending" | "suspended"
       app_role: "buyer" | "seller" | "admin"
+      seller_request_status: "none" | "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -222,6 +239,7 @@ export const Constants = {
     Enums: {
       account_status: ["active", "pending", "suspended"],
       app_role: ["buyer", "seller", "admin"],
+      seller_request_status: ["none", "pending", "approved", "rejected"],
     },
   },
 } as const
