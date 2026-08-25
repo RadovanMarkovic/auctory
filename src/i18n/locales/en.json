@@ -1,0 +1,164 @@
+{
+  "common": {
+    "brand": "Auctory",
+    "established": "Est. MMXXVI",
+    "retry": "Try again",
+    "loading": "Loading",
+    "step": "Step {{number}}"
+  },
+  "nav": {
+    "main": "Main",
+    "mobile": "Mobile",
+    "openMenu": "Open menu",
+    "auctions": "Auctions",
+    "categories": "Categories",
+    "sell": "Sell",
+    "howItWorks": "How it works",
+    "liveAuctions": "Live auctions",
+    "sellWithUs": "Sell with us",
+    "account": "Account",
+    "groups": {
+      "marketplace": "Marketplace",
+      "company": "Company"
+    }
+  },
+  "language": {
+    "label": "Language",
+    "change": "Change language",
+    "en": "English",
+    "sr": "Srpski"
+  },
+  "account": {
+    "menu": "Account menu",
+    "label": "Account",
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "myBids": "My bids",
+    "myListings": "My listings"
+  },
+  "wallet": {
+    "connect": "Connect wallet"
+  },
+  "footer": {
+    "tagline": "A bilingual auction house for luxury watches, fine jewelry, collectibles, and limited-edition fashion — with verifiable on-chain certificates of provenance.",
+    "rights": "© {{year}} Auctory. All rights reserved.",
+    "network": "Certificates on Sepolia testnet"
+  },
+  "categories": {
+    "watches": {
+      "name": "Watches",
+      "blurb": "Vintage and contemporary timepieces from established maisons."
+    },
+    "jewelry": {
+      "name": "Jewelry",
+      "blurb": "Signed pieces, rare gemstones, and estate collections."
+    },
+    "collectibles": {
+      "name": "Collectibles",
+      "blurb": "Design objects, memorabilia, and rare printed matter."
+    },
+    "fashion": {
+      "name": "Fashion",
+      "blurb": "Limited-edition and archival pieces in collectible condition."
+    }
+  },
+  "lot": {
+    "live": "Live",
+    "endingSoon": "Ending soon",
+    "certified": "Certified",
+    "currentBid": "Current bid",
+    "bids": "{{count}} bids",
+    "bids_one": "{{count}} bid",
+    "closed": "Closed",
+    "certificateNote": "ERC-721 certificate on settlement",
+    "ariaLabel": "{{brand}} — {{title}}, current bid {{price}}",
+    "lotCount": "{{count}} lots",
+    "browse": "Browse {{category}}"
+  },
+  "home": {
+    "meta": {
+      "title": "Auctory — Curated Auctions for Watches, Jewelry & Collectibles",
+      "description": "Auctory is a bilingual auction house for luxury watches, fine jewelry, collectibles, and limited-edition fashion, with on-chain certificates of provenance."
+    },
+    "hero": {
+      "badge": "Bilingual auction house",
+      "titleLine1": "Exceptional objects,",
+      "titleLine2": "rigorously verified.",
+      "browse": "Browse auctions",
+      "consign": "Consign a piece",
+      "imageAlt": "A gold wristwatch and a diamond ring photographed on a pale blue surface"
+    },
+    "featured": {
+      "eyebrow": "Current sales",
+      "title": "Featured live auctions",
+      "description": "Highlights selected by our specialists across every department.",
+      "viewAll": "View all lots",
+      "emptyTitle": "No featured lots right now",
+      "emptyDescription": "Our next curated sale is being catalogued. Check back shortly."
+    },
+    "endingSoon": {
+      "eyebrow": "Closing today",
+      "title": "Ending soon",
+      "description": "Lots entering their final hours. Bids in the last minutes extend the clock.",
+      "emptyTitle": "Nothing closing today",
+      "emptyDescription": "No lots are in their final hours at the moment."
+    },
+    "categories": {
+      "eyebrow": "Departments",
+      "title": "Luxury categories",
+      "description": "Four departments, each with its own specialists and authentication process."
+    },
+    "steps": {
+      "eyebrow": "Process",
+      "title": "How Auctory works",
+      "description": "Three steps from registration to a piece with verifiable provenance.",
+      "guide": "Read the full guide",
+      "register": {
+        "title": "Register and get verified",
+        "body": "Create an account, confirm your identity, and receive a bidding limit."
+      },
+      "bid": {
+        "title": "Bid in ascending auctions",
+        "body": "Transparent increments, live bid history, and anti-sniping time extensions."
+      },
+      "settle": {
+        "title": "Settle and receive provenance",
+        "body": "Pay securely, then receive the piece with its on-chain certificate."
+      }
+    },
+    "provenance": {
+      "eyebrow": "Blockchain provenance",
+      "title": "Every sold piece carries its own certificate",
+      "body": "When a lot settles, Auctory mints an ERC-721 certificate on the Sepolia network containing the lot reference, specialist report, and sale date. The certificate transfers with the object, so each future owner inherits a complete, tamper-evident ownership history.",
+      "cta": "See how certificates work",
+      "minted": { "title": "Minted at settlement", "body": "No manual paperwork." },
+      "log": { "title": "On-chain ownership log", "body": "Each transfer is recorded." },
+      "report": { "title": "Specialist report", "body": "Linked in the metadata." },
+      "permanent": { "title": "Permanent record", "body": "Independent of Auctory." }
+    },
+    "sell": {
+      "eyebrow": "Consignment",
+      "title": "Have a piece worth the catalogue?",
+      "body": "Submit your item for a free specialist estimate. Approved consignors receive photography, cataloguing, and a reserve agreed in writing before the sale opens.",
+      "cta": "Consign a piece",
+      "terms": "Seller terms"
+    },
+    "stats": {
+      "lotsSold": "Lots sold",
+      "certificatesMinted": "Certificates minted",
+      "sellThrough": "Average sell-through",
+      "bidders": "Registered bidders"
+    },
+    "trust": {
+      "vetted": "Specialist-vetted lots",
+      "escrow": "Escrowed settlement",
+      "certificates": "Sepolia ERC-721 certificates",
+      "support": "Bilingual support, EN & SR"
+    },
+    "lots": {
+      "loading": "Loading lots",
+      "errorTitle": "Couldn't load these lots",
+      "errorDescription": "The catalogue didn't respond. Please try again."
+    }
+  }
+}
