@@ -458,7 +458,8 @@
         "detailsHint": "Podaci na koje se kupci oslanjaju.",
         "provenance": "Poreklo",
         "provenanceHint": "Istorija vlasništva i prateći predmeti."
-      }
+      },
+      "requiredField": "Ovo polje je obavezno"
     },
     "images": {
       "title": "Slike predmeta",
@@ -514,6 +515,17 @@
       "imageCount_other": "{{count}} slika",
       "notSellerTitle": "Potreban je nalog prodavca",
       "notSellerDescription": "Zatražite ulogu prodavca na svom profilu da biste dodavali predmete."
+    },
+    "attachment": {
+      "label": "Prilog o poreklu",
+      "hint": "Opciono priložite prateći dokument (račun, sertifikat, servisna knjižica). Najviše 10 MB.",
+      "add": "Priloži dokument",
+      "replace": "Zameni dokument",
+      "open": "Otvori",
+      "remove": "Ukloni",
+      "uploaded": "Prilog je otpremljen",
+      "deleted": "Prilog je uklonjen",
+      "tooLarge": "Fajl je prevelik"
     }
   }
 }
