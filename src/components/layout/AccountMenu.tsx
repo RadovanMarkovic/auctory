@@ -44,7 +44,10 @@ export function AccountMenu() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to="/account">{t("account.myProfile")}</Link>
+              <Link to="/profile">{t("account.myProfile")}</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/account">{t("account.label")}</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => void onSignOut()}>

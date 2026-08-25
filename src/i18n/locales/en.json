@@ -320,5 +320,45 @@
       "emailTaken": "An account with this email already exists.",
       "generic": "Something went wrong. Please try again."
     }
+  },
+  "profilePage": {
+    "eyebrow": "Your account",
+    "title": "Profile",
+    "description": "Manage your personal information, contact data, avatar, and wallet connection.",
+    "avatar": {
+      "title": "Avatar",
+      "description": "Upload a square image, up to 5 MB.",
+      "alt": "Profile avatar",
+      "upload": "Upload image",
+      "remove": "Remove",
+      "updated": "Avatar updated.",
+      "removed": "Avatar removed.",
+      "invalidType": "Please choose an image file.",
+      "tooLarge": "The image must be smaller than 5 MB."
+    },
+    "personal": {
+      "title": "Personal information",
+      "description": "Only you can see and edit these details."
+    },
+    "contact": {
+      "emailHint": "Your sign-in email cannot be changed here."
+    },
+    "wallet": {
+      "title": "Wallet",
+      "description": "Connect a wallet later to receive ERC-721 certificates.",
+      "status": "Status",
+      "connected": "Connected",
+      "notConnected": "Not connected",
+      "address": "Address",
+      "network": "Network",
+      "verifiedAt": "Verified on",
+      "none": "—",
+      "connectSoon": "Connect wallet (coming soon)",
+      "hint": "Wallet connection with MetaMask arrives in a later step."
+    },
+    "status": {
+      "readOnly": "Role and account status are managed by Auctory and cannot be changed here.",
+      "memberSince": "Member since"
+    }
   }
 }

@@ -24,6 +24,9 @@ export type Database = {
           id: string
           phone: string | null
           updated_at: string
+          wallet_address: string | null
+          wallet_network: string | null
+          wallet_verified_at: string | null
         }
         Insert: {
           account_status?: Database["public"]["Enums"]["account_status"]
@@ -34,6 +37,9 @@ export type Database = {
           id: string
           phone?: string | null
           updated_at?: string
+          wallet_address?: string | null
+          wallet_network?: string | null
+          wallet_verified_at?: string | null
         }
         Update: {
           account_status?: Database["public"]["Enums"]["account_status"]
@@ -44,6 +50,9 @@ export type Database = {
           id?: string
           phone?: string | null
           updated_at?: string
+          wallet_address?: string | null
+          wallet_network?: string | null
+          wallet_verified_at?: string | null
         }
         Relationships: []
       }
