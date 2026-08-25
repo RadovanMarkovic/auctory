@@ -473,13 +473,6 @@
       "tooLarge": "Image is too large",
       "alt": "Product photograph"
     },
-    "catalogue": {
-      "eyebrow": "Catalogue",
-      "title": "Products",
-      "description": "Published items described by their sellers, ahead of their auctions.",
-      "emptyTitle": "No products yet",
-      "emptyDescription": "Published products will appear here."
-    },
     "detail": {
       "information": "Product information",
       "seller": "Seller",
