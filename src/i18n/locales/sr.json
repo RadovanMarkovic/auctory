@@ -323,5 +323,45 @@
       "emailTaken": "Nalog sa ovom email adresom već postoji.",
       "generic": "Nešto je pošlo naopako. Pokušajte ponovo."
     }
+  },
+  "profilePage": {
+    "eyebrow": "Vaš nalog",
+    "title": "Profil",
+    "description": "Upravljajte ličnim podacima, kontaktima, avatarom i povezivanjem novčanika.",
+    "avatar": {
+      "title": "Avatar",
+      "description": "Otpremite kvadratnu sliku, do 5 MB.",
+      "alt": "Avatar profila",
+      "upload": "Otpremi sliku",
+      "remove": "Ukloni",
+      "updated": "Avatar je ažuriran.",
+      "removed": "Avatar je uklonjen.",
+      "invalidType": "Izaberite datoteku sa slikom.",
+      "tooLarge": "Slika mora biti manja od 5 MB."
+    },
+    "personal": {
+      "title": "Lični podaci",
+      "description": "Samo vi možete videti i menjati ove podatke."
+    },
+    "contact": {
+      "emailHint": "E-adresa za prijavu se ne može menjati ovde."
+    },
+    "wallet": {
+      "title": "Novčanik",
+      "description": "Novčanik ćete kasnije povezati radi ERC-721 sertifikata.",
+      "status": "Status",
+      "connected": "Povezan",
+      "notConnected": "Nije povezan",
+      "address": "Adresa",
+      "network": "Mreža",
+      "verifiedAt": "Verifikovano",
+      "none": "—",
+      "connectSoon": "Poveži novčanik (uskoro)",
+      "hint": "Povezivanje putem MetaMask-a stiže u sledećem koraku."
+    },
+    "status": {
+      "readOnly": "Uloga i status naloga su pod kontrolom Auctory tima i ne mogu se menjati ovde.",
+      "memberSince": "Član od"
+    }
   }
 }
