@@ -170,19 +170,26 @@ function SignUpCard() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [country, setCountry] = useState("");
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState(false);
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
+    const trimmedPhone = phone.trim();
     const next = {
       fullName: v.fullName(fullName),
       email: v.email(email),
       password: v.password(password),
+      phone:
+        trimmedPhone.length > 0 && !/^\+?[0-9\s()-]{6,20}$/.test(trimmedPhone)
+          ? t("auth.validation.phoneInvalid")
+          : null,
     };
     setErrors(next);
-    if (next.fullName || next.email || next.password) return;
+    if (next.fullName || next.email || next.password || next.phone) return;
 
     setBusy(true);
     const { data, error } = await supabase.auth.signUp({
@@ -190,7 +197,11 @@ function SignUpCard() {
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/account`,
-        data: { full_name: fullName.trim() },
+        data: {
+          full_name: fullName.trim(),
+          phone: trimmedPhone,
+          country: country.trim(),
+        },
       },
     });
     setBusy(false);
