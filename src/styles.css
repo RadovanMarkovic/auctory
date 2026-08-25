@@ -6,9 +6,10 @@
 
 /*
  * Auctory design system.
- * Premium auction-house aesthetic: warm ivory surfaces, charcoal ink,
- * restrained gold accents, generous spacing, editorial typography.
- * All colors are oklch tokens. Never hardcode colors in components.
+ * Light futuristic minimalism: cool gray-blue surfaces, deep navy ink,
+ * refined electric blue accents, generous spacing, editorial typography.
+ * All colors are semantic tokens. Never hardcode colors in components.
+ * Legacy alias tokens (gold / ivory / charcoal) now map to the cool palette.
  */
 
 @theme inline {
@@ -66,97 +67,73 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --shadow-soft: 0 1px 2px oklch(0.24 0.02 60 / 0.05), 0 12px 32px -18px oklch(0.24 0.02 60 / 0.25);
-  --shadow-lift: 0 2px 4px oklch(0.24 0.02 60 / 0.06), 0 24px 48px -24px oklch(0.24 0.02 60 / 0.35);
+  --color-focus: var(--focus);
+  --color-accent-subtle: var(--accent-subtle);
+
+  --shadow-soft: 0 1px 2px oklch(0.21 0.04 258 / 0.06), 0 10px 28px -18px oklch(0.21 0.04 258 / 0.22);
+  --shadow-lift: 0 2px 6px oklch(0.21 0.04 258 / 0.07), 0 22px 44px -26px oklch(0.21 0.04 258 / 0.28);
 }
 
 :root {
   --radius: 0.375rem;
 
-  --background: oklch(0.977 0.008 85);
-  --foreground: oklch(0.245 0.012 60);
-  --ivory: oklch(0.977 0.008 85);
-  --charcoal: oklch(0.245 0.012 60);
+  /* Base surfaces */
+  --background: #f1f5f9;
+  --foreground: #0f172a;
+  --ivory: #f8fafc;
+  --charcoal: #0f172a;
 
-  --card: oklch(0.992 0.005 90);
-  --card-foreground: oklch(0.245 0.012 60);
-  --popover: oklch(0.992 0.005 90);
-  --popover-foreground: oklch(0.245 0.012 60);
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
 
-  --primary: oklch(0.245 0.012 60);
-  --primary-foreground: oklch(0.977 0.008 85);
+  /* Primary accent: refined electric blue */
+  --primary: #315cf5;
+  --primary-foreground: #ffffff;
+  --primary-hover: #2448d8;
 
-  --secondary: oklch(0.945 0.011 84);
-  --secondary-foreground: oklch(0.3 0.014 62);
+  --secondary: #f8fafc;
+  --secondary-foreground: #1e293b;
 
-  --muted: oklch(0.945 0.011 84);
-  --muted-foreground: oklch(0.52 0.014 68);
+  --muted: #eef2f7;
+  --muted-foreground: #526174;
 
-  --accent: oklch(0.938 0.022 84);
-  --accent-foreground: oklch(0.3 0.014 62);
+  --accent: #e8eeff;
+  --accent-foreground: #1e3a8a;
+  --accent-subtle: #e8eeff;
 
-  --gold: oklch(0.72 0.098 80);
-  --gold-soft: oklch(0.92 0.04 86);
-  --gold-foreground: oklch(0.22 0.02 62);
+  /* Legacy alias tokens retargeted to the cool palette */
+  --gold: #755cf6;
+  --gold-soft: #ece8ff;
+  --gold-foreground: #ffffff;
 
-  --success: oklch(0.55 0.09 155);
-  --success-foreground: oklch(0.98 0.006 150);
-  --warning: oklch(0.75 0.12 70);
-  --warning-foreground: oklch(0.24 0.02 62);
-  --destructive: oklch(0.53 0.18 25);
-  --destructive-foreground: oklch(0.98 0.004 80);
+  --success: #0f9d76;
+  --success-foreground: #ffffff;
+  --warning: #b45309;
+  --warning-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
 
-  --border: oklch(0.9 0.012 82);
-  --input: oklch(0.9 0.012 82);
-  --ring: oklch(0.72 0.098 80);
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #38bdf8;
+  --focus: #38bdf8;
 
-  --chart-1: oklch(0.72 0.098 80);
-  --chart-2: oklch(0.55 0.09 155);
-  --chart-3: oklch(0.45 0.05 250);
-  --chart-4: oklch(0.75 0.12 70);
-  --chart-5: oklch(0.53 0.18 25);
+  --chart-1: #315cf5;
+  --chart-2: #755cf6;
+  --chart-3: #38bdf8;
+  --chart-4: #0f9d76;
+  --chart-5: #dc2626;
 
-  --sidebar: oklch(0.96 0.01 84);
-  --sidebar-foreground: oklch(0.245 0.012 60);
-  --sidebar-primary: oklch(0.245 0.012 60);
-  --sidebar-primary-foreground: oklch(0.977 0.008 85);
-  --sidebar-accent: oklch(0.938 0.022 84);
-  --sidebar-accent-foreground: oklch(0.3 0.014 62);
-  --sidebar-border: oklch(0.9 0.012 82);
-  --sidebar-ring: oklch(0.72 0.098 80);
-}
-
-.dark {
-  --background: oklch(0.19 0.01 62);
-  --foreground: oklch(0.95 0.008 85);
-  --ivory: oklch(0.95 0.008 85);
-  --charcoal: oklch(0.19 0.01 62);
-  --card: oklch(0.23 0.011 62);
-  --card-foreground: oklch(0.95 0.008 85);
-  --popover: oklch(0.23 0.011 62);
-  --popover-foreground: oklch(0.95 0.008 85);
-  --primary: oklch(0.95 0.008 85);
-  --primary-foreground: oklch(0.19 0.01 62);
-  --secondary: oklch(0.28 0.012 64);
-  --secondary-foreground: oklch(0.95 0.008 85);
-  --muted: oklch(0.28 0.012 64);
-  --muted-foreground: oklch(0.72 0.012 74);
-  --accent: oklch(0.3 0.02 70);
-  --accent-foreground: oklch(0.95 0.008 85);
-  --gold: oklch(0.78 0.1 82);
-  --gold-soft: oklch(0.35 0.04 78);
-  --gold-foreground: oklch(0.19 0.01 62);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.78 0.1 82);
-  --sidebar: oklch(0.23 0.011 62);
-  --sidebar-foreground: oklch(0.95 0.008 85);
-  --sidebar-primary: oklch(0.78 0.1 82);
-  --sidebar-primary-foreground: oklch(0.19 0.01 62);
-  --sidebar-accent: oklch(0.3 0.02 70);
-  --sidebar-accent-foreground: oklch(0.95 0.008 85);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.78 0.1 82);
+  --sidebar: #f8fafc;
+  --sidebar-foreground: #0f172a;
+  --sidebar-primary: #315cf5;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8eeff;
+  --sidebar-accent-foreground: #1e3a8a;
+  --sidebar-border: #cbd5e1;
+  --sidebar-ring: #38bdf8;
 }
 
 @layer base {
@@ -190,9 +167,14 @@
   color: var(--color-muted-foreground);
 }
 
-/* Thin gold hairline divider */
+/* Thin accent hairline divider (legacy name kept for component stability) */
 @utility rule-gold {
   height: 1px;
   width: 3rem;
-  background: linear-gradient(90deg, var(--color-gold), transparent);
+  background: linear-gradient(90deg, var(--color-primary), transparent);
+}
+
+/* Extremely subtle cool gradient for hero / highlighted areas */
+@utility surface-gradient {
+  background-image: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
 }
