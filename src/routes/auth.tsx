@@ -190,15 +190,11 @@ function SignUpCard() {
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    const trimmedPhone = phone.trim();
     const next = {
       fullName: v.fullName(fullName),
       email: v.email(email),
       password: v.password(password),
-      phone:
-        trimmedPhone.length > 0 && !/^\+?[0-9\s()-]{6,20}$/.test(trimmedPhone)
-          ? t("auth.validation.phoneInvalid")
-          : null,
+      phone: v.phone(phone),
     };
     setErrors(next);
     if (next.fullName || next.email || next.password || next.phone) return;
