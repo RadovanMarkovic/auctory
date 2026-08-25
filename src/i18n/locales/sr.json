@@ -325,6 +325,7 @@
       "invalidCredentials": "Pogrešan email ili lozinka.",
       "emailNotConfirmed": "Potvrdite email adresu pre prijave.",
       "emailTaken": "Nalog sa ovom email adresom već postoji.",
+      "weakPassword": "Ova lozinka se nalazi u poznatim procurelim bazama. Izaberite jaču, jedinstvenu lozinku.",
       "generic": "Nešto je pošlo naopako. Pokušajte ponovo."
     }
   },

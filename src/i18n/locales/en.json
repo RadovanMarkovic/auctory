@@ -322,6 +322,7 @@
       "invalidCredentials": "Incorrect email or password.",
       "emailNotConfirmed": "Confirm your email address before signing in.",
       "emailTaken": "An account with this email already exists.",
+      "weakPassword": "This password appears in known data breaches. Please choose a stronger, unique password.",
       "generic": "Something went wrong. Please try again."
     }
   },
