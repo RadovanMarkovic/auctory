@@ -184,6 +184,25 @@ function ProfilePage() {
     onError: () => toast.error(t("auth.errors.generic")),
   });
 
+  const sellerStatus = profileQuery.data?.profile?.seller_request_status ?? "none";
+  const isSellerAlready = (profileQuery.data?.roles ?? []).includes("seller");
+
+  const becomeSellerMutation = useMutation({
+    mutationFn: async () => {
+      if (!userId) throw new Error("Missing authenticated user");
+      const { error } = await supabase
+        .from("profiles")
+        .update({ seller_request_status: "pending" })
+        .eq("id", userId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success(t("seller.requestSent"));
+      void queryClient.invalidateQueries({ queryKey: ["profile", userId] });
+    },
+    onError: () => toast.error(t("auth.errors.generic")),
+  });
+
   function onSubmit(event: FormEvent) {
     event.preventDefault();
     if (fullName.trim().length > 0 && fullName.trim().length < 2) {
