@@ -12,6 +12,7 @@ import {
   Timer,
   Users,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import heroImage from "@/assets/home-hero.jpg";
 import { EmptyState, ErrorState, LoadingState } from "@/components/common";
@@ -42,31 +43,27 @@ export const Route = createFileRoute("/")({
 });
 
 const steps = [
-  {
-    icon: BadgeCheck,
-    title: "Register and get verified",
-    body: "Create an account, confirm your identity, and receive a bidding limit.",
-  },
-  {
-    icon: Gavel,
-    title: "Bid in ascending auctions",
-    body: "Transparent increments, live bid history, and anti-sniping time extensions.",
-  },
-  {
-    icon: ScrollText,
-    title: "Settle and receive provenance",
-    body: "Pay securely, then receive the piece with its on-chain certificate.",
-  },
-];
+  { icon: BadgeCheck, key: "register" },
+  { icon: Gavel, key: "bid" },
+  { icon: ScrollText, key: "settle" },
+] as const;
 
 const trust = [
-  { icon: ShieldCheck, label: "Specialist-vetted lots" },
-  { icon: Landmark, label: "Escrowed settlement" },
-  { icon: Link2, label: "Sepolia ERC-721 certificates" },
-  { icon: Users, label: "Bilingual support, EN & SR" },
-];
+  { icon: ShieldCheck, key: "vetted" },
+  { icon: Landmark, key: "escrow" },
+  { icon: Link2, key: "certificates" },
+  { icon: Users, key: "support" },
+] as const;
+
+const provenancePoints = [
+  { icon: Sparkles, key: "minted" },
+  { icon: Link2, key: "log" },
+  { icon: ShieldCheck, key: "report" },
+  { icon: Timer, key: "permanent" },
+] as const;
 
 function Index() {
+  const { t } = useTranslation();
   const { data, isPending, isError, refetch } = useQuery<HomeData>({
     queryKey: ["home"],
     queryFn: fetchHomeData,
@@ -79,12 +76,12 @@ function Index() {
       <PageContainer className="space-y-24">
         <section>
           <SectionHeading
-            eyebrow="Current sales"
-            title="Featured live auctions"
-            description="Highlights selected by our specialists across every department."
+            eyebrow={t("home.featured.eyebrow")}
+            title={t("home.featured.title")}
+            description={t("home.featured.description")}
             action={
               <Button variant="outline" asChild>
-                <Link to="/auctions">View all lots</Link>
+                <Link to="/auctions">{t("home.featured.viewAll")}</Link>
               </Button>
             }
           />
@@ -94,17 +91,17 @@ function Index() {
               isPending={isPending}
               isError={isError}
               onRetry={() => void refetch()}
-              emptyTitle="No featured lots right now"
-              emptyDescription="Our next curated sale is being catalogued. Check back shortly."
+              emptyTitle={t("home.featured.emptyTitle")}
+              emptyDescription={t("home.featured.emptyDescription")}
             />
           </div>
         </section>
 
         <section>
           <SectionHeading
-            eyebrow="Closing today"
-            title="Ending soon"
-            description="Lots entering their final hours. Bids in the last minutes extend the clock."
+            eyebrow={t("home.endingSoon.eyebrow")}
+            title={t("home.endingSoon.title")}
+            description={t("home.endingSoon.description")}
           />
           <div className="mt-10">
             <LotGrid
@@ -113,67 +110,74 @@ function Index() {
               isPending={isPending}
               isError={isError}
               onRetry={() => void refetch()}
-              emptyTitle="Nothing closing today"
-              emptyDescription="No lots are in their final hours at the moment."
+              emptyTitle={t("home.endingSoon.emptyTitle")}
+              emptyDescription={t("home.endingSoon.emptyDescription")}
             />
           </div>
         </section>
 
         <section>
           <SectionHeading
-            eyebrow="Departments"
-            title="Luxury categories"
-            description="Four departments, each with its own specialists and authentication process."
+            eyebrow={t("home.categories.eyebrow")}
+            title={t("home.categories.title")}
+            description={t("home.categories.description")}
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {isPending
               ? Array.from({ length: 4 }).map((_, i) => (
                   <Card key={i} className="h-40 animate-pulse bg-muted/60" />
                 ))
-              : data?.categories.map((category) => (
-                  <Card key={category.key} interactive>
-                    <CardContent className="space-y-3 p-7">
-                      <Badge variant="muted">{category.lotCount} lots</Badge>
-                      <CardTitle>{category.name}</CardTitle>
-                      <CardDescription className="leading-relaxed">
-                        {category.blurb}
-                      </CardDescription>
-                      <Link
-                        to="/categories"
-                        className="inline-block pt-1 text-sm text-primary underline-offset-4 hover:underline"
-                      >
-                        Browse {category.name.toLowerCase()}
-                      </Link>
-                    </CardContent>
-                  </Card>
-                ))}
+              : data?.categories.map((category) => {
+                  const name = t(`categories.${category.key}.name`);
+                  return (
+                    <Card key={category.key} interactive>
+                      <CardContent className="space-y-3 p-7">
+                        <Badge variant="muted">
+                          {t("lot.lotCount", { count: category.lotCount })}
+                        </Badge>
+                        <CardTitle>{name}</CardTitle>
+                        <CardDescription className="leading-relaxed">
+                          {t(`categories.${category.key}.blurb`)}
+                        </CardDescription>
+                        <Link
+                          to="/categories"
+                          className="inline-block pt-1 text-sm text-primary underline-offset-4 hover:underline"
+                        >
+                          {t("lot.browse", { category: name.toLowerCase() })}
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
           </div>
         </section>
 
         <section>
           <SectionHeading
-            eyebrow="Process"
-            title="How Auctory works"
-            description="Three steps from registration to a piece with verifiable provenance."
+            eyebrow={t("home.steps.eyebrow")}
+            title={t("home.steps.title")}
+            description={t("home.steps.description")}
             action={
               <Button variant="outline" asChild>
-                <Link to="/how-it-works">Read the full guide</Link>
+                <Link to="/how-it-works">{t("home.steps.guide")}</Link>
               </Button>
             }
           />
           <ol className="mt-10 grid gap-6 md:grid-cols-3">
-            {steps.map(({ icon: Icon, title: t, body }, index) => (
-              <li key={t}>
+            {steps.map(({ icon: Icon, key }, index) => (
+              <li key={key}>
                 <Card className="h-full">
                   <CardContent className="space-y-3 p-7">
                     <div className="flex items-center gap-3">
                       <span className="flex size-9 items-center justify-center rounded-full bg-accent text-accent-foreground">
                         <Icon className="size-4" aria-hidden="true" />
                       </span>
-                      <span className="eyebrow">Step {index + 1}</span>
+                      <span className="eyebrow">{t("common.step", { number: index + 1 })}</span>
                     </div>
-                    <CardTitle>{t}</CardTitle>
-                    <CardDescription className="leading-relaxed">{body}</CardDescription>
+                    <CardTitle>{t(`home.steps.${key}.title`)}</CardTitle>
+                    <CardDescription className="leading-relaxed">
+                      {t(`home.steps.${key}.body`)}
+                    </CardDescription>
                   </CardContent>
                 </Card>
               </li>
@@ -187,32 +191,24 @@ function Index() {
         >
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div className="space-y-5">
-              <p className="eyebrow">Blockchain provenance</p>
+              <p className="eyebrow">{t("home.provenance.eyebrow")}</p>
               <h2 id="provenance-heading" className="font-display text-3xl sm:text-4xl">
-                Every sold piece carries its own certificate
+                {t("home.provenance.title")}
               </h2>
               <div className="rule-gold" aria-hidden="true" />
-              <p className="leading-relaxed text-muted-foreground">
-                When a lot settles, Auctory mints an ERC-721 certificate on the Sepolia
-                network containing the lot reference, specialist report, and sale date. The
-                certificate transfers with the object, so each future owner inherits a
-                complete, tamper-evident ownership history.
-              </p>
+              <p className="leading-relaxed text-muted-foreground">{t("home.provenance.body")}</p>
               <Button variant="outlineGold" asChild>
-                <Link to="/how-it-works">See how certificates work</Link>
+                <Link to="/how-it-works">{t("home.provenance.cta")}</Link>
               </Button>
             </div>
             <ul className="grid gap-4 sm:grid-cols-2">
-              {[
-                { icon: Sparkles, t: "Minted at settlement", b: "No manual paperwork." },
-                { icon: Link2, t: "On-chain ownership log", b: "Each transfer is recorded." },
-                { icon: ShieldCheck, t: "Specialist report", b: "Linked in the metadata." },
-                { icon: Timer, t: "Permanent record", b: "Independent of Auctory." },
-              ].map(({ icon: Icon, t, b }) => (
-                <li key={t} className="rounded-lg border border-border bg-card p-5">
+              {provenancePoints.map(({ icon: Icon, key }) => (
+                <li key={key} className="rounded-lg border border-border bg-card p-5">
                   <Icon className="size-4 text-gold" aria-hidden="true" />
-                  <p className="mt-3 font-display text-lg">{t}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{b}</p>
+                  <p className="mt-3 font-display text-lg">{t(`home.provenance.${key}.title`)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {t(`home.provenance.${key}.body`)}
+                  </p>
                 </li>
               ))}
             </ul>
@@ -223,45 +219,47 @@ function Index() {
           aria-labelledby="sell-heading"
           className="rounded-lg border border-border bg-card p-8 text-center sm:p-14"
         >
-          <p className="eyebrow">Consignment</p>
+          <p className="eyebrow">{t("home.sell.eyebrow")}</p>
           <h2 id="sell-heading" className="mt-3 font-display text-3xl sm:text-4xl">
-            Have a piece worth the catalogue?
+            {t("home.sell.title")}
           </h2>
           <p className="mx-auto mt-4 max-w-xl leading-relaxed text-muted-foreground">
-            Submit your item for a free specialist estimate. Approved consignors receive
-            photography, cataloguing, and a reserve agreed in writing before the sale opens.
+            {t("home.sell.body")}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button size="lg" asChild>
-              <Link to="/sell">Consign a piece</Link>
+              <Link to="/sell">{t("home.sell.cta")}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/how-it-works">Seller terms</Link>
+              <Link to="/how-it-works">{t("home.sell.terms")}</Link>
             </Button>
           </div>
         </section>
 
         <section>
           <dl className="grid gap-6 border-y border-border py-10 sm:grid-cols-2 lg:grid-cols-4">
-            <Stat label="Lots sold" value={data ? `${data.stats.lotsSold.toLocaleString()}+` : null} />
             <Stat
-              label="Certificates minted"
+              label={t("home.stats.lotsSold")}
+              value={data ? `${data.stats.lotsSold.toLocaleString()}+` : null}
+            />
+            <Stat
+              label={t("home.stats.certificatesMinted")}
               value={data ? `${data.stats.certificatesMinted.toLocaleString()}` : null}
             />
             <Stat
-              label="Average sell-through"
+              label={t("home.stats.sellThrough")}
               value={data ? `${data.stats.averageSellThrough}%` : null}
             />
             <Stat
-              label="Registered bidders"
+              label={t("home.stats.bidders")}
               value={data ? `${data.stats.registeredBidders.toLocaleString()}` : null}
             />
           </dl>
           <ul className="mt-8 flex flex-wrap justify-center gap-x-10 gap-y-4">
-            {trust.map(({ icon: Icon, label }) => (
-              <li key={label} className="flex items-center gap-2 text-sm text-muted-foreground">
+            {trust.map(({ icon: Icon, key }) => (
+              <li key={key} className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Icon className="size-4 text-primary" aria-hidden="true" />
-                {label}
+                {t(`home.trust.${key}`)}
               </li>
             ))}
           </ul>
@@ -272,32 +270,36 @@ function Index() {
 }
 
 function Hero() {
+  const { t } = useTranslation();
+
   return (
     <section className="border-b border-border">
       <PageContainer className="py-16 sm:py-24">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div className="max-w-xl space-y-6">
-            <Badge variant="gold">Bilingual auction house</Badge>
+            <Badge variant="gold">{t("home.hero.badge")}</Badge>
             <h1 className="font-display text-5xl leading-[1.05] sm:text-6xl">
-              Exceptional objects,
+              {t("home.hero.titleLine1")}
               <br />
-              rigorously verified.
+              {t("home.hero.titleLine2")}
             </h1>
             <div className="rule-gold" aria-hidden="true" />
-            <p className="text-lg leading-relaxed text-muted-foreground">{description}</p>
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              {t("home.meta.description")}
+            </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <Button size="lg" asChild>
-                <Link to="/auctions">Browse auctions</Link>
+                <Link to="/auctions">{t("home.hero.browse")}</Link>
               </Button>
               <Button size="lg" variant="outlineGold" asChild>
-                <Link to="/sell">Consign a piece</Link>
+                <Link to="/sell">{t("home.hero.consign")}</Link>
               </Button>
             </div>
           </div>
           <div className="overflow-hidden rounded-lg border border-border shadow-lift">
             <img
               src={heroImage}
-              alt="A gold wristwatch and a diamond ring photographed on a pale blue surface"
+              alt={t("home.hero.imageAlt")}
               width={1400}
               height={1050}
               className="h-full w-full object-cover"
@@ -337,12 +339,15 @@ function LotGrid({
   emptyTitle: string;
   emptyDescription: string;
 }) {
-  if (isPending) return <LoadingState variant="cards" count={3} label="Loading lots" />;
+  const { t } = useTranslation();
+
+  if (isPending)
+    return <LoadingState variant="cards" count={3} label={t("home.lots.loading")} />;
   if (isError)
     return (
       <ErrorState
-        title="Couldn't load these lots"
-        description="The catalogue didn't respond. Please try again."
+        title={t("home.lots.errorTitle")}
+        description={t("home.lots.errorDescription")}
         onRetry={onRetry}
       />
     );
