@@ -88,6 +88,10 @@ function useValidators() {
       return null;
     },
     fullName: (value: string) => (value.trim().length < 2 ? t("auth.validation.nameRequired") : null),
+    phone: (value: string) => {
+      if (!value) return null;
+      return /^[0-9]{6,20}$/.test(value) ? null : t("auth.validation.phoneInvalid");
+    },
   };
 }
 
