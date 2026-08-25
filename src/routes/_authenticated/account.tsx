@@ -155,8 +155,11 @@ function AccountPage() {
                     <Label htmlFor="account-phone">{t("auth.fields.phone")}</Label>
                     <Input
                       id="account-phone"
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                       className="mt-2"
                     />
                   </div>
