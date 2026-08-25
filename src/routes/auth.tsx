@@ -41,7 +41,7 @@ export const Route = createFileRoute("/auth")({
 });
 
 function safePath(value: string | undefined) {
-  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/account";
+  return value && value.startsWith("/") && !value.startsWith("//") ? value : "/profile";
 }
 
 function AuthPage() {
@@ -205,7 +205,7 @@ function SignUpCard() {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/account`,
+        emailRedirectTo: `${window.location.origin}/profile`,
         data: {
           full_name: fullName.trim(),
           phone: phone || null,

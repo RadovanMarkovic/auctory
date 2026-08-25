@@ -59,6 +59,14 @@ function ProfilePage() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  if (!user) {
+    return (
+      <PageContainer>
+        <LoadingState />
+      </PageContainer>
+    );
+  }
+
   async function onSignOut() {
     await queryClient.cancelQueries();
     queryClient.clear();
@@ -77,9 +85,9 @@ function ProfilePage() {
           .select(
             "full_name, avatar_url, phone, country, account_status, created_at, wallet_address, wallet_network, wallet_verified_at",
           )
-          .eq("id", user!.id)
+          .eq("id", user.id)
           .maybeSingle(),
-        supabase.from("user_roles").select("role").eq("user_id", user!.id),
+        supabase.from("user_roles").select("role").eq("user_id", user.id),
       ]);
       if (error) throw error;
       if (rolesError) throw rolesError;
@@ -124,7 +132,7 @@ function ProfilePage() {
           phone: phone.trim() || null,
           country: country.trim() || null,
         })
-        .eq("id", user!.id);
+        .eq("id", user.id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -139,7 +147,7 @@ function ProfilePage() {
       if (!file.type.startsWith("image/")) throw new Error("type");
       if (file.size > 5 * 1024 * 1024) throw new Error("size");
       const extension = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
-      const path = `${user!.id}/avatar-${Date.now()}.${extension}`;
+      const path = `${user.id}/avatar-${Date.now()}.${extension}`;
       const { error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(path, file, { upsert: true, contentType: file.type });
@@ -147,7 +155,7 @@ function ProfilePage() {
       const { error } = await supabase
         .from("profiles")
         .update({ avatar_url: path })
-        .eq("id", user!.id);
+        .eq("id", user.id);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -169,7 +177,7 @@ function ProfilePage() {
       const { error } = await supabase
         .from("profiles")
         .update({ avatar_url: null })
-        .eq("id", user!.id);
+        .eq("id", user.id);
       if (error) throw error;
     },
     onSuccess: () => {

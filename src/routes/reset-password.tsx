@@ -69,7 +69,7 @@ function ResetPasswordPage() {
       return;
     }
     toast.success(t("auth.reset.success"));
-    void navigate({ to: "/account", replace: true });
+    void navigate({ to: "/profile", replace: true });
   }
 
   return (
