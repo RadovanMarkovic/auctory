@@ -316,7 +316,7 @@ export function ProductForm({
           <CardTitle>{t("products.form.sections.provenance")}</CardTitle>
           <CardDescription>{t("products.form.sections.provenanceHint")}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="provenance">{t("products.fields.provenanceNotes")}</Label>
             <Textarea
@@ -326,7 +326,9 @@ export function ProductForm({
               onChange={(event) => set("provenance_notes", event.target.value)}
             />
           </div>
+          {provenanceSlot}
         </CardContent>
+
       </Card>
 
       <div className="flex flex-wrap items-center gap-3">
