@@ -269,6 +269,7 @@
       "fullName": "Full name",
       "phone": "Phone",
       "country": "Country",
+      "countryPlaceholder": "Select country",
       "optional": "(optional)"
     },
     "signIn": {
