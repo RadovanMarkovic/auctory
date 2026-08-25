@@ -46,6 +46,11 @@ export function AccountMenu() {
             <DropdownMenuItem asChild>
               <Link to="/profile">{t("account.myProfile")}</Link>
             </DropdownMenuItem>
+            {isAdmin ? (
+              <DropdownMenuItem asChild>
+                <Link to="/admin">{t("admin.nav")}</Link>
+              </DropdownMenuItem>
+            ) : null}
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => void onSignOut()}>
               {t("account.signOut")}
