@@ -36,12 +36,21 @@ export interface Money {
   currency: "EUR" | "USD";
 }
 
+/** Interface languages supported by Auctory. Mirrors src/i18n SUPPORTED_LANGUAGES. */
+export type PreferredLanguage = "en" | "sr";
+
 export interface UserProfile {
   id: string;
   displayName: string;
   email: string;
   roles: UserRole[];
   walletAddress?: string | null;
+  /**
+   * Preferred interface language. Persisted in localStorage today; the Cloud
+   * `profiles` table will gain a `preferred_language` column later and this
+   * field will be hydrated from it.
+   */
+  preferredLanguage?: PreferredLanguage | null;
   createdAt: string;
 }
 
