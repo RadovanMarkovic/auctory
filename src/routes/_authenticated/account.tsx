@@ -11,8 +11,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
+import { COUNTRIES } from "@/lib/countries";
 
 const title = "Your Account — Auctory";
 const description = "Manage your Auctory profile, bids, listings, and wallet connection.";
@@ -154,12 +162,18 @@ function AccountPage() {
                   </div>
                   <div>
                     <Label htmlFor="account-country">{t("auth.fields.country")}</Label>
-                    <Input
-                      id="account-country"
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      className="mt-2"
-                    />
+                    <Select value={country} onValueChange={setCountry}>
+                      <SelectTrigger id="account-country" className="mt-2" aria-label={t("auth.fields.country")}>
+                        <SelectValue placeholder={t("auth.fields.countryPlaceholder")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {COUNTRIES.map((c) => (
+                          <SelectItem key={c} value={c}>
+                            {c}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <Button type="submit" disabled={saveMutation.isPending}>

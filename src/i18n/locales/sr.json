@@ -272,6 +272,7 @@
       "fullName": "Ime i prezime",
       "phone": "Telefon",
       "country": "Država",
+      "countryPlaceholder": "Izaberite državu",
       "optional": "(opciono)"
     },
     "signIn": {
