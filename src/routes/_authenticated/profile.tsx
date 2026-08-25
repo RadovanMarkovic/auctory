@@ -77,7 +77,7 @@ function ProfilePage() {
         supabase
           .from("profiles")
           .select(
-            "full_name, avatar_url, phone, country, account_status, created_at, wallet_address, wallet_network, wallet_verified_at",
+            "full_name, avatar_url, phone, country, account_status, seller_request_status, created_at, wallet_address, wallet_network, wallet_verified_at",
           )
           .eq("id", userId)
           .maybeSingle(),
