@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
 import {
   Select,
   SelectContent,
@@ -152,9 +153,8 @@ function SignInCard({ onDone }: { onDone: () => void }) {
           </div>
           <div>
             <Label htmlFor="signin-password">{t("auth.fields.password")}</Label>
-            <Input
+            <PasswordInput
               id="signin-password"
-              type="password"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -273,9 +273,8 @@ function SignUpCard() {
           </div>
           <div>
             <Label htmlFor="signup-password">{t("auth.fields.password")}</Label>
-            <Input
+            <PasswordInput
               id="signup-password"
-              type="password"
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}

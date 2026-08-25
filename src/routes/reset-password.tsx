@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/ui/password-input";
 import { supabase } from "@/integrations/supabase/client";
 
 const title = "Set a new password — Auctory";
@@ -86,9 +87,8 @@ function ResetPasswordPage() {
               <form className="space-y-5" onSubmit={onSubmit} noValidate>
                 <div>
                   <Label htmlFor="new-password">{t("auth.fields.newPassword")}</Label>
-                  <Input
+                  <PasswordInput
                     id="new-password"
-                    type="password"
                     autoComplete="new-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -100,9 +100,8 @@ function ResetPasswordPage() {
                 </div>
                 <div>
                   <Label htmlFor="confirm-password">{t("auth.fields.confirmPassword")}</Label>
-                  <Input
+                  <PasswordInput
                     id="confirm-password"
-                    type="password"
                     autoComplete="new-password"
                     value={confirm}
                     onChange={(e) => setConfirm(e.target.value)}

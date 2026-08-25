@@ -272,6 +272,10 @@
       "countryPlaceholder": "Select country",
       "optional": "(optional)"
     },
+    "password": {
+      "show": "Show password",
+      "hide": "Hide password"
+    },
     "signIn": {
       "tab": "Sign in",
       "title": "Welcome back",
