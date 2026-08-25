@@ -16,7 +16,7 @@ import { useRoles } from "@/lib/use-roles";
 import type { ProductStatus } from "@/lib/products";
 
 const title = "My Products — Auctory";
-const description = "Manage your Auctory listings: drafts, published items, and archived products.";
+const description = "Manage your private Auctory listings: drafts and archived products.";
 
 export const Route = createFileRoute("/_authenticated/my-products/")({
   head: () => ({

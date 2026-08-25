@@ -15,7 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 
 const title = "New Product — Auctory";
-const description = "Create a new Auctory listing and save it as a draft before publishing.";
+const description = "Create a new private Auctory listing and save it as a draft.";
 
 export const Route = createFileRoute("/_authenticated/my-products/new")({
   head: () => ({
