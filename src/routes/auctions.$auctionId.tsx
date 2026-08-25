@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 import { EmptyState, PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -20,14 +21,19 @@ export const Route = createFileRoute("/auctions/$auctionId")({
 
 function AuctionDetailPage() {
   const { auctionId } = Route.useParams();
+  const { t } = useTranslation();
 
   return (
     <PageContainer>
-      <PageHeader eyebrow={`Lot ${auctionId}`} title="Lot details" description={description} />
+      <PageHeader
+        eyebrow={t("pages.lot.eyebrow", { id: auctionId })}
+        title={t("pages.lot.title")}
+        description={t("pages.lot.description")}
+      />
       <div className="mt-12">
         <EmptyState
-          title="Lot view not built yet"
-          description="Bidding, payment, and certificate panels will render here."
+          title={t("pages.lot.emptyTitle")}
+          description={t("pages.lot.emptyDescription")}
         />
       </div>
     </PageContainer>
