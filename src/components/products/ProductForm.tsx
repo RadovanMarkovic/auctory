@@ -75,6 +75,7 @@ export function ProductForm({
   onSubmit,
   actions,
   provenanceSlot,
+  footerSlot,
 }: {
   initialValues: ProductFormValues;
   submitting?: boolean;
@@ -83,6 +84,8 @@ export function ProductForm({
   actions?: ReactNode;
   /** Optional content rendered inside the provenance card (e.g. attachment upload). */
   provenanceSlot?: ReactNode;
+  /** Optional content rendered after all cards, above the save button (e.g. images). */
+  footerSlot?: ReactNode;
 }) {
 
   const { t, i18n } = useTranslation();
