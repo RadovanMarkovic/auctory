@@ -14,10 +14,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
+import { useRoles } from "@/lib/use-roles";
 
 export function AccountMenu() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { isAdmin } = useRoles();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -46,6 +48,11 @@ export function AccountMenu() {
             <DropdownMenuItem asChild>
               <Link to="/profile">{t("account.myProfile")}</Link>
             </DropdownMenuItem>
+            {isAdmin ? (
+              <DropdownMenuItem asChild>
+                <Link to="/admin">{t("admin.nav")}</Link>
+              </DropdownMenuItem>
+            ) : null}
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => void onSignOut()}>
               {t("account.signOut")}

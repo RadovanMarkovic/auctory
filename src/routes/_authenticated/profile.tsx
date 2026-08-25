@@ -77,7 +77,7 @@ function ProfilePage() {
         supabase
           .from("profiles")
           .select(
-            "full_name, avatar_url, phone, country, account_status, created_at, wallet_address, wallet_network, wallet_verified_at",
+            "full_name, avatar_url, phone, country, account_status, seller_request_status, created_at, wallet_address, wallet_network, wallet_verified_at",
           )
           .eq("id", userId)
           .maybeSingle(),
@@ -180,6 +180,25 @@ function ProfilePage() {
     onSuccess: () => {
       toast.success(t("profilePage.avatar.removed"));
       void queryClient.invalidateQueries({ queryKey: ["profile", user?.id] });
+    },
+    onError: () => toast.error(t("auth.errors.generic")),
+  });
+
+  const sellerStatus = profileQuery.data?.profile?.seller_request_status ?? "none";
+  const isSellerAlready = (profileQuery.data?.roles ?? []).includes("seller");
+
+  const becomeSellerMutation = useMutation({
+    mutationFn: async () => {
+      if (!userId) throw new Error("Missing authenticated user");
+      const { error } = await supabase
+        .from("profiles")
+        .update({ seller_request_status: "pending" })
+        .eq("id", userId);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success(t("seller.requestSent"));
+      void queryClient.invalidateQueries({ queryKey: ["profile", userId] });
     },
     onError: () => toast.error(t("auth.errors.generic")),
   });
@@ -426,6 +445,24 @@ function ProfilePage() {
                     {profile?.created_at ? dateFormatter.format(new Date(profile.created_at)) : "—"}
                   </span>
                 </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-muted-foreground">{t("seller.requestLabel")}</span>
+                  <Badge variant={sellerStatus === "approved" ? "success" : sellerStatus === "pending" ? "gold" : "muted"}>
+                    {t(`seller.status.${sellerStatus}`)}
+                  </Badge>
+                </div>
+                {isSellerAlready ? null : (
+                  <div className="space-y-2 border-t border-border pt-4">
+                    <Button
+                      className="w-full"
+                      disabled={sellerStatus === "pending" || becomeSellerMutation.isPending}
+                      onClick={() => becomeSellerMutation.mutate()}
+                    >
+                      {sellerStatus === "rejected" ? t("seller.resend") : t("seller.become")}
+                    </Button>
+                    <p className="text-xs text-muted-foreground">{t("seller.hint")}</p>
+                  </div>
+                )}
                 <Button variant="outline" className="w-full" onClick={() => void onSignOut()}>
                   {t("account.signOut")}
                 </Button>
