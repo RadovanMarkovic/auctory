@@ -74,13 +74,17 @@ export function ProductForm({
   submitting,
   onSubmit,
   actions,
+  provenanceSlot,
 }: {
   initialValues: ProductFormValues;
   submitting?: boolean;
   onSubmit: (values: ProductFormValues) => void;
   /** Extra buttons rendered next to the save button. */
   actions?: ReactNode;
+  /** Optional content rendered inside the provenance card (e.g. attachment upload). */
+  provenanceSlot?: ReactNode;
 }) {
+
   const { t, i18n } = useTranslation();
   const [values, setValues] = useState<ProductFormValues>(initialValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
