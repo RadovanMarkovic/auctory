@@ -23,6 +23,7 @@ import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticate
 import { Route as AuctionsIndexRouteImport } from './routes/auctions.index'
 import { Route as AuctionsAuctionIdRouteImport } from './routes/auctions.$auctionId'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
+import { Route as ProductsProductIdRouteImport } from './routes/products.$productId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -93,6 +94,11 @@ const ProductsIndexRoute = ProductsIndexRouteImport.update({
   path: '/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductsProductIdRoute = ProductsProductIdRouteImport.update({
+  id: '/products/$productId',
+  path: '/products/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
+  '/products/$productId': typeof ProductsProductIdRoute
   '/auctions/': typeof AuctionsIndexRoute
   '/products/': typeof ProductsIndexRoute
 }
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
+  '/products/$productId': typeof ProductsProductIdRoute
   '/auctions': typeof AuctionsIndexRoute
   '/products': typeof ProductsIndexRoute
 }
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
+  '/products/$productId': typeof ProductsProductIdRoute
   '/auctions/': typeof AuctionsIndexRoute
   '/products/': typeof ProductsIndexRoute
 }
@@ -155,6 +164,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/profile'
     | '/auctions/$auctionId'
+    | '/products/$productId'
     | '/auctions/'
     | '/products/'
   fileRoutesByTo: FileRoutesByTo
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/profile'
     | '/auctions/$auctionId'
+    | '/products/$productId'
     | '/auctions'
     | '/products'
   id:
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/profile'
     | '/auctions/$auctionId'
+    | '/products/$productId'
     | '/auctions/'
     | '/products/'
   fileRoutesById: FileRoutesById
@@ -200,6 +212,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SellRoute: typeof SellRoute
   AuctionsAuctionIdRoute: typeof AuctionsAuctionIdRoute
+  ProductsProductIdRoute: typeof ProductsProductIdRoute
   AuctionsIndexRoute: typeof AuctionsIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
 }
@@ -304,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/products/$productId': {
+      id: '/products/$productId'
+      path: '/products/$productId'
+      fullPath: '/products/$productId'
+      preLoaderRoute: typeof ProductsProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -332,6 +352,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SellRoute: SellRoute,
   AuctionsAuctionIdRoute: AuctionsAuctionIdRoute,
+  ProductsProductIdRoute: ProductsProductIdRoute,
   AuctionsIndexRoute: AuctionsIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,
 }
