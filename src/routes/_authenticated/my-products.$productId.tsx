@@ -61,7 +61,6 @@ function EditProductPage() {
   function invalidate() {
     void queryClient.invalidateQueries({ queryKey: ["seller-product", productId] });
     void queryClient.invalidateQueries({ queryKey: ["my-products", user?.id] });
-    void queryClient.invalidateQueries({ queryKey: ["catalogue"] });
   }
 
   const saveMutation = useMutation({
@@ -112,7 +111,6 @@ function EditProductPage() {
   }
 
   const images = [...(product.product_images ?? [])].sort((a, b) => a.sort_order - b.sort_order);
-  const canPublish = images.length > 0;
 
   const initialValues: ProductFormValues = {
     category_id: product.category_id,
@@ -164,37 +162,29 @@ function EditProductPage() {
               name={product.provenance_document_name}
             />
           }
+          footerSlot={
+            <ProductImageManager
+              productId={product.id}
+              sellerId={product.seller_id}
+              images={images}
+            />
+          }
+          actions={
+            product.status !== "archived" ? (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => statusMutation.mutate("archived")}
+              >
+                {t("products.manage.archive")}
+              </Button>
+            ) : (
+              <Button type="button" variant="ghost" onClick={() => statusMutation.mutate("draft")}>
+                {t("products.manage.restore")}
+              </Button>
+            )
+          }
         />
-
-
-        <ProductImageManager productId={product.id} sellerId={product.seller_id} images={images} />
-
-        <div className="flex flex-wrap items-center gap-3 border-t border-border pt-6">
-          {product.status !== "published" ? (
-            <Button
-              disabled={!canPublish || statusMutation.isPending}
-              onClick={() => statusMutation.mutate("published")}
-            >
-              {t("products.manage.publish")}
-            </Button>
-          ) : (
-            <Button variant="outline" onClick={() => statusMutation.mutate("draft")}>
-              {t("products.manage.unpublish")}
-            </Button>
-          )}
-          {product.status !== "archived" ? (
-            <Button variant="ghost" onClick={() => statusMutation.mutate("archived")}>
-              {t("products.manage.archive")}
-            </Button>
-          ) : (
-            <Button variant="ghost" onClick={() => statusMutation.mutate("draft")}>
-              {t("products.manage.restore")}
-            </Button>
-          )}
-          {!canPublish ? (
-            <p className="text-sm text-muted-foreground">{t("products.manage.needImage")}</p>
-          ) : null}
-        </div>
       </div>
     </PageContainer>
   );

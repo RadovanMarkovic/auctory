@@ -16,7 +16,7 @@ import { useRoles } from "@/lib/use-roles";
 import type { ProductStatus } from "@/lib/products";
 
 const title = "My Products — Auctory";
-const description = "Manage your Auctory listings: drafts, published items, and archived products.";
+const description = "Manage your private Auctory listings: drafts and archived products.";
 
 export const Route = createFileRoute("/_authenticated/my-products/")({
   head: () => ({
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/_authenticated/my-products/")({
   component: MyProductsPage,
 });
 
-const STATUSES: ProductStatus[] = ["draft", "published", "archived"];
+const STATUSES: ProductStatus[] = ["draft", "archived"];
 
 function MyProductsPage() {
   const { t } = useTranslation();
@@ -63,7 +63,6 @@ function MyProductsPage() {
     onSuccess: () => {
       toast.success(t("products.manage.statusUpdated"));
       void queryClient.invalidateQueries({ queryKey: ["my-products", user?.id] });
-      void queryClient.invalidateQueries({ queryKey: ["catalogue"] });
     },
     onError: () => toast.error(t("common.errorTitle")),
   });
@@ -170,7 +169,7 @@ function MyProductsPage() {
                                     {t("products.manage.edit")}
                                   </Link>
                                 </Button>
-                                {status === "published" ? (
+                                {status === "draft" ? (
                                   <Button
                                     variant="ghost"
                                     size="sm"

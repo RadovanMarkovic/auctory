@@ -476,13 +476,6 @@
       "tooLarge": "Slika je prevelika",
       "alt": "Fotografija predmeta"
     },
-    "catalogue": {
-      "eyebrow": "Katalog",
-      "title": "Predmeti",
-      "description": "Objavljeni predmeti koje su opisali prodavci, pre početka aukcija.",
-      "emptyTitle": "Još nema predmeta",
-      "emptyDescription": "Objavljeni predmeti će se pojaviti ovde."
-    },
     "detail": {
       "information": "Podaci o predmetu",
       "seller": "Prodavac",

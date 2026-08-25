@@ -22,8 +22,6 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuctionsIndexRouteImport } from './routes/auctions.index'
 import { Route as AuctionsAuctionIdRouteImport } from './routes/auctions.$auctionId'
-import { Route as ProductsIndexRouteImport } from './routes/products.index'
-import { Route as ProductsProductIdRouteImport } from './routes/products.$productId'
 import { Route as AuthenticatedMyProductsIndexRouteImport } from './routes/_authenticated/my-products.index'
 import { Route as AuthenticatedMyProductsProductIdRouteImport } from './routes/_authenticated/my-products.$productId'
 import { Route as AuthenticatedMyProductsNewRouteImport } from './routes/_authenticated/my-products.new'
@@ -92,16 +90,6 @@ const AuctionsAuctionIdRoute = AuctionsAuctionIdRouteImport.update({
   path: '/auctions/$auctionId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsIndexRoute = ProductsIndexRouteImport.update({
-  id: '/products/',
-  path: '/products/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductsProductIdRoute = ProductsProductIdRouteImport.update({
-  id: '/products/$productId',
-  path: '/products/$productId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedMyProductsIndexRoute =
   AuthenticatedMyProductsIndexRouteImport.update({
     id: '/my-products/',
@@ -133,9 +121,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
-  '/products/$productId': typeof ProductsProductIdRoute
   '/auctions/': typeof AuctionsIndexRoute
-  '/products/': typeof ProductsIndexRoute
   '/my-products/$productId': typeof AuthenticatedMyProductsProductIdRoute
   '/my-products/new': typeof AuthenticatedMyProductsNewRoute
   '/my-products/': typeof AuthenticatedMyProductsIndexRoute
@@ -152,9 +138,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
-  '/products/$productId': typeof ProductsProductIdRoute
   '/auctions': typeof AuctionsIndexRoute
-  '/products': typeof ProductsIndexRoute
   '/my-products/$productId': typeof AuthenticatedMyProductsProductIdRoute
   '/my-products/new': typeof AuthenticatedMyProductsNewRoute
   '/my-products': typeof AuthenticatedMyProductsIndexRoute
@@ -173,9 +157,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
-  '/products/$productId': typeof ProductsProductIdRoute
   '/auctions/': typeof AuctionsIndexRoute
-  '/products/': typeof ProductsIndexRoute
   '/_authenticated/my-products/$productId': typeof AuthenticatedMyProductsProductIdRoute
   '/_authenticated/my-products/new': typeof AuthenticatedMyProductsNewRoute
   '/_authenticated/my-products/': typeof AuthenticatedMyProductsIndexRoute
@@ -194,9 +176,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/profile'
     | '/auctions/$auctionId'
-    | '/products/$productId'
     | '/auctions/'
-    | '/products/'
     | '/my-products/$productId'
     | '/my-products/new'
     | '/my-products/'
@@ -213,9 +193,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/profile'
     | '/auctions/$auctionId'
-    | '/products/$productId'
     | '/auctions'
-    | '/products'
     | '/my-products/$productId'
     | '/my-products/new'
     | '/my-products'
@@ -233,9 +211,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/profile'
     | '/auctions/$auctionId'
-    | '/products/$productId'
     | '/auctions/'
-    | '/products/'
     | '/_authenticated/my-products/$productId'
     | '/_authenticated/my-products/new'
     | '/_authenticated/my-products/'
@@ -251,9 +227,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SellRoute: typeof SellRoute
   AuctionsAuctionIdRoute: typeof AuctionsAuctionIdRoute
-  ProductsProductIdRoute: typeof ProductsProductIdRoute
   AuctionsIndexRoute: typeof AuctionsIndexRoute
-  ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -349,20 +323,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuctionsAuctionIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/': {
-      id: '/products/'
-      path: '/products'
-      fullPath: '/products/'
-      preLoaderRoute: typeof ProductsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/products/$productId': {
-      id: '/products/$productId'
-      path: '/products/$productId'
-      fullPath: '/products/$productId'
-      preLoaderRoute: typeof ProductsProductIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated/my-products/': {
       id: '/_authenticated/my-products/'
       path: '/my-products'
@@ -418,9 +378,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SellRoute: SellRoute,
   AuctionsAuctionIdRoute: AuctionsAuctionIdRoute,
-  ProductsProductIdRoute: ProductsProductIdRoute,
   AuctionsIndexRoute: AuctionsIndexRoute,
-  ProductsIndexRoute: ProductsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
