@@ -11,6 +11,8 @@ import {
   type ProductFormValues,
 } from "@/components/products/ProductForm";
 import { ProductImageManager } from "@/components/products/ProductImageManager";
+import { ProvenanceAttachment } from "@/components/products/ProvenanceAttachment";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
