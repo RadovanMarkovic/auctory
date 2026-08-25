@@ -9,9 +9,13 @@ export function formatMoney(money: Money, locale = "en-GB") {
 }
 
 /** Compact "2d 04h" / "3h 12m" / "8m" countdown label. */
-export function formatTimeLeft(endsAt: string, now: number = Date.now()) {
+export function formatTimeLeft(
+  endsAt: string,
+  now: number = Date.now(),
+  closedLabel = "Closed",
+) {
   const diff = new Date(endsAt).getTime() - now;
-  if (diff <= 0) return "Closed";
+  if (diff <= 0) return closedLabel;
 
   const minutes = Math.floor(diff / 60_000);
   const hours = Math.floor(minutes / 60);
