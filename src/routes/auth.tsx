@@ -216,13 +216,20 @@ function SignUpCard() {
     setBusy(false);
 
     if (error) {
-      toast.error(
-        /registered|exists/i.test(error.message)
-          ? t("auth.errors.emailTaken")
-          : t("auth.errors.generic"),
-      );
+      const code = (error as { code?: string }).code ?? "";
+      const messageKey =
+        code === "weak_password" || /weak|pwned|leaked/i.test(error.message)
+          ? "auth.errors.weakPassword"
+          : /registered|exists/i.test(error.message)
+            ? "auth.errors.emailTaken"
+            : null;
+      if (messageKey === "auth.errors.weakPassword") {
+        setErrors((prev) => ({ ...prev, password: t("auth.errors.weakPassword") }));
+      }
+      toast.error(messageKey ? t(messageKey) : error.message || t("auth.errors.generic"));
       return;
     }
+
     if (!data.session) {
       setSent(true);
       toast.success(t("auth.signUp.checkEmail"));
