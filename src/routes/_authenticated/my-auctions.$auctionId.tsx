@@ -88,10 +88,7 @@ function EditAuctionPage() {
 
   const cancelMutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase
-        .from("auctions")
-        .update({ status: "cancelled" })
-        .eq("id", auctionId);
+      const { error } = await supabase.rpc("cancel_auction", { _auction_id: auctionId });
       if (error) throw error;
     },
     onSuccess: () => {
