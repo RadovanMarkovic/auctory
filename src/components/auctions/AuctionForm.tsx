@@ -193,7 +193,7 @@ export function AuctionForm({
               <Select
                 value={values.product_id ?? ""}
                 onValueChange={(value) => set("product_id", value || null)}
-                disabled={disabled}
+                disabled={Boolean(disabled)}
               >
                 <SelectTrigger id="auction-product" aria-invalid={Boolean(errors["product_id"])}>
                   <SelectValue placeholder={t("auctions.form.selectPlaceholder")} />
