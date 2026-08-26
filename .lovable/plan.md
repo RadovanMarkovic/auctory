@@ -56,9 +56,11 @@ The form works, but the labels are terse and partly technical. Reword in both En
 
 ## Technical notes
 
-- Data access: public reads go through the existing `public_auctions` view (which omits `reserve_price`); its read policy is widened to include `ended`, and product/product-image read policies gain the same. Reserve status is exposed only as a boolean.
+- Data access: all public reads (including polling) go through the existing `public_auctions` view, which omits `reserve_price`; its read access is widened to include `ended`, and product/product-image read policies gain the same. The view/detail response exposes only a `reserve_met` boolean — never the reserve amount.
+- Seller info comes from a restricted public view or security-definer function over `profiles` returning display name, country and created date only; the `profiles` table itself stays private.
 - Bid history is served by a security-definer function returning amount, timestamp and a masked label derived from a hash of bidder id + auction id — bidder identity never leaves the database.
-- `bids` stays insert-locked; all writes go through the bid function, granted to authenticated users only.
-- The scheduled job uses `pg_cron` calling a public API route in the app, authenticated with the project key.
+- `bids` stays insert-locked; all writes go through the bid function, granted to authenticated users only. Cancellation uses a matching security-definer function.
+- The scheduled job is a security-definer finalization function scheduled directly with `pg_cron`; no HTTP call and no key material in the app.
+
 - Images use the existing signed-URL helper; the storage bucket already allows read for catalogue images.
 - New files: catalogue and detail routes, an `AuctionCard`, a bid panel and bid-history component, and public auction fetchers in `src/lib/auctions.ts`. Translation keys added to both `en.json` and `sr.json`.
