@@ -6,7 +6,8 @@
     "loading": "Učitavanje",
     "step": "Korak {{number}}",
     "errorTitle": "Nešto je pošlo naopako",
-    "errorDescription": "Nismo uspeli da učitamo sadržaj. Pokušajte ponovo."
+    "errorDescription": "Nismo uspeli da učitamo sadržaj. Pokušajte ponovo.",
+    "cancel": "Otkaži"
   },
   "nav": {
     "main": "Glavna navigacija",
@@ -24,7 +25,8 @@
       "company": "Kompanija"
     },
     "products": "Predmeti",
-    "myProducts": "Moji predmeti"
+    "myProducts": "Moji predmeti",
+    "myAuctions": "Moje aukcije"
   },
   "language": {
     "label": "Jezik",
@@ -520,5 +522,86 @@
       "deleted": "Prilog je uklonjen",
       "tooLarge": "Fajl je prevelik"
     }
+  },
+  "auctions": {
+    "status": {
+      "draft": "Nacrt",
+      "scheduled": "Zakazana",
+      "live": "U toku",
+      "ended": "Završena",
+      "cancelled": "Otkazana"
+    },
+    "manage": {
+      "eyebrow": "Prodavac",
+      "title": "Moje aukcije",
+      "description": "Kreiraj aukcije za svoje objavljene proizvode i upravljaj njima pre početka.",
+      "new": "Nova aukcija",
+      "open": "Otvori",
+      "backToList": "Nazad na moje aukcije",
+      "cancel": "Otkaži aukciju",
+      "cancelled": "Aukcija je otkazana",
+      "emptyTitle": "Još nema aukcija",
+      "emptyDescription": "Kreiraj aukciju za neki od svojih objavljenih proizvoda."
+    },
+    "fields": {
+      "product": "Proizvod",
+      "startPrice": "Početna cena",
+      "reservePrice": "Rezervna cena (opciono)",
+      "reserveHint": "Samo ti vidiš rezervnu cenu. Učesnici je nikada ne vide.",
+      "minimumIncrement": "Minimalni korak",
+      "startsAt": "Početak",
+      "endsAt": "Kraj",
+      "antiSniping": "Anti-sniping (minuti)",
+      "antiSnipingHint": "Ponuda pred kraj produžava aukciju za ovoliko minuta."
+    },
+    "form": {
+      "newTitle": "Nova aukcija",
+      "newDescription": "Izaberi objavljen proizvod, postavi cene i termin, pa pregledaj pre zakazivanja.",
+      "editDescription": "Izmeni aukciju. Izmene su moguće samo pre početka i dok nema ponuda.",
+      "selectPlaceholder": "Izaberi",
+      "noEligibleProducts": "Nemaš objavljene proizvode bez aktivne aukcije. Prvo objavi proizvod.",
+      "requiredField": "Ovo polje je obavezno",
+      "saveDraft": "Sačuvaj nacrt",
+      "schedule": "Zakaži aukciju",
+      "created": "Aukcija je kreirana",
+      "saved": "Aukcija je sačuvana",
+      "saveFailed": "Nije moguće sačuvati aukciju",
+      "lockedBids": "Ova aukcija već ima ponude i više se ne može menjati.",
+      "lockedStarted": "Ova aukcija je već počela i više se ne može menjati.",
+      "lockedFinished": "Ova aukcija je završena i više se ne može menjati.",
+      "sections": {
+        "product": "Proizvod",
+        "productHint": "Mogu se izabrati samo tvoji objavljeni proizvodi bez aktivne aukcije.",
+        "pricing": "Cene",
+        "pricingHint": "Početna cena, opciona rezerva i minimalni korak ponude.",
+        "schedule": "Termin",
+        "scheduleHint": "Kada nadmetanje počinje i završava se, i anti-sniping period."
+      },
+      "errors": {
+        "positive": "Unesi iznos veći od nule",
+        "reserveBelowStart": "Rezervna cena ne može biti niža od početne cene",
+        "endBeforeStart": "Kraj mora biti posle početka",
+        "startInPast": "Početak mora biti u budućnosti",
+        "antiSnipingRange": "Unesi vrednost između 0 i 60 minuta"
+      }
+    },
+    "preview": {
+      "title": "Pregled",
+      "hint": "Ovo će učesnici videti kada aukcija postane javna.",
+      "antiSnipingValue": "{{count}} minut",
+      "antiSnipingValue_few": "{{count}} minuta",
+      "antiSnipingValue_other": "{{count}} minuta",
+      "reserveHidden": "Rezervna cena se nikada ne prikazuje učesnicima."
+    },
+    "confirm": {
+      "title": "Zakazati ovu aukciju?",
+      "description": "Nakon zakazivanja aukcija postaje javno vidljiva i više se ne može menjati kada počne ili kada stigne prva ponuda.",
+      "confirm": "Zakaži"
+    },
+    "detail": {
+      "notFoundTitle": "Aukcija nije pronađena",
+      "notFoundDescription": "Ova aukcija ne postoji ili nije tvoja."
+    },
+    "reserveSellerOnly": "Rezervna cena (vidljiva samo tebi): {{value}}"
   }
 }
