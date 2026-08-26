@@ -7,7 +7,9 @@
     "step": "Step {{number}}",
     "errorTitle": "Something went wrong",
     "errorDescription": "We couldn't load this content. Please try again.",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No"
   },
   "nav": {
     "main": "Main",
@@ -210,7 +212,7 @@
     "auctions": {
       "eyebrow": "Catalogue",
       "title": "Auctions",
-      "description": "Browse Auctory's timed English auctions for luxury watches, jewelry, collectibles, and limited-edition fashion.",
+      "description": "Browse live, upcoming and completed Auctory lots.",
       "emptyTitle": "Catalogue coming soon",
       "emptyDescription": "Auction listings and bidding will be connected in a later step."
     },
@@ -594,9 +596,79 @@
       "confirm": "Schedule"
     },
     "detail": {
-      "notFoundTitle": "Auction not found",
-      "notFoundDescription": "This auction does not exist or is not yours."
+      "notFoundTitle": "Auction not available",
+      "notFoundDescription": "This auction does not exist or is no longer public.",
+      "productDetails": "Product details",
+      "seller": "Seller",
+      "sellerUnknown": "Private seller",
+      "memberSince": "Member since {{value}}",
+      "bidHistory": "Bid history",
+      "noBids": "No bids yet.",
+      "you": "You",
+      "reserveMet": "Reserve met",
+      "reserveNotMet": "Reserve not met",
+      "startsAt": "Starts: {{value}}",
+      "endsAt": "Ends: {{value}}",
+      "viewImage": "View image {{index}}",
+      "passportTitle": "Digital product passport",
+      "passportDescription": "After the auction is settled, a blockchain certificate of ownership will be issued for this lot."
     },
-    "reserveSellerOnly": "Reserve price (visible only to you): {{value}}"
+    "reserveSellerOnly": "Reserve price (visible only to you): {{value}}",
+    "tabs": {
+      "live": "Live",
+      "upcoming": "Upcoming",
+      "ended": "Ended"
+    },
+    "card": {
+      "currentBid": "Current bid",
+      "startingPrice": "Starting price",
+      "bids_one": "{{count}} bid",
+      "bids_other": "{{count}} bids",
+      "endsIn": "Ends in {{value}}",
+      "startsIn": "Starts in {{value}}",
+      "finished": "Finished"
+    },
+    "filters": {
+      "search": "Search",
+      "searchPlaceholder": "Title, model or brand",
+      "category": "Category",
+      "brand": "Brand",
+      "condition": "Condition",
+      "priceRange": "Current price",
+      "min": "Min",
+      "max": "Max",
+      "all": "All",
+      "reset": "Clear filters"
+    },
+    "catalogue": {
+      "empty": {
+        "liveTitle": "No live auctions",
+        "liveDescription": "There are no auctions running right now. Check the upcoming tab.",
+        "upcomingTitle": "No upcoming auctions",
+        "upcomingDescription": "No auctions are scheduled at the moment.",
+        "endedTitle": "No ended auctions",
+        "endedDescription": "Completed auctions will appear here.",
+        "filtered": "No auctions match your filters."
+      }
+    },
+    "bid": {
+      "amountLabel": "Your bid",
+      "minimumHint": "Minimum bid: {{value}}",
+      "submit": "Place bid",
+      "submitting": "Placing bid...",
+      "success": "Your bid was placed",
+      "notOpen": "Bidding is not open for this auction.",
+      "signInPrompt": "Sign in to place a bid on this lot.",
+      "signInCta": "Sign in to bid",
+      "errors": {
+        "tooLow": "Your bid must be at least {{min}}.",
+        "invalid": "Enter a valid amount.",
+        "ownAuction": "You cannot bid on your own auction.",
+        "closed": "This auction is closed.",
+        "notLive": "This auction is not live yet.",
+        "authRequired": "Please sign in to bid.",
+        "generic": "Your bid could not be placed."
+      }
+    }
   }
 }
