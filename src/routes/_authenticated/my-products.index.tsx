@@ -33,7 +33,7 @@ export const Route = createFileRoute("/_authenticated/my-products/")({
   component: MyProductsPage,
 });
 
-const STATUSES: ProductStatus[] = ["draft", "archived"];
+const STATUSES: ProductStatus[] = ["draft", "published", "archived"];
 
 function MyProductsPage() {
   const { t } = useTranslation();
@@ -170,17 +170,48 @@ function MyProductsPage() {
                                   </Link>
                                 </Button>
                                 {status === "draft" ? (
+                                  <>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      disabled={(product.product_images?.length ?? 0) === 0}
+                                      title={
+                                        (product.product_images?.length ?? 0) === 0
+                                          ? t("products.manage.needImage")
+                                          : undefined
+                                      }
+                                      onClick={() =>
+                                        statusMutation.mutate({
+                                          id: product.id,
+                                          status: "published",
+                                        })
+                                      }
+                                    >
+                                      {t("products.manage.publish")}
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() =>
+                                        statusMutation.mutate({
+                                          id: product.id,
+                                          status: "archived",
+                                        })
+                                      }
+                                    >
+                                      {t("products.manage.archive")}
+                                    </Button>
+                                  </>
+                                ) : null}
+                                {status === "published" ? (
                                   <Button
                                     variant="ghost"
                                     size="sm"
                                     onClick={() =>
-                                      statusMutation.mutate({
-                                        id: product.id,
-                                        status: "archived",
-                                      })
+                                      statusMutation.mutate({ id: product.id, status: "draft" })
                                     }
                                   >
-                                    {t("products.manage.archive")}
+                                    {t("products.manage.unpublish")}
                                   </Button>
                                 ) : null}
                                 {status === "archived" ? (

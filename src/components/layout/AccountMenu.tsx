@@ -49,9 +49,14 @@ export function AccountMenu() {
               <Link to="/profile">{t("account.myProfile")}</Link>
             </DropdownMenuItem>
             {isSeller ? (
-              <DropdownMenuItem asChild>
-                <Link to="/my-products">{t("nav.myProducts")}</Link>
-              </DropdownMenuItem>
+              <>
+                <DropdownMenuItem asChild>
+                  <Link to="/my-products">{t("nav.myProducts")}</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/my-auctions">{t("nav.myAuctions")}</Link>
+                </DropdownMenuItem>
+              </>
             ) : null}
             {isAdmin ? (
               <DropdownMenuItem asChild>

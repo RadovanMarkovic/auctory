@@ -14,6 +14,119 @@ export type Database = {
   }
   public: {
     Tables: {
+      auctions: {
+        Row: {
+          anti_sniping_minutes: number
+          bid_count: number
+          created_at: string
+          ends_at: string
+          final_price: number | null
+          finalized_at: string | null
+          highest_bid_amount: number | null
+          highest_bidder_id: string | null
+          id: string
+          minimum_increment: number
+          original_ends_at: string
+          product_id: string
+          reserve_price: number | null
+          seller_id: string
+          start_price: number
+          starts_at: string
+          status: Database["public"]["Enums"]["auction_status"]
+          updated_at: string
+          winner_id: string | null
+        }
+        Insert: {
+          anti_sniping_minutes?: number
+          bid_count?: number
+          created_at?: string
+          ends_at: string
+          final_price?: number | null
+          finalized_at?: string | null
+          highest_bid_amount?: number | null
+          highest_bidder_id?: string | null
+          id?: string
+          minimum_increment?: number
+          original_ends_at: string
+          product_id: string
+          reserve_price?: number | null
+          seller_id: string
+          start_price: number
+          starts_at: string
+          status?: Database["public"]["Enums"]["auction_status"]
+          updated_at?: string
+          winner_id?: string | null
+        }
+        Update: {
+          anti_sniping_minutes?: number
+          bid_count?: number
+          created_at?: string
+          ends_at?: string
+          final_price?: number | null
+          finalized_at?: string | null
+          highest_bid_amount?: number | null
+          highest_bidder_id?: string | null
+          id?: string
+          minimum_increment?: number
+          original_ends_at?: string
+          product_id?: string
+          reserve_price?: number | null
+          seller_id?: string
+          start_price?: number
+          starts_at?: string
+          status?: Database["public"]["Enums"]["auction_status"]
+          updated_at?: string
+          winner_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auctions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bids: {
+        Row: {
+          amount: number
+          auction_id: string
+          bidder_id: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          amount: number
+          auction_id: string
+          bidder_id: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          amount?: number
+          auction_id?: string
+          bidder_id?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bids_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bids_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "public_auctions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       brands: {
         Row: {
           created_at: string
@@ -261,7 +374,74 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_auctions: {
+        Row: {
+          anti_sniping_minutes: number | null
+          bid_count: number | null
+          created_at: string | null
+          ends_at: string | null
+          final_price: number | null
+          finalized_at: string | null
+          highest_bid_amount: number | null
+          highest_bidder_id: string | null
+          id: string | null
+          minimum_increment: number | null
+          original_ends_at: string | null
+          product_id: string | null
+          seller_id: string | null
+          start_price: number | null
+          starts_at: string | null
+          status: Database["public"]["Enums"]["auction_status"] | null
+          winner_id: string | null
+        }
+        Insert: {
+          anti_sniping_minutes?: number | null
+          bid_count?: number | null
+          created_at?: string | null
+          ends_at?: string | null
+          final_price?: number | null
+          finalized_at?: string | null
+          highest_bid_amount?: number | null
+          highest_bidder_id?: string | null
+          id?: string | null
+          minimum_increment?: number | null
+          original_ends_at?: string | null
+          product_id?: string | null
+          seller_id?: string | null
+          start_price?: number | null
+          starts_at?: string | null
+          status?: Database["public"]["Enums"]["auction_status"] | null
+          winner_id?: string | null
+        }
+        Update: {
+          anti_sniping_minutes?: number | null
+          bid_count?: number | null
+          created_at?: string | null
+          ends_at?: string | null
+          final_price?: number | null
+          finalized_at?: string | null
+          highest_bid_amount?: number | null
+          highest_bidder_id?: string | null
+          id?: string | null
+          minimum_increment?: number | null
+          original_ends_at?: string | null
+          product_id?: string | null
+          seller_id?: string | null
+          start_price?: number | null
+          starts_at?: string | null
+          status?: Database["public"]["Enums"]["auction_status"] | null
+          winner_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auctions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       admin_list_users: {
@@ -288,6 +468,7 @@ export type Database = {
     Enums: {
       account_status: "active" | "pending" | "suspended"
       app_role: "buyer" | "seller" | "admin"
+      auction_status: "draft" | "scheduled" | "live" | "ended" | "cancelled"
       product_status: "draft" | "published" | "archived"
       seller_request_status: "none" | "pending" | "approved" | "rejected"
     }
@@ -419,6 +600,7 @@ export const Constants = {
     Enums: {
       account_status: ["active", "pending", "suspended"],
       app_role: ["buyer", "seller", "admin"],
+      auction_status: ["draft", "scheduled", "live", "ended", "cancelled"],
       product_status: ["draft", "published", "archived"],
       seller_request_status: ["none", "pending", "approved", "rejected"],
     },

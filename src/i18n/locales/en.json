@@ -6,7 +6,8 @@
     "loading": "Loading",
     "step": "Step {{number}}",
     "errorTitle": "Something went wrong",
-    "errorDescription": "We couldn't load this content. Please try again."
+    "errorDescription": "We couldn't load this content. Please try again.",
+    "cancel": "Cancel"
   },
   "nav": {
     "main": "Main",
@@ -24,7 +25,8 @@
       "company": "Company"
     },
     "products": "Products",
-    "myProducts": "My products"
+    "myProducts": "My products",
+    "myAuctions": "My auctions"
   },
   "language": {
     "label": "Language",
@@ -516,5 +518,85 @@
       "deleted": "Attachment removed",
       "tooLarge": "File is too large"
     }
+  },
+  "auctions": {
+    "status": {
+      "draft": "Draft",
+      "scheduled": "Scheduled",
+      "live": "Live",
+      "ended": "Ended",
+      "cancelled": "Cancelled"
+    },
+    "manage": {
+      "eyebrow": "Seller area",
+      "title": "My auctions",
+      "description": "Create auctions for your published products and manage them before they go live.",
+      "new": "New auction",
+      "open": "Open",
+      "backToList": "Back to my auctions",
+      "cancel": "Cancel auction",
+      "cancelled": "Auction cancelled",
+      "emptyTitle": "No auctions yet",
+      "emptyDescription": "Create an auction for one of your published products."
+    },
+    "fields": {
+      "product": "Product",
+      "startPrice": "Start price",
+      "reservePrice": "Reserve price (optional)",
+      "reserveHint": "Only you can see the reserve price. Bidders never see it.",
+      "minimumIncrement": "Minimum increment",
+      "startsAt": "Starts at",
+      "endsAt": "Ends at",
+      "antiSniping": "Anti-sniping (minutes)",
+      "antiSnipingHint": "A late bid extends the auction by this many minutes."
+    },
+    "form": {
+      "newTitle": "New auction",
+      "newDescription": "Select a published product, set the prices and the schedule, then review the preview before scheduling.",
+      "editDescription": "Adjust the auction. Changes are only possible before it starts and while it has no bids.",
+      "selectPlaceholder": "Select",
+      "noEligibleProducts": "You have no published products without an active auction. Publish a product first.",
+      "requiredField": "This field is required",
+      "saveDraft": "Save draft",
+      "schedule": "Schedule auction",
+      "created": "Auction created",
+      "saved": "Auction saved",
+      "saveFailed": "Could not save the auction",
+      "lockedBids": "This auction already has bids and can no longer be edited.",
+      "lockedStarted": "This auction has already started and can no longer be edited.",
+      "lockedFinished": "This auction is finished and can no longer be edited.",
+      "sections": {
+        "product": "Product",
+        "productHint": "Only your published products without an active auction can be selected.",
+        "pricing": "Pricing",
+        "pricingHint": "Start price, optional reserve and the minimum bid step.",
+        "schedule": "Schedule",
+        "scheduleHint": "When bidding opens and closes, and the anti-sniping window."
+      },
+      "errors": {
+        "positive": "Enter an amount greater than zero",
+        "reserveBelowStart": "Reserve price cannot be lower than the start price",
+        "endBeforeStart": "End time must be after the start time",
+        "startInPast": "Start time must be in the future",
+        "antiSnipingRange": "Enter a value between 0 and 60 minutes"
+      }
+    },
+    "preview": {
+      "title": "Preview",
+      "hint": "This is what bidders will see once the auction is public.",
+      "antiSnipingValue": "{{count}} minute",
+      "antiSnipingValue_other": "{{count}} minutes",
+      "reserveHidden": "The reserve price is never shown to bidders."
+    },
+    "confirm": {
+      "title": "Schedule this auction?",
+      "description": "Once scheduled, the auction becomes publicly visible and can no longer be edited after it starts or once a bid is placed.",
+      "confirm": "Schedule"
+    },
+    "detail": {
+      "notFoundTitle": "Auction not found",
+      "notFoundDescription": "This auction does not exist or is not yours."
+    },
+    "reserveSellerOnly": "Reserve price (visible only to you): {{value}}"
   }
 }

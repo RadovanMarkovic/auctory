@@ -170,19 +170,45 @@ function EditProductPage() {
             />
           }
           actions={
-            product.status !== "archived" ? (
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => statusMutation.mutate("archived")}
-              >
-                {t("products.manage.archive")}
-              </Button>
-            ) : (
-              <Button type="button" variant="ghost" onClick={() => statusMutation.mutate("draft")}>
-                {t("products.manage.restore")}
-              </Button>
-            )
+            <>
+              {product.status === "draft" ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={images.length === 0}
+                  title={images.length === 0 ? t("products.manage.needImage") : undefined}
+                  onClick={() => statusMutation.mutate("published")}
+                >
+                  {t("products.manage.publish")}
+                </Button>
+              ) : null}
+              {product.status === "published" ? (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => statusMutation.mutate("draft")}
+                >
+                  {t("products.manage.unpublish")}
+                </Button>
+              ) : null}
+              {product.status !== "archived" ? (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => statusMutation.mutate("archived")}
+                >
+                  {t("products.manage.archive")}
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => statusMutation.mutate("draft")}
+                >
+                  {t("products.manage.restore")}
+                </Button>
+              )}
+            </>
           }
         />
       </div>
