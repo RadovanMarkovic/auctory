@@ -71,7 +71,7 @@ export function usePublicAuctions(tab: AuctionTab) {
       const { data: auctions, error } = await supabase
         .from("public_auctions")
         .select("*")
-        .in("status", statusesForTab(tab) as unknown as string[])
+        .in("status", [...statusesForTab(tab)])
         .order("ends_at", { ascending: tab !== "ended" })
         .limit(200);
       if (error) throw error;

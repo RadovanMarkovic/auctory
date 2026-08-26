@@ -308,7 +308,7 @@ function AuctionDetailPage() {
               ) : (
                 <ul className="space-y-3">
                   {(bidsQuery.data ?? []).map((bid) => (
-                    <li key={bid.id} className="flex items-center justify-between gap-3 text-sm">
+                    <li key={bid.bid_id} className="flex items-center justify-between gap-3 text-sm">
                       <span className="font-mono text-xs text-muted-foreground">
                         {bid.bidder_label}
                         {bid.is_own ? ` · ${t("auctions.detail.you")}` : ""}
