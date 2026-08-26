@@ -379,58 +379,64 @@ export type Database = {
           anti_sniping_minutes: number | null
           bid_count: number | null
           created_at: string | null
+          current_price: number | null
           ends_at: string | null
           final_price: number | null
           finalized_at: string | null
+          has_reserve: boolean | null
           highest_bid_amount: number | null
-          highest_bidder_id: string | null
           id: string | null
           minimum_increment: number | null
+          minimum_next_bid: number | null
           original_ends_at: string | null
           product_id: string | null
+          reserve_met: boolean | null
           seller_id: string | null
           start_price: number | null
           starts_at: string | null
           status: Database["public"]["Enums"]["auction_status"] | null
-          winner_id: string | null
         }
         Insert: {
           anti_sniping_minutes?: number | null
           bid_count?: number | null
           created_at?: string | null
+          current_price?: never
           ends_at?: string | null
           final_price?: number | null
           finalized_at?: string | null
+          has_reserve?: never
           highest_bid_amount?: number | null
-          highest_bidder_id?: string | null
           id?: string | null
           minimum_increment?: number | null
+          minimum_next_bid?: never
           original_ends_at?: string | null
           product_id?: string | null
+          reserve_met?: never
           seller_id?: string | null
           start_price?: number | null
           starts_at?: string | null
           status?: Database["public"]["Enums"]["auction_status"] | null
-          winner_id?: string | null
         }
         Update: {
           anti_sniping_minutes?: number | null
           bid_count?: number | null
           created_at?: string | null
+          current_price?: never
           ends_at?: string | null
           final_price?: number | null
           finalized_at?: string | null
+          has_reserve?: never
           highest_bid_amount?: number | null
-          highest_bidder_id?: string | null
           id?: string | null
           minimum_increment?: number | null
+          minimum_next_bid?: never
           original_ends_at?: string | null
           product_id?: string | null
+          reserve_met?: never
           seller_id?: string | null
           start_price?: number | null
           starts_at?: string | null
           status?: Database["public"]["Enums"]["auction_status"] | null
-          winner_id?: string | null
         }
         Relationships: [
           {
@@ -457,12 +463,45 @@ export type Database = {
           seller_request_status: Database["public"]["Enums"]["seller_request_status"]
         }[]
       }
+      auction_bid_history: {
+        Args: { _auction_id: string }
+        Returns: {
+          amount: number
+          bid_id: string
+          bidder_label: string
+          created_at: string
+          is_own: boolean
+        }[]
+      }
+      bidder_mask: {
+        Args: { _auction_id: string; _bidder_id: string }
+        Returns: string
+      }
+      cancel_auction: { Args: { _auction_id: string }; Returns: undefined }
+      finalize_auctions: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      place_bid: {
+        Args: { _amount: number; _auction_id: string }
+        Returns: {
+          amount: number
+          bid_count: number
+          ends_at: string
+        }[]
+      }
+      public_seller_summary: {
+        Args: { _seller_id: string }
+        Returns: {
+          country: string
+          full_name: string
+          id: string
+          member_since: string
+        }[]
       }
     }
     Enums: {

@@ -7,7 +7,9 @@
     "step": "Korak {{number}}",
     "errorTitle": "Nešto je pošlo naopako",
     "errorDescription": "Nismo uspeli da učitamo sadržaj. Pokušajte ponovo.",
-    "cancel": "Otkaži"
+    "cancel": "Otkaži",
+    "yes": "Da",
+    "no": "Ne"
   },
   "nav": {
     "main": "Glavna navigacija",
@@ -213,7 +215,7 @@
     "auctions": {
       "eyebrow": "Katalog",
       "title": "Aukcije",
-      "description": "Pregledajte Auctory vremenski ograničene engleske aukcije luksuznih satova, nakita, kolekcionarskih predmeta i limitirane mode.",
+      "description": "Pregledajte aktivne, najavljene i završene Auctory predmete.",
       "emptyTitle": "Katalog uskoro",
       "emptyDescription": "Aukcijski oglasi i licitiranje biće povezani u narednom koraku."
     },
@@ -599,9 +601,80 @@
       "confirm": "Zakaži"
     },
     "detail": {
-      "notFoundTitle": "Aukcija nije pronađena",
-      "notFoundDescription": "Ova aukcija ne postoji ili nije tvoja."
+      "notFoundTitle": "Aukcija nije dostupna",
+      "notFoundDescription": "Ova aukcija ne postoji ili više nije javna.",
+      "productDetails": "Detalji proizvoda",
+      "seller": "Prodavac",
+      "sellerUnknown": "Privatni prodavac",
+      "memberSince": "Član od {{value}}",
+      "bidHistory": "Istorija ponuda",
+      "noBids": "Još nema ponuda.",
+      "you": "Vi",
+      "reserveMet": "Rezervna cena dostignuta",
+      "reserveNotMet": "Rezervna cena nije dostignuta",
+      "startsAt": "Početak: {{value}}",
+      "endsAt": "Kraj: {{value}}",
+      "viewImage": "Prikaži sliku {{index}}",
+      "passportTitle": "Digitalni pasoš proizvoda",
+      "passportDescription": "Nakon završetka aukcije za ovaj predmet biće izdat blockchain sertifikat o vlasništvu."
     },
-    "reserveSellerOnly": "Rezervna cena (vidljiva samo tebi): {{value}}"
+    "reserveSellerOnly": "Rezervna cena (vidljiva samo tebi): {{value}}",
+    "tabs": {
+      "live": "U toku",
+      "upcoming": "Uskoro",
+      "ended": "Završene"
+    },
+    "card": {
+      "currentBid": "Trenutna ponuda",
+      "startingPrice": "Početna cena",
+      "bids_one": "{{count}} ponuda",
+      "bids_few": "{{count}} ponude",
+      "bids_other": "{{count}} ponuda",
+      "endsIn": "Završava za {{value}}",
+      "startsIn": "Počinje za {{value}}",
+      "finished": "Završeno"
+    },
+    "filters": {
+      "search": "Pretraga",
+      "searchPlaceholder": "Naziv, model ili brend",
+      "category": "Kategorija",
+      "brand": "Brend",
+      "condition": "Stanje",
+      "priceRange": "Trenutna cena",
+      "min": "Min",
+      "max": "Maks",
+      "all": "Sve",
+      "reset": "Poništi filtere"
+    },
+    "catalogue": {
+      "empty": {
+        "liveTitle": "Nema aukcija u toku",
+        "liveDescription": "Trenutno nema aktivnih aukcija. Pogledajte karticu „Uskoro“.",
+        "upcomingTitle": "Nema najavljenih aukcija",
+        "upcomingDescription": "Trenutno nije zakazana nijedna aukcija.",
+        "endedTitle": "Nema završenih aukcija",
+        "endedDescription": "Ovde će se prikazati završene aukcije.",
+        "filtered": "Nijedna aukcija ne odgovara filterima."
+      }
+    },
+    "bid": {
+      "amountLabel": "Vaša ponuda",
+      "minimumHint": "Minimalna ponuda: {{value}}",
+      "submit": "Pošalji ponudu",
+      "submitting": "Slanje ponude...",
+      "success": "Ponuda je poslata",
+      "notOpen": "Licitiranje za ovu aukciju nije otvoreno.",
+      "signInPrompt": "Prijavite se da biste licitirali.",
+      "signInCta": "Prijavite se za licitiranje",
+      "errors": {
+        "tooLow": "Ponuda mora biti najmanje {{min}}.",
+        "invalid": "Unesite ispravan iznos.",
+        "ownAuction": "Ne možete licitirati na sopstvenoj aukciji.",
+        "closed": "Ova aukcija je zatvorena.",
+        "notLive": "Ova aukcija još nije počela.",
+        "authRequired": "Prijavite se da biste licitirali.",
+        "generic": "Ponuda nije mogla biti poslata."
+      }
+    }
   }
 }
