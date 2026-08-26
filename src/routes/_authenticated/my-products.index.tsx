@@ -33,7 +33,7 @@ export const Route = createFileRoute("/_authenticated/my-products/")({
   component: MyProductsPage,
 });
 
-const STATUSES: ProductStatus[] = ["draft", "archived"];
+const STATUSES: ProductStatus[] = ["draft", "published", "archived"];
 
 function MyProductsPage() {
   const { t } = useTranslation();
