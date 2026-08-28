@@ -72,6 +72,36 @@ function NewProductPage() {
           initialValues={emptyProductForm}
           submitting={createMutation.isPending}
           onSubmit={(values) => createMutation.mutate(values)}
+          provenanceSlot={
+            <div className="space-y-2 border-t border-border pt-6">
+              <Label>{t("products.attachment.label")}</Label>
+              <p className="text-sm text-muted-foreground">{t("products.attachment.hint")}</p>
+              <p className="text-sm text-muted-foreground">
+                {t("products.form.lockedUntilSaved")}
+              </p>
+              <Button type="button" variant="secondary" disabled>
+                <Paperclip />
+                {t("products.attachment.add")}
+              </Button>
+            </div>
+          }
+          footerSlot={
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("products.images.title")}</CardTitle>
+                <CardDescription>{t("products.images.hint")}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  {t("products.form.lockedUntilSaved")}
+                </p>
+                <Button type="button" variant="secondary" disabled>
+                  <ImagePlus />
+                  {t("products.images.add")}
+                </Button>
+              </CardContent>
+            </Card>
+          }
         />
       </div>
     </PageContainer>
