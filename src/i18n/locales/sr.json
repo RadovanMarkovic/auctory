@@ -548,14 +548,14 @@
     },
     "fields": {
       "product": "Proizvod",
-      "startPrice": "Početna cena",
-      "reservePrice": "Rezervna cena (opciono)",
+      "startPrice": "Početna cena (EUR)",
+      "reservePrice": "Rezervna cena (EUR, opciono)",
       "reserveHint": "Samo ti vidiš rezervnu cenu. Učesnici je nikada ne vide.",
-      "minimumIncrement": "Minimalni korak",
-      "startsAt": "Početak",
-      "endsAt": "Kraj",
-      "antiSniping": "Anti-sniping (minuti)",
-      "antiSnipingHint": "Ponuda pred kraj produžava aukciju za ovoliko minuta."
+      "minimumIncrement": "Minimalni korak ponude (EUR)",
+      "startsAt": "Datum i vreme početka",
+      "endsAt": "Datum i vreme kraja",
+      "antiSniping": "Produžetak aukcije (minuti)",
+      "antiSnipingHint": "Ako ponuda stigne pred sam kraj, aukcija se produžava za ovoliko minuta."
     },
     "form": {
       "newTitle": "Nova aukcija",
@@ -576,9 +576,9 @@
         "product": "Proizvod",
         "productHint": "Mogu se izabrati samo tvoji objavljeni proizvodi bez aktivne aukcije.",
         "pricing": "Cene",
-        "pricingHint": "Početna cena, opciona rezerva i minimalni korak ponude.",
-        "schedule": "Termin",
-        "scheduleHint": "Kada nadmetanje počinje i završava se, i anti-sniping period."
+        "pricingHint": "Početna cena, opciona rezervna cena i najmanji dozvoljeni korak ponude.",
+        "schedule": "Datum i vreme",
+        "scheduleHint": "Kada nadmetanje počinje i završava se, i period automatskog produžetka."
       },
       "errors": {
         "positive": "Unesi iznos veći od nule",
