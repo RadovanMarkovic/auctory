@@ -447,6 +447,7 @@
       "newDescription": "Describe the item. You can save a draft now and add images next.",
       "editDescription": "Update the details, manage images, and publish when ready.",
       "save": "Save",
+      "lockedUntilSaved": "Available after you save the product for the first time.",
       "saved": "Product saved",
       "draftSaved": "Draft created",
       "saveFailed": "Could not save the product",

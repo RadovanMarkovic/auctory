@@ -450,6 +450,7 @@
       "newDescription": "Opišite predmet. Možete sačuvati nacrt, a slike dodati zatim.",
       "editDescription": "Izmenite podatke, uredite slike i objavite kada budete spremni.",
       "save": "Sačuvaj",
+      "lockedUntilSaved": "Dostupno nakon što prvi put sačuvate predmet.",
       "saved": "Predmet sačuvan",
       "draftSaved": "Nacrt kreiran",
       "saveFailed": "Čuvanje predmeta nije uspelo",
