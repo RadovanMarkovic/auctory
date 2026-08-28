@@ -25,19 +25,19 @@ New route `/transactions/$transactionId`, plus a `/transactions` list of the use
 - separate buyer and seller confirmation buttons, each opening a dialog with a required acknowledgement checkbox (buyer: payment arranged/completed outside the platform; seller: payment received and product handed over/shipped);
 - a dispute button for either party, requiring a reason, available before certificate transfer.
 
-Either party may confirm first. A second click by the same party changes nothing. Once both confirmations exist the status becomes `ready_for_transfer`.
+Either party may confirm first. A second click by the same party changes nothing. Once both confirmations exist the status becomes `ready_for_transfer`. Once a transaction is disputed, further buyer and seller confirmations are blocked and the status can no longer move to `ready_for_transfer` automatically.
 
 ### 4. "Action required" notice
 Buyers and sellers with a transaction that still needs their confirmation see an in-app notice (header/account area and the My Auctions view) linking straight to that transaction page.
 
 ### 5. Access control
-Only the buyer, seller, and admin can see or act on a transaction. Confirmations and disputes go through secure database functions that derive the acting user server-side, so neither party can confirm on the other's behalf.
+Only the buyer, seller, and admin can see a transaction. Read access comes from RLS; authenticated users cannot insert, update, or delete transaction rows directly. Every confirmation and dispute goes exclusively through secure database functions that derive the acting user server-side, so neither party can confirm on the other's behalf.
 
 ## Out of scope for this step
 Payment processing, dispute resolution workflow, MetaMask, and certificate transfer on-chain. The `transferring_certificate` and `completed` statuses exist in the model but are not driven by any UI yet.
 
 ## Technical notes
-- Migration: `transactions` table with `UNIQUE (auction_id)`, FK to auctions/products, GRANTs for `authenticated` and `service_role`, RLS restricting rows to buyer/seller/admin, `updated_at` trigger.
+- Migration: `transactions` table with `UNIQUE (auction_id)`, FK to auctions/products, `GRANT SELECT` only to `authenticated` (no insert/update/delete) plus `GRANT ALL` to `service_role`, RLS with a select-only policy for buyer/seller/admin, `updated_at` trigger.
 - `finalize_auctions()` gets an `INSERT ... SELECT ... ON CONFLICT (auction_id) DO NOTHING` step for newly ended, winner-bearing auctions; bid-history hash computed from that auction's bid rows.
-- New security-definer functions: `confirm_transaction_buyer`, `confirm_transaction_seller`, `open_transaction_dispute`; all use `auth.uid()`, are no-ops on duplicate confirmation, and recompute status.
+- New security-definer functions: `confirm_transaction_buyer`, `confirm_transaction_seller`, `open_transaction_dispute`; all use `auth.uid()`, are no-ops on duplicate confirmation, raise on a `disputed` transaction, and recompute status.
 - Frontend: `src/lib/transactions.ts` (queries/mutations), reusing existing `ConfirmationDialog`, `PageHeader`, empty/loading/error states; EN/SR keys added under `transactions.*`. No design-system changes.
