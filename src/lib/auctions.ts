@@ -47,12 +47,14 @@ export function fromLocalInputValue(value: string): string | null {
   return date.toISOString();
 }
 
-/** An auction can only be edited before it starts and while it has no bids. */
+/**
+ * Drafts were never public, so they stay editable (and publishable) at any time.
+ * Scheduled auctions lock once they start; bids lock everything.
+ */
 export function isAuctionEditable(auction: Pick<AuctionRow, "status" | "starts_at" | "bid_count">) {
-  if (auction.status === "live" || auction.status === "ended" || auction.status === "cancelled") {
-    return false;
-  }
   if (auction.bid_count > 0) return false;
+  if (auction.status === "draft") return true;
+  if (auction.status !== "scheduled") return false;
   return new Date(auction.starts_at).getTime() > Date.now();
 }
 
