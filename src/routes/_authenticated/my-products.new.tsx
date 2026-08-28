@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { ImagePlus, Paperclip } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
@@ -11,6 +12,9 @@ import {
   toProductPayload,
   type ProductFormValues,
 } from "@/components/products/ProductForm";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 
@@ -72,6 +76,36 @@ function NewProductPage() {
           initialValues={emptyProductForm}
           submitting={createMutation.isPending}
           onSubmit={(values) => createMutation.mutate(values)}
+          provenanceSlot={
+            <div className="space-y-2 border-t border-border pt-6">
+              <Label>{t("products.attachment.label")}</Label>
+              <p className="text-sm text-muted-foreground">{t("products.attachment.hint")}</p>
+              <p className="text-sm text-muted-foreground">
+                {t("products.form.lockedUntilSaved")}
+              </p>
+              <Button type="button" variant="secondary" disabled>
+                <Paperclip />
+                {t("products.attachment.add")}
+              </Button>
+            </div>
+          }
+          footerSlot={
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("products.images.title")}</CardTitle>
+                <CardDescription>{t("products.images.hint")}</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  {t("products.form.lockedUntilSaved")}
+                </p>
+                <Button type="button" variant="secondary" disabled>
+                  <ImagePlus />
+                  {t("products.images.add")}
+                </Button>
+              </CardContent>
+            </Card>
+          }
         />
       </div>
     </PageContainer>
