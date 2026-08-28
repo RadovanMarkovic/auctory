@@ -351,6 +351,88 @@ export type Database = {
         }
         Relationships: []
       }
+      transactions: {
+        Row: {
+          auction_id: string
+          bid_history_hash: string
+          buyer_confirmed_at: string | null
+          buyer_confirmed_by: string | null
+          buyer_id: string
+          created_at: string
+          dispute_opened_at: string | null
+          dispute_opened_by: string | null
+          dispute_reason: string | null
+          final_price: number
+          id: string
+          product_id: string
+          seller_confirmed_at: string | null
+          seller_confirmed_by: string | null
+          seller_id: string
+          status: Database["public"]["Enums"]["transaction_status"]
+          updated_at: string
+        }
+        Insert: {
+          auction_id: string
+          bid_history_hash: string
+          buyer_confirmed_at?: string | null
+          buyer_confirmed_by?: string | null
+          buyer_id: string
+          created_at?: string
+          dispute_opened_at?: string | null
+          dispute_opened_by?: string | null
+          dispute_reason?: string | null
+          final_price: number
+          id?: string
+          product_id: string
+          seller_confirmed_at?: string | null
+          seller_confirmed_by?: string | null
+          seller_id: string
+          status?: Database["public"]["Enums"]["transaction_status"]
+          updated_at?: string
+        }
+        Update: {
+          auction_id?: string
+          bid_history_hash?: string
+          buyer_confirmed_at?: string | null
+          buyer_confirmed_by?: string | null
+          buyer_id?: string
+          created_at?: string
+          dispute_opened_at?: string | null
+          dispute_opened_by?: string | null
+          dispute_reason?: string | null
+          final_price?: number
+          id?: string
+          product_id?: string
+          seller_confirmed_at?: string | null
+          seller_confirmed_by?: string | null
+          seller_id?: string
+          status?: Database["public"]["Enums"]["transaction_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: true
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: true
+            referencedRelation: "public_auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -478,6 +560,62 @@ export type Database = {
         Returns: string
       }
       cancel_auction: { Args: { _auction_id: string }; Returns: undefined }
+      confirm_transaction_buyer: {
+        Args: { _transaction_id: string }
+        Returns: {
+          auction_id: string
+          bid_history_hash: string
+          buyer_confirmed_at: string | null
+          buyer_confirmed_by: string | null
+          buyer_id: string
+          created_at: string
+          dispute_opened_at: string | null
+          dispute_opened_by: string | null
+          dispute_reason: string | null
+          final_price: number
+          id: string
+          product_id: string
+          seller_confirmed_at: string | null
+          seller_confirmed_by: string | null
+          seller_id: string
+          status: Database["public"]["Enums"]["transaction_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "transactions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      confirm_transaction_seller: {
+        Args: { _transaction_id: string }
+        Returns: {
+          auction_id: string
+          bid_history_hash: string
+          buyer_confirmed_at: string | null
+          buyer_confirmed_by: string | null
+          buyer_id: string
+          created_at: string
+          dispute_opened_at: string | null
+          dispute_opened_by: string | null
+          dispute_reason: string | null
+          final_price: number
+          id: string
+          product_id: string
+          seller_confirmed_at: string | null
+          seller_confirmed_by: string | null
+          seller_id: string
+          status: Database["public"]["Enums"]["transaction_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "transactions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       finalize_auctions: { Args: never; Returns: undefined }
       has_role: {
         Args: {
@@ -485,6 +623,34 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      open_transaction_dispute: {
+        Args: { _reason: string; _transaction_id: string }
+        Returns: {
+          auction_id: string
+          bid_history_hash: string
+          buyer_confirmed_at: string | null
+          buyer_confirmed_by: string | null
+          buyer_id: string
+          created_at: string
+          dispute_opened_at: string | null
+          dispute_opened_by: string | null
+          dispute_reason: string | null
+          final_price: number
+          id: string
+          product_id: string
+          seller_confirmed_at: string | null
+          seller_confirmed_by: string | null
+          seller_id: string
+          status: Database["public"]["Enums"]["transaction_status"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "transactions"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       place_bid: {
         Args: { _amount: number; _auction_id: string }
@@ -503,6 +669,10 @@ export type Database = {
           member_since: string
         }[]
       }
+      transaction_next_status: {
+        Args: { _buyer_at: string; _seller_at: string }
+        Returns: Database["public"]["Enums"]["transaction_status"]
+      }
     }
     Enums: {
       account_status: "active" | "pending" | "suspended"
@@ -510,6 +680,13 @@ export type Database = {
       auction_status: "draft" | "scheduled" | "live" | "ended" | "cancelled"
       product_status: "draft" | "published" | "archived"
       seller_request_status: "none" | "pending" | "approved" | "rejected"
+      transaction_status:
+        | "awaiting_buyer"
+        | "awaiting_seller"
+        | "ready_for_transfer"
+        | "disputed"
+        | "transferring_certificate"
+        | "completed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -642,6 +819,14 @@ export const Constants = {
       auction_status: ["draft", "scheduled", "live", "ended", "cancelled"],
       product_status: ["draft", "published", "archived"],
       seller_request_status: ["none", "pending", "approved", "rejected"],
+      transaction_status: [
+        "awaiting_buyer",
+        "awaiting_seller",
+        "ready_for_transfer",
+        "disputed",
+        "transferring_certificate",
+        "completed",
+      ],
     },
   },
 } as const
