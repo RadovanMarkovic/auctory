@@ -238,6 +238,12 @@ function ProfilePage() {
         description={t("profilePage.description")}
       />
 
+      <div className="mt-8">
+        <ActionRequiredNotice />
+      </div>
+
+
+
       {profileQuery.isLoading ? (
         <div className="mt-12">
           <LoadingState />
