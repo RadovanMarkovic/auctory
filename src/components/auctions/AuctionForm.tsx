@@ -18,6 +18,7 @@ import {
   formatAuctionDate,
   formatAuctionMoney,
   fromLocalInputValue,
+  toLocalInputValue,
   useAuctionableProducts,
   type AuctionStatus,
 } from "@/lib/auctions";
@@ -98,6 +99,8 @@ export function AuctionForm({
   const [values, setValues] = useState<AuctionFormValues>(initialValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingValues, setPendingValues] = useState<AuctionFormValues | null>(null);
+  const [startsImmediately, setStartsImmediately] = useState(false);
 
   const productsQuery = useAuctionableProducts(initialValues.product_id);
   const products = productsQuery.data ?? [];
@@ -397,9 +400,9 @@ export function AuctionForm({
             type="button"
             variant="gold"
             disabled={submitting}
-            onClick={handleScheduleClick}
+            onClick={handlePublishClick}
           >
-            {t("auctions.form.schedule")}
+            {t("auctions.form.publish")}
           </Button>
           {extraActions}
         </div>
@@ -409,14 +412,18 @@ export function AuctionForm({
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         title={t("auctions.confirm.title")}
-        description={t("auctions.confirm.description")}
+        description={
+          startsImmediately
+            ? t("auctions.confirm.descriptionNow")
+            : t("auctions.confirm.description")
+        }
         confirmLabel={t("auctions.confirm.confirm")}
         cancelLabel={t("common.cancel")}
         tone="gold"
         loading={submitting ?? false}
         onConfirm={() => {
           setConfirmOpen(false);
-          onSubmit(values, "scheduled");
+          onSubmit(pendingValues ?? values, "scheduled");
         }}
       />
     </form>
