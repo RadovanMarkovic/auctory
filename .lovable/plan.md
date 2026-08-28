@@ -37,7 +37,7 @@ Only the buyer, seller, and admin can see a transaction. Read access comes from 
 Payment processing, dispute resolution workflow, MetaMask, and certificate transfer on-chain. The `transferring_certificate` and `completed` statuses exist in the model but are not driven by any UI yet.
 
 ## Technical notes
-- Migration: `transactions` table with `UNIQUE (auction_id)`, FK to auctions/products, GRANTs for `authenticated` and `service_role`, RLS restricting rows to buyer/seller/admin, `updated_at` trigger.
+- Migration: `transactions` table with `UNIQUE (auction_id)`, FK to auctions/products, `GRANT SELECT` only to `authenticated` (no insert/update/delete) plus `GRANT ALL` to `service_role`, RLS with a select-only policy for buyer/seller/admin, `updated_at` trigger.
 - `finalize_auctions()` gets an `INSERT ... SELECT ... ON CONFLICT (auction_id) DO NOTHING` step for newly ended, winner-bearing auctions; bid-history hash computed from that auction's bid rows.
-- New security-definer functions: `confirm_transaction_buyer`, `confirm_transaction_seller`, `open_transaction_dispute`; all use `auth.uid()`, are no-ops on duplicate confirmation, and recompute status.
+- New security-definer functions: `confirm_transaction_buyer`, `confirm_transaction_seller`, `open_transaction_dispute`; all use `auth.uid()`, are no-ops on duplicate confirmation, raise on a `disputed` transaction, and recompute status.
 - Frontend: `src/lib/transactions.ts` (queries/mutations), reusing existing `ConfirmationDialog`, `PageHeader`, empty/loading/error states; EN/SR keys added under `transactions.*`. No design-system changes.
