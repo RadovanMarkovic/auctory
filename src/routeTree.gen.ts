@@ -29,6 +29,7 @@ import { Route as AuthenticatedMyProductsIndexRouteImport } from './routes/_auth
 import { Route as AuthenticatedMyProductsProductIdRouteImport } from './routes/_authenticated/my-products.$productId'
 import { Route as AuthenticatedMyProductsNewRouteImport } from './routes/_authenticated/my-products.new'
 import { Route as AuthenticatedTransactionsIndexRouteImport } from './routes/_authenticated/transactions.index'
+import { Route as AuthenticatedTransactionsTransactionIdRouteImport } from './routes/_authenticated/transactions.$transactionId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -136,6 +137,12 @@ const AuthenticatedTransactionsIndexRoute =
     path: '/transactions/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedTransactionsTransactionIdRoute =
+  AuthenticatedTransactionsTransactionIdRouteImport.update({
+    id: '/transactions/$transactionId',
+    path: '/transactions/$transactionId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/my-auctions/new': typeof AuthenticatedMyAuctionsNewRoute
   '/my-products/$productId': typeof AuthenticatedMyProductsProductIdRoute
   '/my-products/new': typeof AuthenticatedMyProductsNewRoute
+  '/transactions/$transactionId': typeof AuthenticatedTransactionsTransactionIdRoute
   '/my-auctions/': typeof AuthenticatedMyAuctionsIndexRoute
   '/my-products/': typeof AuthenticatedMyProductsIndexRoute
   '/transactions/': typeof AuthenticatedTransactionsIndexRoute
@@ -175,6 +183,7 @@ export interface FileRoutesByTo {
   '/my-auctions/new': typeof AuthenticatedMyAuctionsNewRoute
   '/my-products/$productId': typeof AuthenticatedMyProductsProductIdRoute
   '/my-products/new': typeof AuthenticatedMyProductsNewRoute
+  '/transactions/$transactionId': typeof AuthenticatedTransactionsTransactionIdRoute
   '/my-auctions': typeof AuthenticatedMyAuctionsIndexRoute
   '/my-products': typeof AuthenticatedMyProductsIndexRoute
   '/transactions': typeof AuthenticatedTransactionsIndexRoute
@@ -198,6 +207,7 @@ export interface FileRoutesById {
   '/_authenticated/my-auctions/new': typeof AuthenticatedMyAuctionsNewRoute
   '/_authenticated/my-products/$productId': typeof AuthenticatedMyProductsProductIdRoute
   '/_authenticated/my-products/new': typeof AuthenticatedMyProductsNewRoute
+  '/_authenticated/transactions/$transactionId': typeof AuthenticatedTransactionsTransactionIdRoute
   '/_authenticated/my-auctions/': typeof AuthenticatedMyAuctionsIndexRoute
   '/_authenticated/my-products/': typeof AuthenticatedMyProductsIndexRoute
   '/_authenticated/transactions/': typeof AuthenticatedTransactionsIndexRoute
@@ -221,6 +231,7 @@ export interface FileRouteTypes {
     | '/my-auctions/new'
     | '/my-products/$productId'
     | '/my-products/new'
+    | '/transactions/$transactionId'
     | '/my-auctions/'
     | '/my-products/'
     | '/transactions/'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/my-auctions/new'
     | '/my-products/$productId'
     | '/my-products/new'
+    | '/transactions/$transactionId'
     | '/my-auctions'
     | '/my-products'
     | '/transactions'
@@ -264,6 +276,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-auctions/new'
     | '/_authenticated/my-products/$productId'
     | '/_authenticated/my-products/new'
+    | '/_authenticated/transactions/$transactionId'
     | '/_authenticated/my-auctions/'
     | '/_authenticated/my-products/'
     | '/_authenticated/transactions/'
@@ -424,6 +437,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTransactionsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/transactions/$transactionId': {
+      id: '/_authenticated/transactions/$transactionId'
+      path: '/transactions/$transactionId'
+      fullPath: '/transactions/$transactionId'
+      preLoaderRoute: typeof AuthenticatedTransactionsTransactionIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -435,6 +455,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyAuctionsNewRoute: typeof AuthenticatedMyAuctionsNewRoute
   AuthenticatedMyProductsProductIdRoute: typeof AuthenticatedMyProductsProductIdRoute
   AuthenticatedMyProductsNewRoute: typeof AuthenticatedMyProductsNewRoute
+  AuthenticatedTransactionsTransactionIdRoute: typeof AuthenticatedTransactionsTransactionIdRoute
   AuthenticatedMyAuctionsIndexRoute: typeof AuthenticatedMyAuctionsIndexRoute
   AuthenticatedMyProductsIndexRoute: typeof AuthenticatedMyProductsIndexRoute
   AuthenticatedTransactionsIndexRoute: typeof AuthenticatedTransactionsIndexRoute
@@ -448,6 +469,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyAuctionsNewRoute: AuthenticatedMyAuctionsNewRoute,
   AuthenticatedMyProductsProductIdRoute: AuthenticatedMyProductsProductIdRoute,
   AuthenticatedMyProductsNewRoute: AuthenticatedMyProductsNewRoute,
+  AuthenticatedTransactionsTransactionIdRoute:
+    AuthenticatedTransactionsTransactionIdRoute,
   AuthenticatedMyAuctionsIndexRoute: AuthenticatedMyAuctionsIndexRoute,
   AuthenticatedMyProductsIndexRoute: AuthenticatedMyProductsIndexRoute,
   AuthenticatedTransactionsIndexRoute: AuthenticatedTransactionsIndexRoute,
