@@ -684,5 +684,89 @@
         "generic": "Ponuda nije mogla biti poslata."
       }
     }
+  },
+  "transactions": {
+    "nav": "Moje transakcije",
+    "actionRequired": {
+      "title": "Potrebna je akcija",
+      "description": "Imate {{count}} transakciju/e koje čekaju vašu potvrdu.",
+      "open": "Otvori transakciju"
+    },
+    "list": {
+      "eyebrow": "Nakon aukcije",
+      "title": "Moje transakcije",
+      "description": "Potvrde zabeležene nakon uspešne aukcije.",
+      "emptyTitle": "Još nema transakcija",
+      "emptyDescription": "Transakcije se pojavljuju kada se neka vaša aukcija završi pobedničkom ponudom.",
+      "open": "Otvori"
+    },
+    "detail": {
+      "eyebrow": "Transakcija",
+      "title": "Transakcija",
+      "description": "Rezultat aukcije i tok potvrda. Plaćanje i isporuka se dogovaraju van Auctory platforme.",
+      "backToList": "Sve transakcije",
+      "resultTitle": "Rezultat aukcije",
+      "viewAuction": "Pogledaj aukciju",
+      "notFoundTitle": "Transakcija nije pronađena",
+      "notFoundDescription": "Ova transakcija ne postoji ili nemate pristup."
+    },
+    "fields": {
+      "status": "Status",
+      "finalPrice": "Konačna cena",
+      "role": "Vaša uloga",
+      "bidHistoryHash": "Otisak istorije ponuda"
+    },
+    "roles": {
+      "buyer": "Kupac",
+      "seller": "Prodavac",
+      "admin": "Administrator"
+    },
+    "status": {
+      "awaiting_buyer": "Čeka potvrdu kupca",
+      "awaiting_seller": "Čeka potvrdu prodavca",
+      "ready_for_transfer": "Spremno za prenos sertifikata",
+      "disputed": "Sporno",
+      "transferring_certificate": "Prenos sertifikata",
+      "completed": "Završeno"
+    },
+    "timeline": {
+      "title": "Tok potvrda",
+      "auctionEnded": "Aukcija je završena pobedničkom ponudom",
+      "buyerConfirmed": "Kupac je potvrdio dogovor o plaćanju",
+      "sellerConfirmed": "Prodavac je potvrdio prijem uplate i predaju",
+      "readyForTransfer": "Spremno za prenos sertifikata"
+    },
+    "disclaimer": {
+      "title": "Važno obaveštenje",
+      "body": "Plaćanje i isporuka se dogovaraju direktno između kupca i prodavca, van Auctory platforme. Nikada ne unosite podatke o kartici ili računu na ovoj stranici.",
+      "notEscrow": "Auctory samo beleži ove potvrde i njihovo vreme. Nije pružalac platnih usluga niti escrow servis."
+    },
+    "actions": {
+      "title": "Potvrde",
+      "buyerConfirm": "Potvrdi kao kupac",
+      "buyerConfirmed": "Potvrda kupca je zabeležena",
+      "sellerConfirm": "Potvrdi kao prodavac",
+      "sellerConfirmed": "Potvrda prodavca je zabeležena",
+      "confirmLabel": "Zabeleži potvrdu",
+      "confirmed": "Vaša potvrda je zabeležena.",
+      "failed": "Potvrda nije mogla biti zabeležena.",
+      "buyerDialogTitle": "Potvrda kupca",
+      "buyerDialogDescription": "Beleži se samo vaša potvrda i vreme. Auctory ne obrađuje plaćanja.",
+      "buyerAcknowledgement": "Potvrđujem da je plaćanje dogovoreno ili izvršeno van Auctory platforme.",
+      "sellerDialogTitle": "Potvrda prodavca",
+      "sellerDialogDescription": "Beleži se samo vaša potvrda i vreme. Auctory ne obrađuje plaćanja.",
+      "sellerAcknowledgement": "Potvrđujem da sam primio uplatu i predao ili poslao proizvod."
+    },
+    "dispute": {
+      "open": "Otvori spor",
+      "dialogTitle": "Otvori spor",
+      "dialogDescription": "Opišite problem. Kada je spor otvoren, dalje potvrde nisu moguće.",
+      "reasonLabel": "Razlog",
+      "confirmLabel": "Otvori spor",
+      "opened": "Spor je otvoren.",
+      "failed": "Spor nije mogao biti otvoren.",
+      "openedTitle": "Spor je otvoren",
+      "confirmationsBlocked": "Potvrde su blokirane dok je transakcija sporna."
+    }
   }
 }

@@ -24,6 +24,8 @@ export interface ConfirmationDialogProps {
   cancelLabel?: string;
   tone?: "default" | "gold" | "destructive";
   loading?: boolean;
+  /** Blocks confirmation without showing the working state (e.g. unmet acknowledgement). */
+  confirmDisabled?: boolean;
   onConfirm: () => void | Promise<void>;
   children?: ReactNode;
 }
@@ -38,6 +40,7 @@ export function ConfirmationDialog({
   cancelLabel = "Cancel",
   tone = "default",
   loading = false,
+  confirmDisabled = false,
   onConfirm,
   children,
 }: ConfirmationDialogProps) {
@@ -59,7 +62,7 @@ export function ConfirmationDialog({
             {cancelLabel}
           </AlertDialogCancel>
           <AlertDialogAction
-            disabled={loading}
+            disabled={loading || confirmDisabled}
             onClick={() => void onConfirm()}
             className={cn(
               buttonVariants({

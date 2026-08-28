@@ -678,5 +678,89 @@
         "generic": "Your bid could not be placed."
       }
     }
+  },
+  "transactions": {
+    "nav": "My transactions",
+    "actionRequired": {
+      "title": "Action required",
+      "description": "You have {{count}} transaction(s) waiting for your confirmation.",
+      "open": "Open transaction"
+    },
+    "list": {
+      "eyebrow": "Post-auction",
+      "title": "My transactions",
+      "description": "Confirmations recorded after a successful auction.",
+      "emptyTitle": "No transactions yet",
+      "emptyDescription": "Transactions appear here once one of your auctions ends with a winning bid.",
+      "open": "Open"
+    },
+    "detail": {
+      "eyebrow": "Transaction",
+      "title": "Transaction",
+      "description": "Auction result and confirmation timeline. Payment and delivery are arranged outside Auctory.",
+      "backToList": "All transactions",
+      "resultTitle": "Auction result",
+      "viewAuction": "View auction",
+      "notFoundTitle": "Transaction not found",
+      "notFoundDescription": "This transaction does not exist or you do not have access to it."
+    },
+    "fields": {
+      "status": "Status",
+      "finalPrice": "Final price",
+      "role": "Your role",
+      "bidHistoryHash": "Bid history fingerprint"
+    },
+    "roles": {
+      "buyer": "Buyer",
+      "seller": "Seller",
+      "admin": "Administrator"
+    },
+    "status": {
+      "awaiting_buyer": "Awaiting buyer confirmation",
+      "awaiting_seller": "Awaiting seller confirmation",
+      "ready_for_transfer": "Ready for certificate transfer",
+      "disputed": "Disputed",
+      "transferring_certificate": "Transferring certificate",
+      "completed": "Completed"
+    },
+    "timeline": {
+      "title": "Confirmation timeline",
+      "auctionEnded": "Auction ended with a winning bid",
+      "buyerConfirmed": "Buyer confirmed payment arrangements",
+      "sellerConfirmed": "Seller confirmed payment receipt and handover",
+      "readyForTransfer": "Ready for certificate transfer"
+    },
+    "disclaimer": {
+      "title": "Important notice",
+      "body": "Payment and delivery are arranged directly between buyer and seller, outside Auctory. Never enter card or bank details on this page.",
+      "notEscrow": "Auctory only records these confirmations and their timestamps. It is not a payment provider and does not act as an escrow service."
+    },
+    "actions": {
+      "title": "Confirmations",
+      "buyerConfirm": "Confirm as buyer",
+      "buyerConfirmed": "Buyer confirmation recorded",
+      "sellerConfirm": "Confirm as seller",
+      "sellerConfirmed": "Seller confirmation recorded",
+      "confirmLabel": "Record confirmation",
+      "confirmed": "Your confirmation has been recorded.",
+      "failed": "The confirmation could not be recorded.",
+      "buyerDialogTitle": "Buyer confirmation",
+      "buyerDialogDescription": "This records only your confirmation and its timestamp. Auctory does not process payments.",
+      "buyerAcknowledgement": "I confirm that payment was arranged or completed outside the Auctory platform.",
+      "sellerDialogTitle": "Seller confirmation",
+      "sellerDialogDescription": "This records only your confirmation and its timestamp. Auctory does not process payments.",
+      "sellerAcknowledgement": "I confirm that I received payment and handed over or shipped the product."
+    },
+    "dispute": {
+      "open": "Open a dispute",
+      "dialogTitle": "Open a dispute",
+      "dialogDescription": "Describe the problem. Once a dispute is open, no further confirmations are accepted.",
+      "reasonLabel": "Reason",
+      "confirmLabel": "Open dispute",
+      "opened": "The dispute has been opened.",
+      "failed": "The dispute could not be opened.",
+      "openedTitle": "Dispute opened",
+      "confirmationsBlocked": "Confirmations are blocked while this transaction is disputed."
+    }
   }
 }
