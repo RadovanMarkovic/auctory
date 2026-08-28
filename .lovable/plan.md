@@ -25,13 +25,13 @@ New route `/transactions/$transactionId`, plus a `/transactions` list of the use
 - separate buyer and seller confirmation buttons, each opening a dialog with a required acknowledgement checkbox (buyer: payment arranged/completed outside the platform; seller: payment received and product handed over/shipped);
 - a dispute button for either party, requiring a reason, available before certificate transfer.
 
-Either party may confirm first. A second click by the same party changes nothing. Once both confirmations exist the status becomes `ready_for_transfer`.
+Either party may confirm first. A second click by the same party changes nothing. Once both confirmations exist the status becomes `ready_for_transfer`. Once a transaction is disputed, further buyer and seller confirmations are blocked and the status can no longer move to `ready_for_transfer` automatically.
 
 ### 4. "Action required" notice
 Buyers and sellers with a transaction that still needs their confirmation see an in-app notice (header/account area and the My Auctions view) linking straight to that transaction page.
 
 ### 5. Access control
-Only the buyer, seller, and admin can see or act on a transaction. Confirmations and disputes go through secure database functions that derive the acting user server-side, so neither party can confirm on the other's behalf.
+Only the buyer, seller, and admin can see a transaction. Read access comes from RLS; authenticated users cannot insert, update, or delete transaction rows directly. Every confirmation and dispute goes exclusively through secure database functions that derive the acting user server-side, so neither party can confirm on the other's behalf.
 
 ## Out of scope for this step
 Payment processing, dispute resolution workflow, MetaMask, and certificate transfer on-chain. The `transferring_certificate` and `completed` statuses exist in the model but are not driven by any UI yet.
