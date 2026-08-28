@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { ErrorState, LoadingState, PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { ActionRequiredNotice } from "@/components/transactions/ActionRequiredNotice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -237,6 +238,12 @@ function ProfilePage() {
         title={t("profilePage.title")}
         description={t("profilePage.description")}
       />
+
+      <div className="mt-8">
+        <ActionRequiredNotice />
+      </div>
+
+
 
       {profileQuery.isLoading ? (
         <div className="mt-12">

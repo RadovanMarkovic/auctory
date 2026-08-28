@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { EmptyState, ErrorState, LoadingState, PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { ActionRequiredNotice } from "@/components/transactions/ActionRequiredNotice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -121,7 +122,11 @@ function MyAuctionsPage() {
         }
       />
 
-      <div className="mt-12">
+      <div className="mt-8">
+        <ActionRequiredNotice />
+      </div>
+
+      <div className="mt-8">
         {auctionsQuery.isLoading ? (
           <LoadingState />
         ) : auctionsQuery.isError ? (
