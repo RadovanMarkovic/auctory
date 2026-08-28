@@ -544,14 +544,14 @@
     },
     "fields": {
       "product": "Product",
-      "startPrice": "Start price",
-      "reservePrice": "Reserve price (optional)",
+      "startPrice": "Starting price (EUR)",
+      "reservePrice": "Reserve price (EUR, optional)",
       "reserveHint": "Only you can see the reserve price. Bidders never see it.",
-      "minimumIncrement": "Minimum increment",
-      "startsAt": "Starts at",
-      "endsAt": "Ends at",
-      "antiSniping": "Anti-sniping (minutes)",
-      "antiSnipingHint": "A late bid extends the auction by this many minutes."
+      "minimumIncrement": "Minimum bid step (EUR)",
+      "startsAt": "Start date and time",
+      "endsAt": "End date and time",
+      "antiSniping": "Auction extension (minutes)",
+      "antiSnipingHint": "If a bid arrives just before the end, the auction is extended by this many minutes."
     },
     "form": {
       "newTitle": "New auction",
@@ -571,10 +571,10 @@
       "sections": {
         "product": "Product",
         "productHint": "Only your published products without an active auction can be selected.",
-        "pricing": "Pricing",
-        "pricingHint": "Start price, optional reserve and the minimum bid step.",
-        "schedule": "Schedule",
-        "scheduleHint": "When bidding opens and closes, and the anti-sniping window."
+        "pricing": "Prices",
+        "pricingHint": "Starting price, optional reserve price and the smallest allowed bid step.",
+        "schedule": "Date and time",
+        "scheduleHint": "When bidding opens and closes, plus the automatic extension window."
       },
       "errors": {
         "positive": "Enter an amount greater than zero",

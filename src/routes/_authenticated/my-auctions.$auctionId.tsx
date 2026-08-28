@@ -78,12 +78,20 @@ function EditAuctionPage() {
       if (!payload) throw new Error("invalid");
       const { error } = await supabase.from("auctions").update(payload).eq("id", auctionId);
       if (error) throw error;
+      return status;
     },
-    onSuccess: () => {
-      toast.success(t("auctions.form.saved"));
+    onSuccess: (status) => {
+      toast.success(
+        status === "scheduled" ? t("auctions.form.published") : t("auctions.form.saved"),
+      );
       invalidate();
     },
-    onError: () => toast.error(t("auctions.form.saveFailed")),
+    onError: (_error, variables) =>
+      toast.error(
+        variables.status === "scheduled"
+          ? t("auctions.form.publishFailed")
+          : t("auctions.form.saveFailed"),
+      ),
   });
 
   const cancelMutation = useMutation({
@@ -156,11 +164,13 @@ function EditAuctionPage() {
         }
       />
 
-      <p className="mt-6 rounded-md border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
-        {t("auctions.reserveSellerOnly", {
-          value: formatAuctionMoney(auction.reserve_price, locale),
-        })}
-      </p>
+      {auction.reserve_price !== null ? (
+        <p className="mt-6 rounded-md border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
+          {t("auctions.reserveSellerOnly", {
+            value: formatAuctionMoney(auction.reserve_price, locale),
+          })}
+        </p>
+      ) : null}
 
       <div className="mt-10">
         <AuctionForm
@@ -172,7 +182,9 @@ function EditAuctionPage() {
           lockedProductLabel={productLabel}
           onSubmit={(values, status) => saveMutation.mutate({ values, status })}
           extraActions={
-            auction.bid_count === 0 ? (
+            auction.bid_count === 0 &&
+            auction.status !== "ended" &&
+            auction.status !== "cancelled" ? (
               <Button
                 type="button"
                 variant="ghost"
