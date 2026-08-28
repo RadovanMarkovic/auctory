@@ -543,7 +543,8 @@
       "cancel": "Otkaži aukciju",
       "cancelled": "Aukcija je otkazana",
       "emptyTitle": "Još nema aukcija",
-      "emptyDescription": "Kreiraj aukciju za neki od svojih objavljenih proizvoda."
+      "emptyDescription": "Kreiraj aukciju za neki od svojih objavljenih proizvoda.",
+      "publish": "Objavi"
     },
     "fields": {
       "product": "Proizvod",
@@ -584,8 +585,13 @@
         "reserveBelowStart": "Rezervna cena ne može biti niža od početne cene",
         "endBeforeStart": "Kraj mora biti posle početka",
         "startInPast": "Početak mora biti u budućnosti",
-        "antiSnipingRange": "Unesi vrednost između 0 i 60 minuta"
-      }
+        "antiSnipingRange": "Unesi vrednost između 0 i 60 minuta",
+        "endInPast": "Kraj mora biti u budućnosti"
+      },
+      "publish": "Objavi aukciju",
+      "publishHint": "Objavljivanjem lot postaje vidljiv u javnom katalogu. Kada stigne prva ponuda, izmene više nisu moguće.",
+      "published": "Aukcija je objavljena",
+      "publishFailed": "Nije moguće objaviti aukciju"
     },
     "preview": {
       "title": "Pregled",
@@ -596,9 +602,10 @@
       "reserveHidden": "Rezervna cena se nikada ne prikazuje učesnicima."
     },
     "confirm": {
-      "title": "Zakazati ovu aukciju?",
-      "description": "Nakon zakazivanja aukcija postaje javno vidljiva i više se ne može menjati kada počne ili kada stigne prva ponuda.",
-      "confirm": "Zakaži"
+      "title": "Objaviti ovu aukciju?",
+      "description": "Nakon objave aukcija postaje javno vidljiva i više se ne može menjati kada počne ili kada stigne prva ponuda.",
+      "confirm": "Objavi",
+      "descriptionNow": "Vreme početka je prošlo, pa aukcija počinje odmah i postaje javno vidljiva. Izmene više nisu moguće nakon prve ponude."
     },
     "detail": {
       "notFoundTitle": "Aukcija nije dostupna",

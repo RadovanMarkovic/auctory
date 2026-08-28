@@ -539,7 +539,8 @@
       "cancel": "Cancel auction",
       "cancelled": "Auction cancelled",
       "emptyTitle": "No auctions yet",
-      "emptyDescription": "Create an auction for one of your published products."
+      "emptyDescription": "Create an auction for one of your published products.",
+      "publish": "Publish"
     },
     "fields": {
       "product": "Product",
@@ -580,8 +581,13 @@
         "reserveBelowStart": "Reserve price cannot be lower than the start price",
         "endBeforeStart": "End time must be after the start time",
         "startInPast": "Start time must be in the future",
-        "antiSnipingRange": "Enter a value between 0 and 60 minutes"
-      }
+        "antiSnipingRange": "Enter a value between 0 and 60 minutes",
+        "endInPast": "End time must be in the future"
+      },
+      "publish": "Publish auction",
+      "publishHint": "Publishing makes the lot visible in the public catalogue. Once a bid is placed it can no longer be edited.",
+      "published": "Auction published",
+      "publishFailed": "Could not publish the auction"
     },
     "preview": {
       "title": "Preview",
@@ -591,9 +597,10 @@
       "reserveHidden": "The reserve price is never shown to bidders."
     },
     "confirm": {
-      "title": "Schedule this auction?",
-      "description": "Once scheduled, the auction becomes publicly visible and can no longer be edited after it starts or once a bid is placed.",
-      "confirm": "Schedule"
+      "title": "Publish this auction?",
+      "description": "Once published, the auction becomes publicly visible and can no longer be edited after it starts or once a bid is placed.",
+      "confirm": "Publish",
+      "descriptionNow": "The start time has passed, so the auction will start immediately and become publicly visible. It can no longer be edited once a bid is placed."
     },
     "detail": {
       "notFoundTitle": "Auction not available",
