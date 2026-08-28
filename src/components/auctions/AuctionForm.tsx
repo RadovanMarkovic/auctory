@@ -392,19 +392,22 @@ export function AuctionForm({
       </Card>
 
       {readOnly ? null : (
-        <div className="flex flex-wrap items-center gap-3">
-          <Button type="submit" disabled={submitting}>
-            {t("auctions.form.saveDraft")}
-          </Button>
-          <Button
-            type="button"
-            variant="gold"
-            disabled={submitting}
-            onClick={handlePublishClick}
-          >
-            {t("auctions.form.publish")}
-          </Button>
-          {extraActions}
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <Button type="submit" disabled={submitting}>
+              {t("auctions.form.saveDraft")}
+            </Button>
+            <Button
+              type="button"
+              variant="gold"
+              disabled={submitting}
+              onClick={handlePublishClick}
+            >
+              {t("auctions.form.publish")}
+            </Button>
+            {extraActions}
+          </div>
+          <p className="text-sm text-muted-foreground">{t("auctions.form.publishHint")}</p>
         </div>
       )}
 
