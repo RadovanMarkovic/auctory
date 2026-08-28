@@ -269,7 +269,8 @@ function TransactionPage() {
                   confirmLabel={t("transactions.actions.confirmLabel")}
                   cancelLabel={t("common.cancel")}
                   tone="gold"
-                  loading={confirmBuyer.isPending || !buyerAck}
+                  loading={confirmBuyer.isPending}
+                  confirmDisabled={!buyerAck}
                   onConfirm={async () => {
                     if (!buyerAck) return;
                     try {
@@ -315,7 +316,8 @@ function TransactionPage() {
                   confirmLabel={t("transactions.actions.confirmLabel")}
                   cancelLabel={t("common.cancel")}
                   tone="gold"
-                  loading={confirmSeller.isPending || !sellerAck}
+                  loading={confirmSeller.isPending}
+                  confirmDisabled={!sellerAck}
                   onConfirm={async () => {
                     if (!sellerAck) return;
                     try {
@@ -355,7 +357,8 @@ function TransactionPage() {
                   confirmLabel={t("transactions.dispute.confirmLabel")}
                   cancelLabel={t("common.cancel")}
                   tone="destructive"
-                  loading={dispute.isPending || reason.trim().length === 0}
+                  loading={dispute.isPending}
+                  confirmDisabled={reason.trim().length === 0}
                   onConfirm={async () => {
                     if (reason.trim().length === 0) return;
                     try {
