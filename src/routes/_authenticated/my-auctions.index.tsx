@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Gavel } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 import { EmptyState, ErrorState, LoadingState, PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
@@ -36,6 +37,26 @@ function MyAuctionsPage() {
   const locale = i18n.language.startsWith("sr") ? "sr-RS" : "en-GB";
   const { user } = useAuth();
   const { isSeller, isLoading: rolesLoading } = useRoles();
+  const queryClient = useQueryClient();
+
+  const publishMutation = useMutation({
+    mutationFn: async (auction: { id: string; starts_at: string; ends_at: string }) => {
+      const startsNow = new Date(auction.starts_at).getTime() <= Date.now();
+      const { error } = await supabase
+        .from("auctions")
+        .update({
+          status: "scheduled" as const,
+          ...(startsNow ? { starts_at: new Date().toISOString() } : {}),
+        })
+        .eq("id", auction.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success(t("auctions.form.published"));
+      void queryClient.invalidateQueries({ queryKey: ["my-auctions", user?.id] });
+    },
+    onError: () => toast.error(t("auctions.form.publishFailed")),
+  });
 
   const auctionsQuery = useQuery({
     queryKey: ["my-auctions", user?.id],
@@ -133,6 +154,23 @@ function MyAuctionsPage() {
                     </div>
                     <div className="flex flex-wrap items-center gap-3">
                       <Badge variant="outline">{t(`auctions.status.${auction.status}`)}</Badge>
+                      {auction.status === "draft" ? (
+                        <Button
+                          type="button"
+                          variant="gold"
+                          size="sm"
+                          disabled={publishMutation.isPending}
+                          onClick={() =>
+                            publishMutation.mutate({
+                              id: auction.id,
+                              starts_at: auction.starts_at,
+                              ends_at: auction.ends_at,
+                            })
+                          }
+                        >
+                          {t("auctions.manage.publish")}
+                        </Button>
+                      ) : null}
                       <Button asChild variant="outline" size="sm">
                         <Link to="/my-auctions/$auctionId" params={{ auctionId: auction.id }}>
                           {t("auctions.manage.open")}

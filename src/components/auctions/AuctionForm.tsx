@@ -18,6 +18,7 @@ import {
   formatAuctionDate,
   formatAuctionMoney,
   fromLocalInputValue,
+  toLocalInputValue,
   useAuctionableProducts,
   type AuctionStatus,
 } from "@/lib/auctions";
@@ -98,6 +99,8 @@ export function AuctionForm({
   const [values, setValues] = useState<AuctionFormValues>(initialValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [pendingValues, setPendingValues] = useState<AuctionFormValues | null>(null);
+  const [startsImmediately, setStartsImmediately] = useState(false);
 
   const productsQuery = useAuctionableProducts(initialValues.product_id);
   const products = productsQuery.data ?? [];
@@ -156,13 +159,19 @@ export function AuctionForm({
     onSubmit(values, "draft");
   }
 
-  function handleScheduleClick() {
+  function handlePublishClick() {
     if (!validate()) return;
-    const startsAt = fromLocalInputValue(values.starts_at);
-    if (startsAt && new Date(startsAt).getTime() <= Date.now()) {
-      setErrors({ starts_at: t("auctions.form.errors.startInPast") });
+    const endsAt = fromLocalInputValue(values.ends_at);
+    if (!endsAt || new Date(endsAt).getTime() <= Date.now()) {
+      setErrors({ ends_at: t("auctions.form.errors.endInPast") });
       return;
     }
+    const startsAt = fromLocalInputValue(values.starts_at);
+    const startsNow = !startsAt || new Date(startsAt).getTime() <= Date.now();
+    setPendingValues(
+      startsNow ? { ...values, starts_at: toLocalInputValue(new Date().toISOString()) } : values,
+    );
+    setStartsImmediately(startsNow);
     setConfirmOpen(true);
   }
 
@@ -383,19 +392,22 @@ export function AuctionForm({
       </Card>
 
       {readOnly ? null : (
-        <div className="flex flex-wrap items-center gap-3">
-          <Button type="submit" disabled={submitting}>
-            {t("auctions.form.saveDraft")}
-          </Button>
-          <Button
-            type="button"
-            variant="gold"
-            disabled={submitting}
-            onClick={handleScheduleClick}
-          >
-            {t("auctions.form.schedule")}
-          </Button>
-          {extraActions}
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <Button type="submit" disabled={submitting}>
+              {t("auctions.form.saveDraft")}
+            </Button>
+            <Button
+              type="button"
+              variant="gold"
+              disabled={submitting}
+              onClick={handlePublishClick}
+            >
+              {t("auctions.form.publish")}
+            </Button>
+            {extraActions}
+          </div>
+          <p className="text-sm text-muted-foreground">{t("auctions.form.publishHint")}</p>
         </div>
       )}
 
@@ -403,14 +415,18 @@ export function AuctionForm({
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         title={t("auctions.confirm.title")}
-        description={t("auctions.confirm.description")}
+        description={
+          startsImmediately
+            ? t("auctions.confirm.descriptionNow")
+            : t("auctions.confirm.description")
+        }
         confirmLabel={t("auctions.confirm.confirm")}
         cancelLabel={t("common.cancel")}
         tone="gold"
         loading={submitting ?? false}
         onConfirm={() => {
           setConfirmOpen(false);
-          onSubmit(values, "scheduled");
+          onSubmit(pendingValues ?? values, "scheduled");
         }}
       />
     </form>
