@@ -156,13 +156,19 @@ export function AuctionForm({
     onSubmit(values, "draft");
   }
 
-  function handleScheduleClick() {
+  function handlePublishClick() {
     if (!validate()) return;
-    const startsAt = fromLocalInputValue(values.starts_at);
-    if (startsAt && new Date(startsAt).getTime() <= Date.now()) {
-      setErrors({ starts_at: t("auctions.form.errors.startInPast") });
+    const endsAt = fromLocalInputValue(values.ends_at);
+    if (!endsAt || new Date(endsAt).getTime() <= Date.now()) {
+      setErrors({ ends_at: t("auctions.form.errors.endInPast") });
       return;
     }
+    const startsAt = fromLocalInputValue(values.starts_at);
+    const startsNow = !startsAt || new Date(startsAt).getTime() <= Date.now();
+    setPendingValues(
+      startsNow ? { ...values, starts_at: toLocalInputValue(new Date().toISOString()) } : values,
+    );
+    setStartsImmediately(startsNow);
     setConfirmOpen(true);
   }
 
