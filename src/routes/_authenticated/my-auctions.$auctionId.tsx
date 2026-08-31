@@ -8,6 +8,7 @@ import { PageContainer } from "@/components/layout/PageContainer";
 import {
   AuctionForm,
   toAuctionPayload,
+  toReservePrice,
   type AuctionFormValues,
 } from "@/components/auctions/AuctionForm";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import {
+  AUCTION_COLUMNS,
   formatAuctionMoney,
   isAuctionEditable,
   toLocalInputValue,
@@ -51,7 +53,7 @@ function EditAuctionPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("auctions")
-        .select("*, products(title, model, brands(name))")
+        .select(`${AUCTION_COLUMNS}, products(title, model, brands(name))`)
         .eq("id", auctionId)
         .maybeSingle();
       if (error) throw error;
@@ -61,8 +63,25 @@ function EditAuctionPage() {
 
   const auction = auctionQuery.data ?? null;
 
+  // Reserve prices live in a seller-only table so they are never public.
+  const reserveQuery = useQuery({
+    queryKey: ["seller-auction-reserve", auctionId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("auction_reserves")
+        .select("reserve_price")
+        .eq("auction_id", auctionId)
+        .maybeSingle();
+      if (error) throw error;
+      return data?.reserve_price ?? null;
+    },
+  });
+
+  const reservePrice = reserveQuery.data ?? null;
+
   function invalidate() {
     void queryClient.invalidateQueries({ queryKey: ["seller-auction", auctionId] });
+    void queryClient.invalidateQueries({ queryKey: ["seller-auction-reserve", auctionId] });
     void queryClient.invalidateQueries({ queryKey: ["my-auctions", user?.id] });
   }
 
@@ -78,6 +97,20 @@ function EditAuctionPage() {
       if (!payload) throw new Error("invalid");
       const { error } = await supabase.from("auctions").update(payload).eq("id", auctionId);
       if (error) throw error;
+
+      const nextReserve = toReservePrice(values);
+      if (nextReserve === null) {
+        const { error: deleteError } = await supabase
+          .from("auction_reserves")
+          .delete()
+          .eq("auction_id", auctionId);
+        if (deleteError) throw deleteError;
+      } else {
+        const { error: reserveError } = await supabase
+          .from("auction_reserves")
+          .upsert({ auction_id: auctionId, reserve_price: nextReserve });
+        if (reserveError) throw reserveError;
+      }
       return status;
     },
     onSuccess: (status) => {
@@ -137,7 +170,7 @@ function EditAuctionPage() {
   const initialValues: AuctionFormValues = {
     product_id: auction.product_id,
     start_price: String(auction.start_price),
-    reserve_price: auction.reserve_price === null ? "" : String(auction.reserve_price),
+    reserve_price: reservePrice === null ? "" : String(reservePrice),
     minimum_increment: String(auction.minimum_increment),
     starts_at: toLocalInputValue(auction.starts_at),
     ends_at: toLocalInputValue(auction.ends_at),
@@ -164,10 +197,10 @@ function EditAuctionPage() {
         }
       />
 
-      {auction.reserve_price !== null ? (
+      {reservePrice !== null ? (
         <p className="mt-6 rounded-md border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
           {t("auctions.reserveSellerOnly", {
-            value: formatAuctionMoney(auction.reserve_price, locale),
+            value: formatAuctionMoney(reservePrice, locale),
           })}
         </p>
       ) : null}
