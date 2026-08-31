@@ -82,9 +82,19 @@ export function useAuctionableProducts(currentProductId?: string | null) {
         .in("status", ["draft", "scheduled", "live"]);
       if (takenError) throw takenError;
 
+      // Products from a won auction (a transaction exists) can never be re-listed.
+      const { data: sold, error: soldError } = await supabase
+        .from("transactions")
+        .select("product_id")
+        .eq("seller_id", userId!);
+      if (soldError) throw soldError;
+
       const blocked = new Set(
         (taken ?? []).map((row) => row.product_id).filter((id) => id !== currentProductId),
       );
+      for (const row of sold ?? []) {
+        if (row.product_id !== currentProductId) blocked.add(row.product_id);
+      }
       return (products ?? []).filter((product) => !blocked.has(product.id));
     },
   });
