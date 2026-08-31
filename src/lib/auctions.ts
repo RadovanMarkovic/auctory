@@ -9,6 +9,14 @@ export type AuctionRow = Database["public"]["Tables"]["auctions"]["Row"];
 
 export const AUCTION_CURRENCY = "EUR";
 
+/**
+ * Columns of `auctions` readable through the API. Bidder identity columns
+ * (highest_bidder_id, winner_id) are intentionally not selectable, and the
+ * reserve price lives in the seller-only `auction_reserves` table.
+ */
+export const AUCTION_COLUMNS =
+  "id, product_id, seller_id, start_price, minimum_increment, starts_at, ends_at, original_ends_at, anti_sniping_minutes, status, highest_bid_amount, bid_count, final_price, created_at, updated_at, finalized_at, has_reserve, reserve_met";
+
 /** Statuses a seller can set from the auction form. */
 export const SELLER_AUCTION_STATUSES: AuctionStatus[] = ["draft", "scheduled"];
 
