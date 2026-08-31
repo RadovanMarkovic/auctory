@@ -46,7 +46,6 @@ export const emptyAuctionForm: AuctionFormValues = {
 export interface AuctionPayload {
   product_id: string;
   start_price: number;
-  reserve_price: number | null;
   minimum_increment: number;
   starts_at: string;
   ends_at: string;
@@ -62,11 +61,9 @@ export function toAuctionPayload(
   const startsAt = fromLocalInputValue(values.starts_at);
   const endsAt = fromLocalInputValue(values.ends_at);
   if (!values.product_id || !startsAt || !endsAt) return null;
-  const reserve = values.reserve_price.trim();
   return {
     product_id: values.product_id,
     start_price: Number.parseFloat(values.start_price),
-    reserve_price: reserve ? Number.parseFloat(reserve) : null,
     minimum_increment: Number.parseFloat(values.minimum_increment),
     starts_at: startsAt,
     ends_at: endsAt,
@@ -74,6 +71,12 @@ export function toAuctionPayload(
     anti_sniping_minutes: Number.parseInt(values.anti_sniping_minutes, 10),
     status,
   };
+}
+
+/** Reserve prices are stored separately in the seller-only `auction_reserves` table. */
+export function toReservePrice(values: AuctionFormValues): number | null {
+  const reserve = values.reserve_price.trim();
+  return reserve ? Number.parseFloat(reserve) : null;
 }
 
 export function AuctionForm({

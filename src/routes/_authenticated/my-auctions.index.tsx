@@ -65,7 +65,7 @@ function MyAuctionsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("auctions")
-        .select("*, products(title, brands(name))")
+        .select(`${AUCTION_COLUMNS}, products(title, brands(name))`)
         .eq("seller_id", user!.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
