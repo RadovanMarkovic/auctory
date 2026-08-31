@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      auction_reserves: {
+        Row: {
+          auction_id: string
+          created_at: string
+          reserve_price: number
+          updated_at: string
+        }
+        Insert: {
+          auction_id: string
+          created_at?: string
+          reserve_price: number
+          updated_at?: string
+        }
+        Update: {
+          auction_id?: string
+          created_at?: string
+          reserve_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auction_reserves_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: true
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "auction_reserves_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: true
+            referencedRelation: "public_auctions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       auctions: {
         Row: {
           anti_sniping_minutes: number
@@ -22,13 +58,14 @@ export type Database = {
           ends_at: string
           final_price: number | null
           finalized_at: string | null
+          has_reserve: boolean
           highest_bid_amount: number | null
           highest_bidder_id: string | null
           id: string
           minimum_increment: number
           original_ends_at: string
           product_id: string
-          reserve_price: number | null
+          reserve_met: boolean
           seller_id: string
           start_price: number
           starts_at: string
@@ -43,13 +80,14 @@ export type Database = {
           ends_at: string
           final_price?: number | null
           finalized_at?: string | null
+          has_reserve?: boolean
           highest_bid_amount?: number | null
           highest_bidder_id?: string | null
           id?: string
           minimum_increment?: number
           original_ends_at: string
           product_id: string
-          reserve_price?: number | null
+          reserve_met?: boolean
           seller_id: string
           start_price: number
           starts_at: string
@@ -64,13 +102,14 @@ export type Database = {
           ends_at?: string
           final_price?: number | null
           finalized_at?: string | null
+          has_reserve?: boolean
           highest_bid_amount?: number | null
           highest_bidder_id?: string | null
           id?: string
           minimum_increment?: number
           original_ends_at?: string
           product_id?: string
-          reserve_price?: number | null
+          reserve_met?: boolean
           seller_id?: string
           start_price?: number
           starts_at?: string
@@ -486,14 +525,14 @@ export type Database = {
           ends_at?: string | null
           final_price?: number | null
           finalized_at?: string | null
-          has_reserve?: never
+          has_reserve?: boolean | null
           highest_bid_amount?: number | null
           id?: string | null
           minimum_increment?: number | null
           minimum_next_bid?: never
           original_ends_at?: string | null
           product_id?: string | null
-          reserve_met?: never
+          reserve_met?: boolean | null
           seller_id?: string | null
           start_price?: number | null
           starts_at?: string | null
@@ -507,14 +546,14 @@ export type Database = {
           ends_at?: string | null
           final_price?: number | null
           finalized_at?: string | null
-          has_reserve?: never
+          has_reserve?: boolean | null
           highest_bid_amount?: number | null
           id?: string | null
           minimum_increment?: number | null
           minimum_next_bid?: never
           original_ends_at?: string | null
           product_id?: string | null
-          reserve_met?: never
+          reserve_met?: boolean | null
           seller_id?: string | null
           start_price?: number | null
           starts_at?: string | null

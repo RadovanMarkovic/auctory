@@ -9,6 +9,7 @@ import {
   AuctionForm,
   emptyAuctionForm,
   toAuctionPayload,
+  toReservePrice,
   type AuctionFormValues,
 } from "@/components/auctions/AuctionForm";
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,14 @@ function NewAuctionPage() {
         .select("id")
         .single();
       if (error) throw error;
+
+      const reservePrice = toReservePrice(values);
+      if (reservePrice !== null) {
+        const { error: reserveError } = await supabase
+          .from("auction_reserves")
+          .upsert({ auction_id: data.id, reserve_price: reservePrice });
+        if (reserveError) throw reserveError;
+      }
       return data;
     },
     onSuccess: (data) => {

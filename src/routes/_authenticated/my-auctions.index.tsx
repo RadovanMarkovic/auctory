@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
-import { formatAuctionDate, formatAuctionMoney } from "@/lib/auctions";
+import { AUCTION_COLUMNS, formatAuctionDate, formatAuctionMoney } from "@/lib/auctions";
 import { useRoles } from "@/lib/use-roles";
 
 const title = "My Auctions — Auctory";
@@ -65,7 +65,7 @@ function MyAuctionsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("auctions")
-        .select("*, products(title, brands(name))")
+        .select(`${AUCTION_COLUMNS}, products(title, brands(name))`)
         .eq("seller_id", user!.id)
         .order("created_at", { ascending: false });
       if (error) throw error;
