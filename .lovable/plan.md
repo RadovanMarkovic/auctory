@@ -1,54 +1,55 @@
-# AuctoryCertificate — isolated Hardhat workspace
+# MetaMask wallet connection and server-verified ownership (Sepolia)
 
-Yes, the task is clear. A self-contained `blockchain/` workspace with its own dependencies, an access-controlled ERC-721 certificate contract, a full test suite, an exported ABI, and Remix deployment instructions. No Sepolia deployment, no private keys.
+Yes — clear, and it fits the current code. Today `profiles` already has `wallet_address`, `wallet_verified_at`, `wallet_network`, the Profile page shows a read-only "coming soon" wallet card, and `WalletButton` is a disabled placeholder. Nothing about bidding, finalization, confirmations, or status lifecycles changes.
 
-## Isolation
+## 1. Wallet connection layer (frontend)
 
-Everything lives in `blockchain/` with its own `package.json`, `tsconfig.json`, `node_modules`, and `.gitignore` entries. The Vite app never imports it, and the root build/typecheck/lint never touch it (added to `.prettierignore` and the ESLint ignore list).
+New `src/lib/wallet/` module using `ethers` v6, browser-only (loaded after hydration so SSR is unaffected):
+- connect via `eth_requestAccounts`, read the current chain, and expose a `useWallet()` context with `status`, `address`, `chainId`.
+- logical disconnect: clear local wallet state only (MetaMask has no real disconnect); verified wallet in the database is untouched.
+- listeners for `accountsChanged` and `chainChanged`, with state reset on account switch.
+- wrong network: prompt `wallet_switchEthereumChain` to Sepolia (`0xaa36a7`), and `wallet_addEthereumChain` when the chain is unknown.
+- distinct handled errors with EN/SR messages: MetaMask not installed, user rejected (4001), request already pending (-32002), wrong network, unsupported browser.
 
-Pinned versions: Solidity `0.8.24`, `@openzeppelin/contracts` `5.0.2`, Hardhat 2.x with `@nomicfoundation/hardhat-toolbox`, ethers v6, TypeScript, chai/mocha.
+Private keys are never touched — only `personal_sign` through the provider.
 
-## Contract: `AuctoryCertificate`
+## 2. Server-verified ownership
 
-Extends `ERC721URIStorage`, `AccessControl`, `Pausable`.
+Two protected server functions in `src/lib/wallet.functions.ts` (via `requireSupabaseAuth`, so the acting user comes from the session, never from the client):
 
-Roles
-- `DEFAULT_ADMIN_ROLE` — deployer (constructor arg `admin`).
-- `MINTER_ROLE`, `TRANSFER_ROLE` — granted to the constructor `operator` address.
-
-Storage per product
+- `requestWalletNonce({ address })` — stores a single-use nonce with a short expiry (5 min) for the authenticated user and returns the exact message to sign:
 ```text
-productRef (bytes32, unique)  ->  { tokenId, metadataHash (bytes32),
-                                    registeredAt, initialSeller, registeredBy }
+Auctory wallet verification
+User: <auth uid>
+Address: <checksummed address>
+Chain: 11155111 (Sepolia)
+Nonce: <nonce>
+Expires: <ISO timestamp>
 ```
-plus `tokenId -> productRef`, and `saleRef (bytes32) -> processed` for sale de-duplication.
+- `verifyWalletSignature({ address, signature })` — recovers the signer with `ethers.verifyMessage`, requires an exact match with the address in the nonce row, requires the nonce to be unused and unexpired, marks it used, then writes `wallet_address`, `wallet_network = 'sepolia'`, `wallet_verified_at` to the caller's profile. An unsigned address is never stored.
 
-Functions
-- `registerProduct(bytes32 productRef, bytes32 metadataHash, address sellerWallet, string tokenURI)` — `MINTER_ROLE`, `whenNotPaused`. Reverts on a duplicate `productRef`, zero seller, or empty ref. Mints exactly one token to `sellerWallet`, sets the URI, emits `ProductRegistered`.
-- `completeSale(bytes32 saleRef, uint256 tokenId, address buyerWallet, bytes32 saleDataHash)` — `TRANSFER_ROLE`, `whenNotPaused`. Reverts on duplicate `saleRef`, unknown token, or zero buyer. Transfers from the current owner to the buyer (emitting the standard `Transfer`), records the sale, emits `SaleCompleted`.
-- `pause()` / `unpause()` — `DEFAULT_ADMIN_ROLE`.
-- Role grant/revoke through inherited `AccessControl`.
-- Views: `getProduct`, `isSaleProcessed`, `productRefOf`, `supportsInterface`.
+Uniqueness: a case-insensitive unique index on the stored wallet address means one wallet can be verified by only one user; a second user attempting it gets a clear "wallet already linked to another account" message. Changing the wallet clears `wallet_verified_at` and requires a fresh signature.
 
-Locking down ordinary transfers
-- `approve`, `setApprovalForAll`, `transferFrom`, `safeTransferFrom` are overridden to revert with `TransfersDisabled()` for everyone except callers holding `TRANSFER_ROLE`. Internal movement in `completeSale` uses `_transfer`/`_update`, so the controlled path is unaffected and the standard `Transfer` event is still emitted.
+New table `wallet_verification_nonces` (user_id, address, nonce, expires_at, used_at). RLS enabled with no direct client access — only the server functions (service role) read and write it. `profiles` keeps its existing policies; wallet columns become writable only through the verification function (a trigger blocks direct client updates to the three wallet columns).
 
-Custom errors: `ProductAlreadyRegistered`, `SaleAlreadyProcessed`, `UnknownToken`, `InvalidAddress`, `InvalidRef`, `TransfersDisabled`.
+## 3. Where a wallet is required
 
-## Tests (`blockchain/test/AuctoryCertificate.ts`)
+- Product draft: no wallet needed (unchanged).
+- Publishing a product: an approved seller must have a verified Sepolia wallet. Enforced in the database (trigger on the draft → published transition) and mirrored in the UI, where the publish buttons in `my-products.index.tsx` and `my-products.$productId.tsx` show a "verify your wallet first" notice with a link to the account wallet section.
+- Bidding: no wallet required (unchanged).
+- Buyer: prompted to verify a wallet only once a transaction reaches `ready_for_transfer`, shown on the transaction page and in the existing `ActionRequiredNotice`.
 
-Deployment roles; unauthorized `registerProduct` / `completeSale` / `pause` / role-grant calls; successful mint and initial ownership; token URI; stored metadata hash and registration fields; duplicate `productRef` rejection; controlled transfer via `completeSale` emitting both `Transfer` and `SaleCompleted`; blocked `approve` / `setApprovalForAll` / `transferFrom` / `safeTransferFrom` by a plain owner; duplicate `saleRef` rejection; paused behaviour and unpause; `supportsInterface` for ERC-165, ERC-721, ERC-721Metadata, and AccessControl.
+Certificate minting is not implemented in this step; the wallet gate is the prerequisite it will later use.
 
-Run `npx hardhat compile` and `npx hardhat test` in `blockchain/`, with all tests passing before finishing.
+## 4. UI
 
-## ABI export
+- Profile wallet card becomes functional: connect, verify (sign), change wallet, disconnect, plus verified address, network, and verification date.
+- `WalletButton` in the header/mobile nav becomes active: connect / wrong-network / connected states.
+- Transaction page gains the buyer wallet prompt at `ready_for_transfer`.
+- All strings added under existing `wallet.*` and `profile.wallet.*` keys in EN and SR. No design-system or layout changes.
 
-A script writes the compiled ABI to `blockchain/abi/AuctoryCertificate.json` (ABI only, no bytecode), runnable via `npm run export:abi`.
+## 5. Technical notes
 
-## Remix instructions
-
-`blockchain/REMIX.md` with: exact compiler version `0.8.24+commit.e11b9ed9`, EVM version `paris`, optimizer enabled with 200 runs, flattened-source or import-based options, constructor arguments (`admin`, `operator`), step-by-step deployment via Injected Provider, and Etherscan verification settings matching the compiler/optimizer configuration. No network deployment is performed and no keys are requested.
-
-## Out of scope
-
-No Sepolia deployment, no private keys or RPC secrets, no frontend or backend wiring to the contract in this step.
+- Adds `ethers@^6` as the only new dependency; imported dynamically in browser-only code paths.
+- Migration: `wallet_verification_nonces` table with GRANTs and RLS, unique lower-case index on `profiles.wallet_address`, trigger guarding direct wallet-column writes, and a publish guard requiring `wallet_verified_at` with `wallet_network = 'sepolia'` for seller publishing.
+- No Sepolia contract calls, no minting, no private keys, no changes to bidding, `finalize_auctions`, confirmations, or any status enum.
