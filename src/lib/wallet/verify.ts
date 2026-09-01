@@ -10,6 +10,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { requestWalletNonce, verifyWalletSignature } from "@/lib/wallet.functions";
+import { sameAddress } from "./message";
 import { signMessage, switchToSepolia, WalletError } from "./metamask";
 import { SEPOLIA_NETWORK } from "./message";
 
@@ -43,6 +44,20 @@ export function useVerifiedWallet() {
 
 export function isSepoliaVerified(wallet?: VerifiedWallet | null) {
   return Boolean(wallet?.address && wallet.verifiedAt && wallet.network === SEPOLIA_NETWORK);
+}
+
+/** Publishing requires the currently connected Sepolia account to be the verified wallet. */
+export function isConnectedVerifiedWallet(
+  wallet: VerifiedWallet | null | undefined,
+  connectedAddress: string | null,
+  onSepolia: boolean,
+) {
+  return Boolean(
+    isSepoliaVerified(wallet) &&
+      connectedAddress &&
+      onSepolia &&
+      sameAddress(wallet?.address ?? null, connectedAddress),
+  );
 }
 
 /** Sign the server-issued message and store the wallet after verification. */

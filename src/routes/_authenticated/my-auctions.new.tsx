@@ -18,6 +18,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import type { AuctionStatus } from "@/lib/auctions";
 import { useRoles } from "@/lib/use-roles";
+import { useWallet } from "@/lib/wallet/use-wallet";
+import { isConnectedVerifiedWallet, useVerifiedWallet } from "@/lib/wallet/verify";
 
 const title = "New Auction — Auctory";
 const description = "Schedule a timed English auction for one of your published Auctory products.";
@@ -41,6 +43,8 @@ function NewAuctionPage() {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { isSeller, isLoading } = useRoles();
+  const wallet = useWallet();
+  const verifiedWallet = useVerifiedWallet();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -52,6 +56,12 @@ function NewAuctionPage() {
       values: AuctionFormValues;
       status: AuctionStatus;
     }) => {
+      if (
+        status === "scheduled" &&
+        !isConnectedVerifiedWallet(verifiedWallet.data, wallet.address, wallet.onSepolia)
+      ) {
+        throw new Error("WALLET_CONNECTION_REQUIRED");
+      }
       const payload = toAuctionPayload(values, status);
       if (!payload) throw new Error("invalid");
       const { data, error } = await supabase
@@ -77,7 +87,8 @@ function NewAuctionPage() {
     },
     onError: (error) =>
       toast.error(
-        error instanceof Error && error.message.includes("wallet_not_verified")
+        error instanceof Error &&
+          /wallet_not_verified|WALLET_CONNECTION_REQUIRED/i.test(error.message)
           ? t("wallet.required.seller")
           : t("auctions.form.saveFailed"),
       ),
@@ -125,6 +136,15 @@ function NewAuctionPage() {
         <AuctionForm
           initialValues={emptyAuctionForm}
           submitting={createMutation.isPending}
+          onBeforePublish={() => {
+            const ready = isConnectedVerifiedWallet(
+              verifiedWallet.data,
+              wallet.address,
+              wallet.onSepolia,
+            );
+            if (!ready) toast.error(t("wallet.required.connectedSeller"));
+            return ready;
+          }}
           onSubmit={(values, status) => createMutation.mutate({ values, status })}
         />
       </div>

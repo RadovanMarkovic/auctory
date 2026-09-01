@@ -23,6 +23,8 @@ import {
   toLocalInputValue,
   type AuctionStatus,
 } from "@/lib/auctions";
+import { useWallet } from "@/lib/wallet/use-wallet";
+import { isConnectedVerifiedWallet, useVerifiedWallet } from "@/lib/wallet/verify";
 
 const title = "Auction Details — Auctory";
 const description = "Review and adjust your scheduled Auctory auction before it goes live.";
@@ -47,6 +49,8 @@ function EditAuctionPage() {
   const { t, i18n } = useTranslation();
   const locale = i18n.language.startsWith("sr") ? "sr-RS" : "en-GB";
   const { user } = useAuth();
+  const wallet = useWallet();
+  const verifiedWallet = useVerifiedWallet();
   const queryClient = useQueryClient();
 
   const auctionQuery = useQuery({
@@ -94,6 +98,12 @@ function EditAuctionPage() {
       values: AuctionFormValues;
       status: AuctionStatus;
     }) => {
+      if (
+        status === "scheduled" &&
+        !isConnectedVerifiedWallet(verifiedWallet.data, wallet.address, wallet.onSepolia)
+      ) {
+        throw new Error("WALLET_CONNECTION_REQUIRED");
+      }
       const payload = toAuctionPayload(values, status);
       if (!payload) throw new Error("invalid");
       const { error } = await supabase.from("auctions").update(payload).eq("id", auctionId);
@@ -122,7 +132,8 @@ function EditAuctionPage() {
     },
     onError: (error, variables) =>
       toast.error(
-        error instanceof Error && error.message.includes("wallet_not_verified")
+        error instanceof Error &&
+          /wallet_not_verified|WALLET_CONNECTION_REQUIRED/i.test(error.message)
           ? t("wallet.required.seller")
           : variables.status === "scheduled"
             ? t("auctions.form.publishFailed")
@@ -217,6 +228,15 @@ function EditAuctionPage() {
           readOnly={!editable}
           readOnlyReason={readOnlyReason}
           lockedProductLabel={productLabel}
+          onBeforePublish={() => {
+            const ready = isConnectedVerifiedWallet(
+              verifiedWallet.data,
+              wallet.address,
+              wallet.onSepolia,
+            );
+            if (!ready) toast.error(t("wallet.required.connectedSeller"));
+            return ready;
+          }}
           onSubmit={(values, status) => saveMutation.mutate({ values, status })}
           extraActions={
             auction.bid_count === 0 &&

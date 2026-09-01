@@ -86,6 +86,7 @@ export function AuctionForm({
   readOnlyReason,
   lockedProductLabel,
   onSubmit,
+  onBeforePublish,
   extraActions,
 }: {
   initialValues: AuctionFormValues;
@@ -95,6 +96,7 @@ export function AuctionForm({
   /** Shown instead of the product picker when the product can no longer be changed. */
   lockedProductLabel?: string;
   onSubmit: (values: AuctionFormValues, status: AuctionStatus) => void;
+  onBeforePublish?: () => boolean;
   extraActions?: React.ReactNode;
 }) {
   const { t, i18n } = useTranslation();
@@ -163,6 +165,7 @@ export function AuctionForm({
   }
 
   function handlePublishClick() {
+    if (onBeforePublish && !onBeforePublish()) return;
     if (!validate()) return;
     const endsAt = fromLocalInputValue(values.ends_at);
     if (!endsAt || new Date(endsAt).getTime() <= Date.now()) {

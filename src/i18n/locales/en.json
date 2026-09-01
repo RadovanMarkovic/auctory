@@ -87,7 +87,8 @@
     "securityHint": "Auctory never asks for your private key or seed phrase. You only sign a free verification message.",
     "required": {
       "title": "Verified wallet required",
-      "seller": "Verify a Sepolia wallet before publishing a product and registering its certificate.",
+      "seller": "Verify a Sepolia wallet before publishing a product or auction and registering its certificate.",
+      "connectedSeller": "Connect MetaMask to your verified Sepolia wallet before publishing.",
       "buyer": "Verify a Sepolia wallet so the certificate can be transferred to you.",
       "action": "Go to wallet"
     },
