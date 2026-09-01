@@ -105,9 +105,10 @@ export function useWallet() {
   }, []);
 
   const connect = useCallback(async () => {
+    const forcePicker = state.dismissed;
     setState({ connecting: true, error: null });
     try {
-      const address = await connectWallet();
+      const address = await connectWallet(forcePicker);
       const chainId = await getChainId();
       setState({ address, chainId, dismissed: false });
       return address;
