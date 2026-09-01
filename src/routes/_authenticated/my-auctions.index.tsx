@@ -14,6 +14,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
 import { AUCTION_COLUMNS, formatAuctionDate, formatAuctionMoney } from "@/lib/auctions";
 import { useRoles } from "@/lib/use-roles";
+import { useWallet } from "@/lib/wallet/use-wallet";
+import { isConnectedVerifiedWallet, useVerifiedWallet } from "@/lib/wallet/verify";
 
 const title = "My Auctions — Auctory";
 const description = "Create and manage the auctions for your Auctory listings.";
@@ -38,10 +40,15 @@ function MyAuctionsPage() {
   const locale = i18n.language.startsWith("sr") ? "sr-RS" : "en-GB";
   const { user } = useAuth();
   const { isSeller, isLoading: rolesLoading } = useRoles();
+  const wallet = useWallet();
+  const verifiedWallet = useVerifiedWallet();
   const queryClient = useQueryClient();
 
   const publishMutation = useMutation({
     mutationFn: async (auction: { id: string; starts_at: string; ends_at: string }) => {
+      if (!isConnectedVerifiedWallet(verifiedWallet.data, wallet.address, wallet.onSepolia)) {
+        throw new Error("WALLET_CONNECTION_REQUIRED");
+      }
       const startsNow = new Date(auction.starts_at).getTime() <= Date.now();
       const { error } = await supabase
         .from("auctions")
@@ -56,7 +63,12 @@ function MyAuctionsPage() {
       toast.success(t("auctions.form.published"));
       void queryClient.invalidateQueries({ queryKey: ["my-auctions", user?.id] });
     },
-    onError: () => toast.error(t("auctions.form.publishFailed")),
+    onError: (error) =>
+      toast.error(
+        error instanceof Error && error.message.includes("WALLET_CONNECTION_REQUIRED")
+          ? t("wallet.required.connectedSeller")
+          : t("auctions.form.publishFailed"),
+      ),
   });
 
   const auctionsQuery = useQuery({

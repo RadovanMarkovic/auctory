@@ -87,7 +87,8 @@
     "securityHint": "Auctory nikada ne traži privatni ključ ni seed frazu. Potpisujete samo besplatnu poruku za verifikaciju.",
     "required": {
       "title": "Potreban je verifikovan novčanik",
-      "seller": "Verifikujte Sepolia novčanik pre objavljivanja proizvoda i registracije sertifikata.",
+      "seller": "Verifikujte Sepolia novčanik pre objavljivanja proizvoda ili aukcije i registracije sertifikata.",
+      "connectedSeller": "Povežite MetaMask sa svojim verifikovanim Sepolia novčanikom pre objavljivanja.",
       "buyer": "Verifikujte Sepolia novčanik kako bi sertifikat mogao da vam bude prenet.",
       "action": "Idi na novčanik"
     },
