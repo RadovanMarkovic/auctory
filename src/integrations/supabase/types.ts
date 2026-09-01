@@ -493,6 +493,39 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_verification_nonces: {
+        Row: {
+          address: string
+          created_at: string
+          expires_at: string
+          id: string
+          nonce: string
+          updated_at: string
+          used_at: string | null
+          user_id: string
+        }
+        Insert: {
+          address: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          nonce: string
+          updated_at?: string
+          used_at?: string | null
+          user_id: string
+        }
+        Update: {
+          address?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          nonce?: string
+          updated_at?: string
+          used_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       public_auctions: {
@@ -655,6 +688,13 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      consume_wallet_nonce: {
+        Args: { _nonce: string; _user_id: string }
+        Returns: {
+          address: string
+          expires_at: string
+        }[]
+      }
       finalize_auctions: { Args: never; Returns: undefined }
       has_role: {
         Args: {
@@ -662,6 +702,19 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      issue_wallet_nonce: {
+        Args: {
+          _address: string
+          _expires_at: string
+          _nonce: string
+          _user_id: string
+        }
+        Returns: undefined
+      }
+      link_verified_wallet: {
+        Args: { _address: string; _user_id: string }
+        Returns: undefined
       }
       open_transaction_dispute: {
         Args: { _reason: string; _transaction_id: string }

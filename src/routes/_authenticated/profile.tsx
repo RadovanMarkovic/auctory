@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
+import { WalletPanel } from "@/components/wallet/WalletPanel";
 import { useAuth } from "@/lib/auth-context";
 import { COUNTRIES } from "@/lib/countries";
 
@@ -379,48 +380,18 @@ function ProfilePage() {
           </div>
 
           <div className="space-y-6">
-            <Card>
+            <Card id="wallet">
               <CardHeader>
                 <CardTitle className="font-display text-2xl">
                   {t("profilePage.wallet.title")}
                 </CardTitle>
                 <CardDescription>{t("profilePage.wallet.description")}</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 text-sm">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-muted-foreground">{t("profilePage.wallet.status")}</span>
-                  <Badge variant={walletConnected ? "success" : "muted"}>
-                    {walletConnected
-                      ? t("profilePage.wallet.connected")
-                      : t("profilePage.wallet.notConnected")}
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-muted-foreground">{t("profilePage.wallet.address")}</span>
-                  <span className="font-mono text-xs">
-                    {profile?.wallet_address
-                      ? shortenAddress(profile.wallet_address)
-                      : t("profilePage.wallet.none")}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-muted-foreground">{t("profilePage.wallet.network")}</span>
-                  <span>{profile?.wallet_network ?? t("profilePage.wallet.none")}</span>
-                </div>
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-muted-foreground">{t("profilePage.wallet.verifiedAt")}</span>
-                  <span>
-                    {profile?.wallet_verified_at
-                      ? dateFormatter.format(new Date(profile.wallet_verified_at))
-                      : t("profilePage.wallet.none")}
-                  </span>
-                </div>
-                <Button variant="outline" className="w-full" disabled>
-                  {t("profilePage.wallet.connectSoon")}
-                </Button>
-                <p className="text-xs text-muted-foreground">{t("profilePage.wallet.hint")}</p>
+              <CardContent>
+                <WalletPanel />
               </CardContent>
             </Card>
+
 
             <Card>
               <CardHeader>

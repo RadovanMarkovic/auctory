@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { WalletRequiredNotice } from "@/components/wallet/WalletRequiredNotice";
 import { formatAuctionDate, formatAuctionMoney } from "@/lib/auctions";
 import { useAuth } from "@/lib/auth-context";
 import {
@@ -130,6 +131,12 @@ function TransactionPage() {
           </Button>
         }
       />
+
+      {isBuyer && transaction.status === "ready_for_transfer" ? (
+        <div className="mt-6">
+          <WalletRequiredNotice context="buyer" />
+        </div>
+      ) : null}
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-6">

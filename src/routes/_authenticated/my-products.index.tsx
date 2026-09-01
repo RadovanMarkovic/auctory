@@ -11,7 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { WalletRequiredNotice } from "@/components/wallet/WalletRequiredNotice";
 import { useAuth } from "@/lib/auth-context";
+import { isSepoliaVerified, useVerifiedWallet } from "@/lib/wallet/verify";
 import { useRoles } from "@/lib/use-roles";
 import type { ProductStatus } from "@/lib/products";
 
@@ -37,6 +39,7 @@ const STATUSES: ProductStatus[] = ["draft", "published", "archived"];
 
 function MyProductsPage() {
   const { t } = useTranslation();
+  const walletVerified = isSepoliaVerified(useVerifiedWallet().data);
   const { user } = useAuth();
   const { isSeller, isLoading: rolesLoading } = useRoles();
   const queryClient = useQueryClient();
@@ -116,6 +119,8 @@ function MyProductsPage() {
         }
       />
 
+      <WalletRequiredNotice context="seller" />
+
       <div className="mt-12">
         {productsQuery.isLoading ? (
           <LoadingState />
@@ -174,11 +179,16 @@ function MyProductsPage() {
                                     <Button
                                       variant="outline"
                                       size="sm"
-                                      disabled={(product.product_images?.length ?? 0) === 0}
+                                      disabled={
+                                        (product.product_images?.length ?? 0) === 0 ||
+                                        !walletVerified
+                                      }
                                       title={
                                         (product.product_images?.length ?? 0) === 0
                                           ? t("products.manage.needImage")
-                                          : undefined
+                                          : !walletVerified
+                                            ? t("wallet.required.seller")
+                                            : undefined
                                       }
                                       onClick={() =>
                                         statusMutation.mutate({

@@ -16,7 +16,9 @@ import { ProvenanceAttachment } from "@/components/products/ProvenanceAttachment
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { WalletRequiredNotice } from "@/components/wallet/WalletRequiredNotice";
 import { useAuth } from "@/lib/auth-context";
+import { isSepoliaVerified, useVerifiedWallet } from "@/lib/wallet/verify";
 import type { ProductStatus } from "@/lib/products";
 
 const title = "Edit Product — Auctory";
@@ -40,6 +42,7 @@ export const Route = createFileRoute("/_authenticated/my-products/$productId")({
 function EditProductPage() {
   const { productId } = Route.useParams();
   const { t } = useTranslation();
+  const walletVerified = isSepoliaVerified(useVerifiedWallet().data);
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
@@ -144,6 +147,8 @@ function EditProductPage() {
         }
       />
 
+      <WalletRequiredNotice context="seller" />
+
       <p className="mt-6 rounded-md border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
         {t("products.disclaimer")}
       </p>
@@ -175,8 +180,14 @@ function EditProductPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  disabled={images.length === 0}
-                  title={images.length === 0 ? t("products.manage.needImage") : undefined}
+                  disabled={images.length === 0 || !walletVerified}
+                  title={
+                    images.length === 0
+                      ? t("products.manage.needImage")
+                      : !walletVerified
+                        ? t("wallet.required.seller")
+                        : undefined
+                  }
                   onClick={() => statusMutation.mutate("published")}
                 >
                   {t("products.manage.publish")}
