@@ -103,7 +103,8 @@
       "invalidAddress": "Invalid wallet address.",
       "unauthorized": "Please sign in again.",
       "unknown": "Wallet verification failed. Please try again."
-    }
+    },
+    "mismatchShort": "Account mismatch"
   },
   "footer": {
     "tagline": "A bilingual auction house for luxury watches, fine jewelry, collectibles, and limited-edition fashion — with verifiable on-chain certificates of provenance.",
