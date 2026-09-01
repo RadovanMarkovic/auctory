@@ -17,15 +17,18 @@ export function WalletButton({ className }: { className?: string }) {
   const wallet = useWallet();
   const verifiedQuery = useVerifiedWallet();
   const isAuthenticated = Boolean(session);
+  // Never show a MetaMask account for a signed-out user, even if the local
+  // connection state has not been reset yet.
+  const activeAddress = isAuthenticated ? wallet.address : null;
   const verifiedAddress = verifiedQuery.data?.address ?? null;
   const mismatch = Boolean(
-    wallet.address && verifiedAddress && !sameAddress(wallet.address, verifiedAddress),
+    activeAddress && verifiedAddress && !sameAddress(activeAddress, verifiedAddress),
   );
 
   // Warn as soon as MetaMask switches to an account other than the verified one.
   useEffect(() => {
     if (mismatch) toast.warning(t("wallet.mismatch"));
-  }, [mismatch, wallet.address, t]);
+  }, [mismatch, activeAddress, t]);
 
   async function handleClick() {
     if (!isAuthenticated) return;
