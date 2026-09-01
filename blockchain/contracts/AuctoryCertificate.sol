@@ -2,6 +2,7 @@
 pragma solidity 0.8.24;
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
@@ -188,11 +189,11 @@ contract AuctoryCertificate is ERC721URIStorage, AccessControl, Pausable {
         return super._update(to, tokenId, auth);
     }
 
-    function approve(address, uint256) public pure override {
+    function approve(address, uint256) public pure override(ERC721, IERC721) {
         revert ApprovalsDisabled();
     }
 
-    function setApprovalForAll(address, bool) public pure override {
+    function setApprovalForAll(address, bool) public pure override(ERC721, IERC721) {
         revert ApprovalsDisabled();
     }
 
