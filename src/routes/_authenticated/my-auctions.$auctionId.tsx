@@ -11,6 +11,7 @@ import {
   toReservePrice,
   type AuctionFormValues,
 } from "@/components/auctions/AuctionForm";
+import { WalletRequiredNotice } from "@/components/wallet/WalletRequiredNotice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -119,11 +120,13 @@ function EditAuctionPage() {
       );
       invalidate();
     },
-    onError: (_error, variables) =>
+    onError: (error, variables) =>
       toast.error(
-        variables.status === "scheduled"
-          ? t("auctions.form.publishFailed")
-          : t("auctions.form.saveFailed"),
+        error instanceof Error && error.message.includes("wallet_not_verified")
+          ? t("wallet.required.seller")
+          : variables.status === "scheduled"
+            ? t("auctions.form.publishFailed")
+            : t("auctions.form.saveFailed"),
       ),
   });
 
@@ -205,7 +208,8 @@ function EditAuctionPage() {
         </p>
       ) : null}
 
-      <div className="mt-10">
+      <div className="mt-10 space-y-6">
+        <WalletRequiredNotice context="seller" />
         <AuctionForm
           key={auction.updated_at}
           initialValues={initialValues}
