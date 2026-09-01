@@ -1,11 +1,13 @@
 import { Wallet } from "lucide-react";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
-import { shortenAddress } from "@/lib/wallet/message";
+import { shortenAddress, sameAddress } from "@/lib/wallet/message";
 import { useWallet } from "@/lib/wallet/use-wallet";
+import { useVerifiedWallet } from "@/lib/wallet/verify";
 
 /** Header wallet control: connect, wrong network, or connected account.
  * Disabled until the user is signed in. */
@@ -13,7 +15,17 @@ export function WalletButton({ className }: { className?: string }) {
   const { t } = useTranslation();
   const { session } = useAuth();
   const wallet = useWallet();
+  const verifiedQuery = useVerifiedWallet();
   const isAuthenticated = Boolean(session);
+  const verifiedAddress = verifiedQuery.data?.address ?? null;
+  const mismatch = Boolean(
+    wallet.address && verifiedAddress && !sameAddress(wallet.address, verifiedAddress),
+  );
+
+  // Warn as soon as MetaMask switches to an account other than the verified one.
+  useEffect(() => {
+    if (mismatch) toast.warning(t("wallet.mismatch"));
+  }, [mismatch, wallet.address, t]);
 
   async function handleClick() {
     if (!isAuthenticated) return;
@@ -35,11 +47,13 @@ export function WalletButton({ className }: { className?: string }) {
     ? t("wallet.connect")
     : !wallet.onSepolia
       ? t("wallet.wrongNetworkShort")
-      : shortenAddress(wallet.address);
+      : mismatch
+        ? t("wallet.mismatchShort")
+        : shortenAddress(wallet.address);
 
   return (
     <Button
-      variant="outlineGold"
+      variant={mismatch ? "outline" : "outlineGold"}
       size="sm"
       className={className}
       onClick={handleClick}

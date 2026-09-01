@@ -4,6 +4,7 @@ import { useRouter } from "@tanstack/react-router";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { resetWalletConnection } from "@/lib/wallet/use-wallet";
 
 export interface AuthState {
   session: Session | null;
@@ -29,6 +30,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
 
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
+      // A different (or no) user must never inherit the previous local wallet
+      // connection shown in the header.
+      if (event !== "USER_UPDATED") resetWalletConnection();
       void router.invalidate();
       if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
     });
