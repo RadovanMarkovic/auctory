@@ -4,6 +4,7 @@ import { useRouter } from "@tanstack/react-router";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { revokeWalletPermission } from "@/lib/wallet/metamask";
 import { resetWalletConnection } from "@/lib/wallet/use-wallet";
 
 export interface AuthState {
@@ -31,8 +32,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       // A different (or no) user must never inherit the previous local wallet
-      // connection shown in the header.
+      // connection shown in the header. On sign-out we also revoke the site's
+      // MetaMask permission so the next connect opens the account picker
+      // instead of silently reusing the previous user's account.
       if (event !== "USER_UPDATED") resetWalletConnection();
+      if (event === "SIGNED_OUT") void revokeWalletPermission();
       void router.invalidate();
       if (event !== "SIGNED_OUT") void queryClient.invalidateQueries();
     });
