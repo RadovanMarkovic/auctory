@@ -15,22 +15,26 @@ Private keys are never touched — only `personal_sign` through the provider.
 
 ## 2. Server-verified ownership
 
-Two protected server functions in `src/lib/wallet.functions.ts` (via `requireSupabaseAuth`, so the acting user comes from the session, never from the client):
+Two protected server functions in `src/lib/wallet.functions.ts` (via `requireSupabaseAuth`, so the acting user comes from the session, never from the client). This stack does guarantee server-only execution: the build strips `.handler()` bodies from client bundles, and all privileged logic (nonce writes, signature recovery, profile updates) lives in the handler body or in a `wallet.server.ts` helper that is blocked from client bundles by filename. No Edge Function fallback is needed, and nothing secret sits at module scope.
 
-- `requestWalletNonce({ address })` — stores a single-use nonce with a short expiry (5 min) for the authenticated user and returns the exact message to sign:
+- `requestWalletNonce({ address })` — normalizes/checksums the address, stores a single-use nonce bound to the authenticated user and that address, expiring in 5 minutes, and returns the exact message to sign:
 ```text
 Auctory wallet verification
+Domain: <application origin>
 User: <auth uid>
 Address: <checksummed address>
 Chain: 11155111 (Sepolia)
 Nonce: <nonce>
 Expires: <ISO timestamp>
 ```
-- `verifyWalletSignature({ address, signature })` — recovers the signer with `ethers.verifyMessage`, requires an exact match with the address in the nonce row, requires the nonce to be unused and unexpired, marks it used, then writes `wallet_address`, `wallet_network = 'sepolia'`, `wallet_verified_at` to the caller's profile. An unsigned address is never stored.
+- `verifyWalletSignature({ address, signature })` — rebuilds the exact message from the stored nonce row, recovers the signer with `ethers.verifyMessage`, and requires an exact match with the bound address, the caller's user ID, and an unexpired, unused nonce. The nonce is consumed conditionally (`UPDATE ... WHERE used_at IS NULL AND expires_at > now() RETURNING`), so two simultaneous attempts cannot both succeed. Only after that does it write `wallet_address`, `wallet_network = 'sepolia'`, `wallet_verified_at`. An unsigned address is never stored.
 
-Uniqueness: a case-insensitive unique index on the stored wallet address means one wallet can be verified by only one user; a second user attempting it gets a clear "wallet already linked to another account" message. Changing the wallet clears `wallet_verified_at` and requires a fresh signature.
+Uniqueness: a unique index on the normalized (lower-cased) wallet address enforces at the database level that one address belongs to at most one Auctory user; a second user attempting it gets a clear "wallet already linked to another account" message. Changing the wallet clears `wallet_verified_at` and requires a fresh signature.
 
-New table `wallet_verification_nonces` (user_id, address, nonce, expires_at, used_at). RLS enabled with no direct client access — only the server functions (service role) read and write it. `profiles` keeps its existing policies; wallet columns become writable only through the verification function (a trigger blocks direct client updates to the three wallet columns).
+New table `wallet_verification_nonces` (user_id, address, nonce, expires_at, used_at) with RLS enabled and no client grants at all — only the server-side verification flow (service role) reads and writes it.
+
+`profiles` keeps its existing policies, but a `BEFORE UPDATE` trigger rejects any change to `wallet_address`, `wallet_verified_at`, or `wallet_network` unless it comes from the verification flow (a server-side marker the client cannot set). Authenticated users therefore cannot forge wallet verification through a direct profile update.
+
 
 ## 3. Where a wallet is required
 
