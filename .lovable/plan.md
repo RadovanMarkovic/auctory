@@ -15,18 +15,19 @@ ERC721URIStorage + AccessControl + Pausable.
 
 - Constructor takes an operator address: deployer gets `DEFAULT_ADMIN_ROLE`, operator gets `MINTER_ROLE` and `TRANSFER_ROLE`. Zero-address operator reverts.
 - `registerProduct(bytes32 productRef, address sellerWallet, string tokenURI, bytes32 metadataHash)` — `MINTER_ROLE` only, `whenNotPaused`:
-  - reverts if `productRef` already registered or is zero, or seller wallet is zero;
-  - mints exactly one token to the seller wallet, sets the token URI;
+  - reverts on zero `productRef`, zero `metadataHash`, empty `tokenURI`, zero seller wallet, or an already-registered `productRef`;
+  - mints exactly one token to the seller wallet and sets the token URI; token IDs start at 1, so 0 stays the unregistered default;
   - stores `{ tokenId, metadataHash, registeredAt, initialSeller, registeredBy }` plus `productRef → tokenId` and `tokenId → productRef` lookups;
   - emits `ProductRegistered(productRef, tokenId, sellerWallet, metadataHash, operator, timestamp)`.
 - `completeSale(bytes32 saleRef, bytes32 productRef, address buyerWallet, bytes32 saleDataHash)` — `TRANSFER_ROLE` only, `whenNotPaused`:
-  - reverts on unknown product, duplicate `saleRef`, zero buyer, or buyer already the current owner;
-  - performs the controlled transfer from current owner to buyer internally (bypassing the approval checks that ordinary callers face);
+  - reverts on zero `saleRef`, zero `saleDataHash`, zero buyer, unknown product, duplicate `saleRef`, or buyer already the current owner;
+  - performs the transfer through the internal controlled path;
   - records `{ productRef, tokenId, seller, buyer, saleDataHash, completedAt, operator }`;
   - emits the standard `Transfer` plus `SaleCompleted(saleRef, productRef, tokenId, seller, buyer, saleDataHash, timestamp)`.
-- Controlled-custody lock: `approve`, `setApprovalForAll`, `transferFrom`, `safeTransferFrom` are overridden to revert for everyone with `TransfersDisabled()` — only the internal `completeSale` path moves tokens. Ordinary owners cannot move or approve certificates.
+- Controlled-custody lock (OpenZeppelin 5.0.2 correct form): the three-argument `safeTransferFrom` is non-virtual and is not overridden. Instead an `_update` override rejects any owner-to-nonzero-address transfer unless an internal controlled-sale flag is set, so every public transfer variant — `transferFrom`, both `safeTransferFrom` overloads — reverts with `TransfersDisabled()`. Minting (from zero) stays allowed. `approve` and `setApprovalForAll` are explicitly overridden to revert.
+- `completeSale` sets the internal flag only immediately around the internal transfer and resets it right after. Because verified Auctory wallets are MetaMask EOAs, the transfer uses the internal controlled path so the flag is never active during an external receiver callback.
 - Admin-only `pause()` / `unpause()`; role management via standard AccessControl `grantRole`/`revokeRole` under `DEFAULT_ADMIN_ROLE`.
-- View helpers: `getProduct(productRef)`, `getSale(saleRef)`, `tokenIdOf(productRef)`, `productRefOf(tokenId)`, `isProductRegistered`, `isSaleProcessed`.
+- View helpers: `getProduct(productRef)`, `getSale(saleRef)`, `tokenIdOf(productRef)`, `productRefOf(tokenId)`, `isProductRegistered`, `isSaleProcessed`. Unknown `tokenIdOf` / `productRefOf` lookups revert instead of returning ambiguous zero defaults.
 - `supportsInterface` covers ERC165, ERC721, ERC721Metadata, AccessControl.
 
 ## 3. Tests (`blockchain/test/AuctoryCertificate.test.ts`)
