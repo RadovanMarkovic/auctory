@@ -77,18 +77,24 @@ export async function getConnectedAccounts(): Promise<string[]> {
 }
 
 /**
- * Connect an account. When `forcePicker` is true we first ask MetaMask to
- * re-issue the `eth_accounts` permission, which opens the account selector
- * instead of silently reusing the previously authorised account.
+ * Connect an account. When `forcePicker` is true we first revoke the existing
+ * `eth_accounts` permission, so `eth_requestAccounts` opens the MetaMask
+ * account selector instead of silently reusing the previously authorised
+ * account. (`wallet_requestPermissions` alone resolves without a UI when the
+ * permission is already granted.)
  */
 export async function connectWallet(forcePicker = false): Promise<string> {
   if (forcePicker) {
     try {
-      await request("wallet_requestPermissions", [{ eth_accounts: {} }]);
-    } catch (error) {
-      const walletError = error instanceof WalletError ? error : toWalletError(error);
-      if (walletError.code === "rejected" || walletError.code === "pending") throw walletError;
-      // Older wallets may not support the permission request; fall through.
+      await request("wallet_revokePermissions", [{ eth_accounts: {} }]);
+    } catch {
+      // Wallet may not support revocation; fall through and try the picker.
+      try {
+        await request("wallet_requestPermissions", [{ eth_accounts: {} }]);
+      } catch (error) {
+        const walletError = error instanceof WalletError ? error : toWalletError(error);
+        if (walletError.code === "rejected" || walletError.code === "pending") throw walletError;
+      }
     }
   }
   const accounts = await request<string[]>("eth_requestAccounts");
