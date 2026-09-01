@@ -3,15 +3,20 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth-context";
 import { shortenAddress } from "@/lib/wallet/message";
 import { useWallet } from "@/lib/wallet/use-wallet";
 
-/** Header wallet control: connect, wrong network, or connected account. */
+/** Header wallet control: connect, wrong network, or connected account.
+ * Disabled until the user is signed in. */
 export function WalletButton({ className }: { className?: string }) {
   const { t } = useTranslation();
+  const { session } = useAuth();
   const wallet = useWallet();
+  const isAuthenticated = Boolean(session);
 
   async function handleClick() {
+    if (!isAuthenticated) return;
     if (!wallet.available) {
       toast.error(t("wallet.errors.no_metamask"));
       return;
@@ -38,7 +43,9 @@ export function WalletButton({ className }: { className?: string }) {
       size="sm"
       className={className}
       onClick={handleClick}
-      disabled={wallet.connecting}
+      disabled={wallet.connecting || !isAuthenticated}
+      aria-disabled={!isAuthenticated}
+EOL_MARKER
     >
       <Wallet />
       {label}
