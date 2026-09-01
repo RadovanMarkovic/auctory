@@ -13,7 +13,7 @@ const NONCE_TTL_MS = 5 * 60 * 1000;
 
 /** Server-only: the Auctory origin is part of the signed message. */
 async function requestDomain() {
-  const { getRequest } = await import("@tanstack/start-server-core");
+  const { getRequest } = await import("@tanstack/react-start/server");
   const headers = getRequest().headers;
   const origin = headers.get("origin");
   if (origin) return origin.replace(/^https?:\/\//, "");
