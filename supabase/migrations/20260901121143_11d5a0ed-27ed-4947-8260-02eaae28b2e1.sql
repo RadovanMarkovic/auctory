@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.guard_auction_publish_wallet() FROM anon, authenticated;
