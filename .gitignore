@@ -30,3 +30,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Blockchain workspace (isolated Hardhat)
+blockchain/node_modules
+blockchain/artifacts
+blockchain/cache
+blockchain/coverage
+blockchain/coverage.json
+blockchain/typechain
+blockchain/typechain-types
