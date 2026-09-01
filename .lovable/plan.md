@@ -39,7 +39,7 @@ Run `npx hardhat compile` and `npx hardhat test` in `blockchain/` and report res
 ## 4. ABI export and Remix guide
 
 - Export script writes `blockchain/abi/AuctoryCertificate.json` (ABI only) after compile.
-- `blockchain/REMIX.md`: exact compiler version `0.8.24+commit.e11b9ed9`, EVM version, optimizer on / 200 runs, flattened-vs-import instructions, constructor argument (operator address), Injected Provider deployment to Sepolia, and Etherscan verification steps including ABI-encoded constructor args.
+- `blockchain/REMIX.md`: exact compiler version `0.8.24+commit.e11b9ed9`, EVM version `shanghai`, optimizer enabled with 200 runs, viaIR disabled, flattened-vs-import instructions, constructor argument (operator address), Injected Provider deployment to Sepolia, and Etherscan verification steps including ABI-encoded constructor args.
 
 ## 5. Out of scope for this step
 
