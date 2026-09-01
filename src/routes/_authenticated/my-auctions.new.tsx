@@ -12,6 +12,7 @@ import {
   toReservePrice,
   type AuctionFormValues,
 } from "@/components/auctions/AuctionForm";
+import { WalletRequiredNotice } from "@/components/wallet/WalletRequiredNotice";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
@@ -74,7 +75,12 @@ function NewAuctionPage() {
       void queryClient.invalidateQueries({ queryKey: ["my-auctions", user?.id] });
       void navigate({ to: "/my-auctions/$auctionId", params: { auctionId: data.id } });
     },
-    onError: () => toast.error(t("auctions.form.saveFailed")),
+    onError: (error) =>
+      toast.error(
+        error instanceof Error && error.message.includes("wallet_not_verified")
+          ? t("wallet.required.seller")
+          : t("auctions.form.saveFailed"),
+      ),
   });
 
   if (isLoading) {
@@ -114,7 +120,8 @@ function NewAuctionPage() {
         }
       />
 
-      <div className="mt-10">
+      <div className="mt-10 space-y-6">
+        <WalletRequiredNotice context="seller" />
         <AuctionForm
           initialValues={emptyAuctionForm}
           submitting={createMutation.isPending}
