@@ -43,8 +43,11 @@ function setState(patch: Partial<WalletState>) {
 
 function subscribe(listener: () => void) {
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
+
 
 const serverSnapshot: WalletState = {
   available: false,
