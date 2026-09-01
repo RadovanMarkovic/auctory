@@ -188,11 +188,11 @@ contract AuctoryCertificate is ERC721URIStorage, AccessControl, Pausable {
         return super._update(to, tokenId, auth);
     }
 
-    function approve(address, uint256) public pure override(ERC721, IERC721) {
+    function approve(address, uint256) public pure override {
         revert ApprovalsDisabled();
     }
 
-    function setApprovalForAll(address, bool) public pure override(ERC721, IERC721) {
+    function setApprovalForAll(address, bool) public pure override {
         revert ApprovalsDisabled();
     }
 
