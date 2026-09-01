@@ -103,6 +103,21 @@ export async function connectWallet(forcePicker = false): Promise<string> {
   return account;
 }
 
+/**
+ * Revoke the site's `eth_accounts` permission so the next
+ * `eth_requestAccounts` call opens the account picker again instead of
+ * silently reusing the previously authorised account. Used on sign-out:
+ * MetaMask has no true "disconnect" API, this is the closest equivalent.
+ * Safe to call even when the wallet does not support revocation.
+ */
+export async function revokeWalletPermission(): Promise<void> {
+  try {
+    await request("wallet_revokePermissions", [{ eth_accounts: {} }]);
+  } catch {
+    // Wallet may not support revocation; ignore.
+  }
+}
+
 /** Ask MetaMask to switch to Sepolia, adding the chain when it is unknown. */
 export async function switchToSepolia(): Promise<void> {
   try {
