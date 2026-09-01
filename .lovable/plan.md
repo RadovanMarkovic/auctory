@@ -32,7 +32,7 @@ ERC721URIStorage + AccessControl + Pausable.
 
 ## 3. Tests (`blockchain/test/AuctoryCertificate.test.ts`)
 
-Deployment roles; unauthorized `registerProduct`/`completeSale`/`pause` revert; mint count and initial ownership; token URI; stored metadata hash and registration fields; duplicate `productRef` reverts; controlled transfer moves ownership and emits both events; owner `approve`/`setApprovalForAll`/`transferFrom`/`safeTransferFrom` all revert; duplicate `saleRef` reverts; paused state blocks register and sale, unpause restores; `supportsInterface` matrix.
+Deployment roles; unauthorized `registerProduct`/`completeSale`/`pause` revert; mint count and initial ownership; first token ID is 1; token URI; stored metadata hash and registration fields; duplicate `productRef` reverts; every zero/empty validation (zero `productRef`, zero `metadataHash`, empty `tokenURI`, zero seller, zero `saleRef`, zero `saleDataHash`, zero buyer); unknown `tokenIdOf` / `productRefOf` / `getProduct` / `getSale` lookups revert; controlled transfer moves ownership and emits both `Transfer` and `SaleCompleted`; every public transfer overload reverts for the owner and for an approved-attempt caller — `transferFrom`, `safeTransferFrom(address,address,uint256)`, `safeTransferFrom(address,address,uint256,bytes)` — plus `approve` and `setApprovalForAll`; duplicate `saleRef` reverts; paused state blocks register and sale, unpause restores; `supportsInterface` matrix.
 
 Run `npx hardhat compile` and `npx hardhat test` in `blockchain/` and report results.
 
