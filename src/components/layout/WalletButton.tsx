@@ -45,7 +45,6 @@ export function WalletButton({ className }: { className?: string }) {
       onClick={handleClick}
       disabled={wallet.connecting || !isAuthenticated}
       aria-disabled={!isAuthenticated}
-EOL_MARKER
     >
       <Wallet />
       {label}
