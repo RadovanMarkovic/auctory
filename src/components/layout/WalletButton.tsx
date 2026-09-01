@@ -36,12 +36,12 @@ export function WalletButton({ className }: { className?: string }) {
       toast.error(t("wallet.errors.no_metamask"));
       return;
     }
-    if (wallet.address && !wallet.onSepolia) {
+    if (activeAddress && !wallet.onSepolia) {
       const ok = await wallet.switchNetwork();
       if (!ok && wallet.error) toast.error(t(`wallet.errors.${wallet.error}`));
       return;
     }
-    if (wallet.address) return;
+    if (activeAddress) return;
     const address = await wallet.connect();
     if (!address && wallet.error) toast.error(t(`wallet.errors.${wallet.error}`));
   }
