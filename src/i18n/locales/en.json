@@ -72,7 +72,38 @@
     }
   },
   "wallet": {
-    "connect": "Connect wallet"
+    "connect": "Connect wallet",
+    "disconnect": "Disconnect",
+    "verify": "Verify wallet",
+    "changeVerified": "Verify a different wallet",
+    "verified": "Verified",
+    "notVerified": "Not verified",
+    "switchNetwork": "Switch to Sepolia",
+    "wrongNetworkShort": "Wrong network",
+    "connectedAccount": "Connected account: {{address}}",
+    "notConnectedHint": "MetaMask is available. Connect an account to verify it.",
+    "mismatch": "The connected account differs from your verified wallet. Sign again to change the verified wallet.",
+    "verifiedToast": "Wallet verified.",
+    "securityHint": "Auctory never asks for your private key or seed phrase. You only sign a free verification message.",
+    "required": {
+      "title": "Verified wallet required",
+      "seller": "Verify a Sepolia wallet before publishing a product and registering its certificate.",
+      "buyer": "Verify a Sepolia wallet so the certificate can be transferred to you.",
+      "action": "Go to wallet"
+    },
+    "errors": {
+      "no_metamask": "MetaMask was not detected in this browser.",
+      "rejected": "You rejected the request in MetaMask.",
+      "pending": "A MetaMask request is already open. Finish it first.",
+      "wrong_network": "Switch MetaMask to the Sepolia test network.",
+      "no_accounts": "No MetaMask account was shared.",
+      "alreadyLinked": "This wallet is already verified by another account.",
+      "nonceInvalid": "The verification request expired. Please try again.",
+      "signatureInvalid": "The signature did not match the wallet address.",
+      "invalidAddress": "Invalid wallet address.",
+      "unauthorized": "Please sign in again.",
+      "unknown": "Wallet verification failed. Please try again."
+    }
   },
   "footer": {
     "tagline": "A bilingual auction house for luxury watches, fine jewelry, collectibles, and limited-edition fashion — with verifiable on-chain certificates of provenance.",
@@ -356,16 +387,14 @@
     },
     "wallet": {
       "title": "Wallet",
-      "description": "Connect a wallet later to receive ERC-721 certificates.",
+      "description": "Verify a Sepolia wallet to receive ERC-721 certificates.",
       "status": "Status",
       "connected": "Connected",
       "notConnected": "Not connected",
       "address": "Address",
       "network": "Network",
-      "verifiedAt": "Verified on",
-      "none": "—",
-      "connectSoon": "Connect wallet (coming soon)",
-      "hint": "Wallet connection with MetaMask arrives in a later step."
+      "verifiedAt": "Verified",
+      "none": "—"
     },
     "status": {
       "readOnly": "Role and account status are managed by Auctory and cannot be changed here.",

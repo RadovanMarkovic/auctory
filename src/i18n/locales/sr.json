@@ -72,7 +72,38 @@
     }
   },
   "wallet": {
-    "connect": "Poveži novčanik"
+    "connect": "Poveži novčanik",
+    "disconnect": "Prekini vezu",
+    "verify": "Verifikuj novčanik",
+    "changeVerified": "Verifikuj drugi novčanik",
+    "verified": "Verifikovan",
+    "notVerified": "Nije verifikovan",
+    "switchNetwork": "Prebaci na Sepolia",
+    "wrongNetworkShort": "Pogrešna mreža",
+    "connectedAccount": "Povezan nalog: {{address}}",
+    "notConnectedHint": "MetaMask je dostupan. Povežite nalog da biste ga verifikovali.",
+    "mismatch": "Povezan nalog se razlikuje od verifikovanog novčanika. Potpišite ponovo da biste promenili verifikovani novčanik.",
+    "verifiedToast": "Novčanik je verifikovan.",
+    "securityHint": "Auctory nikada ne traži privatni ključ ni seed frazu. Potpisujete samo besplatnu poruku za verifikaciju.",
+    "required": {
+      "title": "Potreban je verifikovan novčanik",
+      "seller": "Verifikujte Sepolia novčanik pre objavljivanja proizvoda i registracije sertifikata.",
+      "buyer": "Verifikujte Sepolia novčanik kako bi sertifikat mogao da vam bude prenet.",
+      "action": "Idi na novčanik"
+    },
+    "errors": {
+      "no_metamask": "MetaMask nije pronađen u ovom pregledaču.",
+      "rejected": "Odbili ste zahtev u MetaMask-u.",
+      "pending": "Zahtev u MetaMask-u je već otvoren. Prvo ga završite.",
+      "wrong_network": "Prebacite MetaMask na Sepolia test mrežu.",
+      "no_accounts": "Nijedan MetaMask nalog nije podeljen.",
+      "alreadyLinked": "Ovaj novčanik je već verifikovan na drugom nalogu.",
+      "nonceInvalid": "Zahtev za verifikaciju je istekao. Pokušajte ponovo.",
+      "signatureInvalid": "Potpis se ne poklapa sa adresom novčanika.",
+      "invalidAddress": "Neispravna adresa novčanika.",
+      "unauthorized": "Prijavite se ponovo.",
+      "unknown": "Verifikacija novčanika nije uspela. Pokušajte ponovo."
+    }
   },
   "footer": {
     "tagline": "Dvojezična aukcijska kuća za luksuzne satove, fini nakit, kolekcionarske predmete i modu u ograničenom izdanju — uz proverljive sertifikate porekla na blokčejnu.",
@@ -359,16 +390,14 @@
     },
     "wallet": {
       "title": "Novčanik",
-      "description": "Novčanik ćete kasnije povezati radi ERC-721 sertifikata.",
+      "description": "Verifikujte Sepolia novčanik za prijem ERC-721 sertifikata.",
       "status": "Status",
       "connected": "Povezan",
       "notConnected": "Nije povezan",
       "address": "Adresa",
       "network": "Mreža",
       "verifiedAt": "Verifikovano",
-      "none": "—",
-      "connectSoon": "Poveži novčanik (uskoro)",
-      "hint": "Povezivanje putem MetaMask-a stiže u sledećem koraku."
+      "none": "—"
     },
     "status": {
       "readOnly": "Uloga i status naloga su pod kontrolom Auctory tima i ne mogu se menjati ovde.",
