@@ -38,12 +38,15 @@ New table `wallet_verification_nonces` (user_id, address, nonce, expires_at, use
 
 ## 3. Where a wallet is required
 
-- Product draft: no wallet needed (unchanged).
-- Publishing a product: an approved seller must have a verified Sepolia wallet. Enforced in the database (trigger on the draft → published transition) and mirrored in the UI, where the publish buttons in `my-products.index.tsx` and `my-products.$productId.tsx` show a "verify your wallet first" notice with a link to the account wallet section.
+- Product draft: no wallet needed — saving a draft is never blocked (unchanged).
+- Publishing/registering a product: an approved seller must have a verified Sepolia wallet. Enforced in the database (trigger on the draft → published transition) and mirrored in the UI, where the publish buttons in `my-products.index.tsx` and `my-products.$productId.tsx` show a "verify your wallet first" notice with a link to the account wallet section.
 - Bidding: no wallet required (unchanged).
-- Buyer: prompted to verify a wallet only once a transaction reaches `ready_for_transfer`, shown on the transaction page and in the existing `ActionRequiredNotice`.
+- Winning buyer: a verified wallet is required only before certificate transfer, so the prompt appears once a transaction reaches `ready_for_transfer` — on the transaction page and in the existing `ActionRequiredNotice`.
+
+On `accountsChanged`, only the local connection state resets. The verified wallet in the database is never silently deleted or replaced: the UI shows a mismatch state ("connected account differs from your verified wallet") and changing the verified wallet always requires an explicit new signature.
 
 Certificate minting is not implemented in this step; the wallet gate is the prerequisite it will later use.
+
 
 ## 4. UI
 
