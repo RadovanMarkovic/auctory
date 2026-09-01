@@ -46,13 +46,13 @@ export function WalletButton({ className }: { className?: string }) {
     if (!address && wallet.error) toast.error(t(`wallet.errors.${wallet.error}`));
   }
 
-  const label = !wallet.address
+  const label = !activeAddress
     ? t("wallet.connect")
     : !wallet.onSepolia
       ? t("wallet.wrongNetworkShort")
       : mismatch
         ? t("wallet.mismatchShort")
-        : shortenAddress(wallet.address);
+        : shortenAddress(activeAddress);
 
   return (
     <Button
