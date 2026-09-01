@@ -24,6 +24,9 @@ export interface WalletState {
   connecting: boolean;
   /** Last error code surfaced to the UI (translated at render time). */
   error: string | null;
+  /** True after an explicit disconnect or a sign-out: never auto-restore the
+   * MetaMask account until the user connects again on purpose. */
+  dismissed: boolean;
 }
 
 let state: WalletState = {
@@ -32,6 +35,7 @@ let state: WalletState = {
   chainId: null,
   connecting: false,
   error: null,
+  dismissed: false,
 };
 
 const listeners = new Set<() => void>();
@@ -55,7 +59,14 @@ const serverSnapshot: WalletState = {
   chainId: null,
   connecting: false,
   error: null,
+  dismissed: false,
 };
+
+/** Drop every local wallet connection detail (used on sign-in/sign-out).
+ * The server-verified wallet on the profile is never touched here. */
+export function resetWalletConnection() {
+  setState({ address: null, chainId: null, connecting: false, error: null, dismissed: true });
+}
 
 export function useWallet() {
   const snapshot = useSyncExternalStore(
@@ -72,7 +83,7 @@ export function useWallet() {
 
     void (async () => {
       const [accounts, chainId] = await Promise.all([getConnectedAccounts(), getChainId()]);
-      if (cancelled) return;
+      if (cancelled || state.dismissed) return;
       setState({ address: accounts[0] ?? null, chainId });
     })();
 
@@ -80,7 +91,7 @@ export function useWallet() {
     // the database is never touched here.
     const offAccounts = onWalletEvent("accountsChanged", (accounts) => {
       const next = (accounts as unknown as string[])[0] ?? null;
-      setState({ address: next, error: null });
+      setState({ address: next, error: null, dismissed: next === null ? true : state.dismissed });
     });
     const offChain = onWalletEvent("chainChanged", (hex) => {
       setState({ chainId: Number.parseInt(hex as unknown as string, 16) });
@@ -98,7 +109,7 @@ export function useWallet() {
     try {
       const address = await connectWallet();
       const chainId = await getChainId();
-      setState({ address, chainId });
+      setState({ address, chainId, dismissed: false });
       return address;
     } catch (error) {
       setState({ error: error instanceof WalletError ? error.code : "unknown" });
@@ -122,7 +133,7 @@ export function useWallet() {
 
   /** Logical disconnect: MetaMask has no revoke API, so we clear local state only. */
   const disconnect = useCallback(() => {
-    setState({ address: null, error: null });
+    setState({ address: null, error: null, dismissed: true });
   }, []);
 
   const clearError = useCallback(() => setState({ error: null }), []);
