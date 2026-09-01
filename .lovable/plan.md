@@ -5,8 +5,9 @@ A new `blockchain/` folder at the project root with its own `package.json`, `nod
 ## 1. Workspace
 
 - `blockchain/` with pinned versions: Solidity `0.8.24`, `@openzeppelin/contracts@5.0.2`, Hardhat 2.x + `@nomicfoundation/hardhat-toolbox`, ethers v6, TypeScript, Chai.
-- Optimizer enabled, `runs: 200`, `viaIR` off — the exact settings repeated in the Remix guide so bytecode matches.
-- Root `.gitignore` / `.prettierignore` / tsconfig excludes updated so `blockchain/` never enters the Vite or app TypeScript graph.
+- Compiler settings pinned in `hardhat.config.ts`: optimizer enabled, `runs: 200`, `viaIR: false`, `evmVersion: "shanghai"` — the exact same settings are repeated in the Remix guide so bytecode matches.
+- Root `.gitignore` / `.prettierignore` / tsconfig excludes updated so `blockchain/` never enters the Vite or app TypeScript graph. `blockchain/node_modules`, `artifacts`, `cache`, `coverage`, and generated typechain types are gitignored; `blockchain/abi/AuctoryCertificate.json` stays tracked.
+
 
 ## 2. Contract `AuctoryCertificate`
 
