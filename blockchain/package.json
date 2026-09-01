@@ -1,0 +1,19 @@
+{
+  "name": "auctory-blockchain",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Isolated Hardhat workspace for the AuctoryCertificate ERC-721 contract.",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "export-abi": "hardhat compile && node scripts/export-abi.cjs"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "4.0.0",
+    "@openzeppelin/contracts": "5.0.2",
+    "chai": "4.4.1",
+    "ethers": "6.13.4",
+    "hardhat": "2.22.17",
+    "typescript": "5.6.3"
+  }
+}
