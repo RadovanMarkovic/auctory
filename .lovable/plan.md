@@ -55,8 +55,18 @@ Certificate minting is not implemented in this step; the wallet gate is the prer
 - Transaction page gains the buyer wallet prompt at `ready_for_transfer`.
 - All strings added under existing `wallet.*` and `profile.wallet.*` keys in EN and SR. No design-system or layout changes.
 
-## 5. Technical notes
+## 5. Tests
+
+Automated tests covering the security requirements:
+- an address submitted without a valid signature is never stored;
+- an expired nonce fails verification;
+- a reused (already consumed) nonce fails verification, including two concurrent attempts where only one succeeds;
+- a wallet already verified by one user cannot be verified by a second user;
+- a direct authenticated update to `profiles.wallet_address` / `wallet_verified_at` / `wallet_network` is rejected and cannot forge verification.
+
+## 6. Technical notes
 
 - Adds `ethers@^6` as the only new dependency; imported dynamically in browser-only code paths.
-- Migration: `wallet_verification_nonces` table with GRANTs and RLS, unique lower-case index on `profiles.wallet_address`, trigger guarding direct wallet-column writes, and a publish guard requiring `wallet_verified_at` with `wallet_network = 'sepolia'` for seller publishing.
+- Migration: `wallet_verification_nonces` table with RLS and no client grants, unique index on the normalized `profiles.wallet_address`, trigger guarding direct wallet-column writes, and a publish guard requiring `wallet_verified_at` with `wallet_network = 'sepolia'` for seller publishing.
 - No Sepolia contract calls, no minting, no private keys, no changes to bidding, `finalize_auctions`, confirmations, or any status enum.
+
