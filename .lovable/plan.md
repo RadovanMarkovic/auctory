@@ -43,9 +43,9 @@ Failure handling:
 A protected retry action always reconciles first: inspect the saved receipt, `isSaleProcessed(saleRef)`, `getSale(saleRef)`, `ownerOf(tokenId)` and the historical `SaleCompleted` event. If the chain already shows the sale, the database is reconciled to `completed` — no second transaction is sent. While a previous transaction is still pending or its outcome is unknown, the action only reports status; a new submission is allowed **only** after a receipt explicitly shows failure.
 
 
-### 6. UI
-- Transaction page: transfer progress (ready → submitting → confirming → completed), previous and new owner, tx hash with Sepolia Etherscan link, block, timestamp, error and retry state, and a retry/reconcile button for participants. The existing outside-payment disclaimer stays exactly as it is.
-- Digital passport: shows the ownership change (previous owner, current owner, sale transaction link) once completed.
+### 7. UI and public passport access
+- Transaction page: a "Transfer certificate" action for buyer and seller at `ready_for_transfer`, transfer progress (ready → submitting → confirming → completed), previous and new owner, tx hash with Sepolia Etherscan link, block, timestamp, error and retry state, and a retry/reconcile button for participants. The existing outside-payment disclaimer stays exactly as it is.
+- `ownership_transfers` stays readable only by buyer, seller and admin. The public `ProductPassport` gets a safe public subset of completed transfer data (previous owner wallet, new owner wallet, tx hash, block, completion timestamp) through a trusted read-only server function limited to products of publicly visible auctions. No internal error text, no private transaction data.
 - Both parties see an in-app notice (the existing action-required notice pattern, extended) once the transfer confirms. No email is sent — the project has no email infrastructure.
 - All new strings added to EN and SR locale files.
 
