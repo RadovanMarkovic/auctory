@@ -292,6 +292,7 @@ function TransactionPage() {
                     try {
                       await confirmBuyer.mutateAsync(transaction.id);
                       toast.success(t("transactions.actions.confirmed"));
+                      void attemptTransferAfterConfirm();
                     } catch {
                       toast.error(t("transactions.actions.failed"));
                     }
@@ -339,6 +340,7 @@ function TransactionPage() {
                     try {
                       await confirmSeller.mutateAsync(transaction.id);
                       toast.success(t("transactions.actions.confirmed"));
+                      void attemptTransferAfterConfirm();
                     } catch {
                       toast.error(t("transactions.actions.failed"));
                     }
