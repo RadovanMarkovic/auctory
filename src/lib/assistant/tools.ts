@@ -280,18 +280,27 @@ async function resolveTarget(
       .eq("id", args.productId)
       .maybeSingle();
     if (data) {
-      const facts = data as unknown as ProductFacts & { title: string; brands: { name: string } | null };
+      const p = data as unknown as {
+        title: string;
+        model: string | null;
+        condition: string | null;
+        production_year: number | null;
+        category_id: string | null;
+        brand_id: string | null;
+        brands: { name: string } | null;
+      };
       return {
-        categoryId: facts.categoryId ?? (data as { category_id: string | null }).category_id,
-        brandId: (data as { brand_id: string | null }).brand_id,
-        brandName: facts.brands?.name ?? null,
-        model: (data as { model: string | null }).model,
-        condition: (data as { condition: string | null }).condition,
-        productionYear: (data as { production_year: number | null }).production_year,
-        productTitle: (data as { title: string }).title,
+        categoryId: p.category_id,
+        brandId: p.brand_id,
+        brandName: p.brands?.name ?? null,
+        model: p.model,
+        condition: p.condition,
+        productionYear: p.production_year,
+        productTitle: p.title,
       };
     }
   }
+
 
   // Free-text criteria: resolve names to ids so scoring can match precisely.
   let categoryId: string | null = null;
