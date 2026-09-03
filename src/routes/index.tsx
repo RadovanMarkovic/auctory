@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   BadgeCheck,
@@ -15,14 +15,16 @@ import {
 import { useTranslation } from "react-i18next";
 
 import heroImage from "@/assets/home-hero.jpg";
+import { AuctionCard } from "@/components/auctions/AuctionCard";
 import { EmptyState, ErrorState, LoadingState } from "@/components/common";
-import { LotCard } from "@/components/home/LotCard";
 import { SectionHeading } from "@/components/home/Section";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
-import { fetchHomeData, type HomeData } from "@/mocks/home";
+import { useHomeHighlights, useHomeStats } from "@/lib/home";
+import { categoryName, useCategories, useSignedImageUrls } from "@/lib/products";
+import { useNow, type AuctionListItem } from "@/lib/public-auctions";
 
 const title = "Auctory — Curated Auctions for Watches, Jewelry & Collectibles";
 const description =
