@@ -14,6 +14,68 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_messages: {
+        Row: {
+          client_request_id: string | null
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          language: string
+          role: string
+        }
+        Insert: {
+          client_request_id?: string | null
+          content: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          language?: string
+          role: string
+        }
+        Update: {
+          client_request_id?: string | null
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          language?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       auction_reserves: {
         Row: {
           auction_id: string
