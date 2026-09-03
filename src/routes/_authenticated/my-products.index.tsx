@@ -116,7 +116,8 @@ function MyProductsPage() {
     );
   }
 
-  const products = productsQuery.data ?? [];
+  const sold = soldQuery.data ?? new Set<string>();
+  const products = (productsQuery.data ?? []).filter((product) => !sold.has(product.id));
 
   return (
     <PageContainer>
