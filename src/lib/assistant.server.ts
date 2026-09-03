@@ -61,7 +61,8 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
  * can store a graceful fallback instead of an error trace.
  */
 export async function runAssistant(
-  supabase: SupabaseClient<Database, "public", never>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabase: SupabaseClient<Database, "public", any>,
   message: string,
   history: ChatHistoryTurn[],
   language: AssistantLanguage,

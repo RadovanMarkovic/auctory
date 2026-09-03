@@ -72,7 +72,12 @@ export function useSendAssistantMessage(conversationId: string | null) {
           : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
       setPending({ userContent: content });
       setFailed(null);
-      return fn({ data: { conversationId: conversationId ?? undefined, content, clientRequestId } });
+      const data: { conversationId?: string; content: string; clientRequestId: string } = {
+        content,
+        clientRequestId,
+      };
+      if (conversationId) data.conversationId = conversationId;
+      return fn({ data });
     },
     onSuccess: (result) => {
       setPending(null);
