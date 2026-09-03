@@ -70,7 +70,7 @@ Vitest coverage for: canonical serialization + hash determinism and `productRef`
 
 ## Technical notes
 
-- `ethers` v6 is already a dependency; the JSON ABI at `blockchain/abi/AuctoryCertificate.json` is imported server-side.
+- `ethers` v6 is already a dependency. `blockchain/` is outside the app build graph, so the ABI is not imported from there: the generated ABI is copied **unchanged** into a server-only application module (`src/lib/certificates/abi.server.ts`) so it is guaranteed to be part of the deployed server bundle. A test asserts the copy still matches `blockchain/abi/AuctoryCertificate.json`.
 - Secrets are read with `process.env[...]` **inside** handler bodies only, never at module scope, never returned or logged. Only the derived operator *address* may surface in server logs.
 - Server-only chain code lives in a `*.server.ts` module imported dynamically inside handlers, so it never reaches the browser bundle.
 - Certificate transfer on sale is explicitly **not** part of this step.
