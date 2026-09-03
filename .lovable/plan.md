@@ -33,7 +33,7 @@ Never surfaced: reserve prices, seller emails or private profile data, bidder id
 **Migration** (one call, standard four-step order):
 
 - `ai_conversations`: `id`, `user_id` (auth user), `title`, `created_at`, `updated_at` + updated_at trigger.
-- `ai_messages`: `id`, `conversation_id` (FK cascade), `role` (`user` | `assistant` enum-checked text), `content`, `language` (`en` | `sr`), `created_at`.
+- `ai_messages`: `id`, `conversation_id` (FK cascade), `role` (`user` | `assistant` enum-checked text), `content`, `language` (`en` | `sr`), `client_request_id` (unique, set by the server from the caller's request id for idempotent retries), `created_at`.
 - GRANTs: `SELECT, INSERT, UPDATE, DELETE` on `ai_conversations` to `authenticated`; `SELECT` on `ai_messages` to `authenticated`; `ALL` on both to `service_role`. No `anon` grants.
 - RLS: owners read/manage only their own conversations; messages readable when the parent conversation belongs to `auth.uid()`. No client INSERT/UPDATE/DELETE policy on `ai_messages` — all writes go through service-role server logic.
 
