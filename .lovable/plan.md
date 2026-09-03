@@ -2,7 +2,7 @@
 
 Three grounded additions to the existing assistant. No new agent, no new auth, no new product columns.
 
-Confirmed from the current code before planning: prices have no currency column (everything is EUR, one currency only), completed auctions carry `final_price` + `finalized_at` + `status`, the agent already runs four read-only tools through `src/lib/assistant/tools.ts`, and there is **no watchlist table anywhere in the project**.
+Confirmed from the current schema and finalization logic before planning: prices have no currency column (everything is EUR, one currency only); the `auction_status` enum is `draft, scheduled, live, ended, cancelled` — there is **no `sold` status**, and `finalize_auctions()` marks every expired auction `ended`, setting `winner_id` and `final_price` only when a highest bidder exists and the reserve was met, and inserting exactly one `transactions` row per genuine sale. So the authoritative "sold" signal is: `status = 'ended'` AND `winner_id` not null AND `final_price` not null AND `finalized_at` not null AND a matching `transactions` row exists. The agent already runs four read-only tools through `src/lib/assistant/tools.ts`, and there is **no watchlist table anywhere in the project**.
 
 ## 1. AI-assisted product description (seller form)
 
@@ -11,13 +11,14 @@ Confirmed from the current code before planning: prices have no currency column 
 - Result appears in a review panel with six editable parts: title suggestion, short SR, short EN, detailed SR, detailed EN, highlighted attributes. Nothing is written to the form until the seller presses "Use this text", and saving stays a separate, explicit action.
 - The panel carries an "AI-assisted — review before saving" notice. The product keeps its single description field: the seller picks which language draft to copy in.
 - The prompt forbids inventing or strengthening claims about authenticity, provenance, ownership, condition, serial number, documents, materials, specifications or accessories; missing facts are omitted or marked as not provided.
+- Input trust rules: when a `productId` is supplied, the server re-loads the product and aborts unless `seller_id` equals the authenticated caller before reading any draft/private field. For an unsaved product the server accepts only a validated whitelist of structured form fields (category, brand, model, year, condition, material, country, box/documents flags, provenance notes, title). `seller_id`, ownership, role or any authorization field coming from the client is rejected outright, never trusted.
 
 ## 2. Transparent value estimate
 
 New read-only agent tool `estimateProductValue`. All numbers are computed in code **before** the model is called; the model may only explain them.
 
 Method (documented in code and returned as `method`):
-1. Load completed auctions that actually sold (`status = ended`, a winner exists, `final_price` not null) and join their product's category, brand, model, condition and production year.
+1. Load only genuinely sold auctions — `status = 'ended'`, `winner_id` not null, `final_price` not null, `finalized_at` not null, and an existing `transactions` row for that auction — and join their product's category, brand, model, condition and production year. Unsold, cancelled and merely expired auctions are excluded. No participant, bidder, winner or transaction detail leaves the tool; only the final price is used.
 2. Score comparables: same category required; brand match, model match, same condition, production year within 5 years each add weight. Keep the 20 best.
 3. Fewer than 3 comparables → return `insufficientData: true` with no range.
 4. Otherwise sort final prices and return `estimatedMin` = 25th percentile, `estimatedMax` = 75th percentile, plus `currency: "EUR"`, `comparableCount`, `confidence` (low/medium/high by count and match quality), `factors` (what drove the range), `method`, and a localized disclaimer.
