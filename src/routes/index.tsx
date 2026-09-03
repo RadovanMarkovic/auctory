@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   BadgeCheck,
@@ -15,14 +15,16 @@ import {
 import { useTranslation } from "react-i18next";
 
 import heroImage from "@/assets/home-hero.jpg";
+import { AuctionCard } from "@/components/auctions/AuctionCard";
 import { EmptyState, ErrorState, LoadingState } from "@/components/common";
-import { LotCard } from "@/components/home/LotCard";
 import { SectionHeading } from "@/components/home/Section";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
-import { fetchHomeData, type HomeData } from "@/mocks/home";
+import { useHomeHighlights, useHomeStats } from "@/lib/home";
+import { categoryName, useCategories, useSignedImageUrls } from "@/lib/products";
+import { useNow, type AuctionListItem } from "@/lib/public-auctions";
 
 const title = "Auctory — Curated Auctions for Watches, Jewelry & Collectibles";
 const description =
@@ -63,11 +65,28 @@ const provenancePoints = [
 ] as const;
 
 function Index() {
-  const { t } = useTranslation();
-  const { data, isPending, isError, refetch } = useQuery<HomeData>({
-    queryKey: ["home"],
-    queryFn: fetchHomeData,
-  });
+  const { t, i18n } = useTranslation();
+  const now = useNow(1000);
+  const { featured, endingSoon, openAuctions, isPending, isError, refetch } = useHomeHighlights();
+  const categoriesQuery = useCategories();
+
+  const imagePaths = useMemo(
+    () =>
+      [...featured, ...endingSoon]
+        .map((auction) => auction.coverPath)
+        .filter((path): path is string => Boolean(path)),
+    [featured, endingSoon],
+  );
+  const imageUrls = useSignedImageUrls(imagePaths).data ?? {};
+
+  const lotCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const auction of openAuctions) {
+      if (!auction.categoryId) continue;
+      counts.set(auction.categoryId, (counts.get(auction.categoryId) ?? 0) + 1);
+    }
+    return counts;
+  }, [openAuctions]);
 
   return (
     <>
@@ -87,10 +106,12 @@ function Index() {
           />
           <div className="mt-10">
             <LotGrid
-              lots={data?.featured}
+              lots={featured}
+              now={now}
+              imageUrls={imageUrls}
               isPending={isPending}
               isError={isError}
-              onRetry={() => void refetch()}
+              onRetry={refetch}
               emptyTitle={t("home.featured.emptyTitle")}
               emptyDescription={t("home.featured.emptyDescription")}
             />
@@ -105,11 +126,12 @@ function Index() {
           />
           <div className="mt-10">
             <LotGrid
-              lots={data?.endingSoon}
-              urgent
+              lots={endingSoon}
+              now={now}
+              imageUrls={imageUrls}
               isPending={isPending}
               isError={isError}
-              onRetry={() => void refetch()}
+              onRetry={refetch}
               emptyTitle={t("home.endingSoon.emptyTitle")}
               emptyDescription={t("home.endingSoon.emptyDescription")}
             />
@@ -123,24 +145,24 @@ function Index() {
             description={t("home.categories.description")}
           />
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {isPending
+            {categoriesQuery.isPending
               ? Array.from({ length: 4 }).map((_, i) => (
                   <Card key={i} className="h-40 animate-pulse bg-muted/60" />
                 ))
-              : data?.categories.map((category) => {
-                  const name = t(`categories.${category.key}.name`);
+              : (categoriesQuery.data ?? []).map((category) => {
+                  const name = categoryName(category, i18n.language);
                   return (
-                    <Card key={category.key} interactive>
+                    <Card key={category.id} interactive>
                       <CardContent className="space-y-3 p-7">
                         <Badge variant="muted">
-                          {t("lot.lotCount", { count: category.lotCount })}
+                          {t("lot.lotCount", { count: lotCounts.get(category.id) ?? 0 })}
                         </Badge>
                         <CardTitle>{name}</CardTitle>
                         <CardDescription className="leading-relaxed">
-                          {t(`categories.${category.key}.blurb`)}
+                          {t(`categories.${category.slug}.blurb`, { defaultValue: "" })}
                         </CardDescription>
                         <Link
-                          to="/categories"
+                          to="/auctions"
                           className="inline-block pt-1 text-sm text-primary underline-offset-4 hover:underline"
                         >
                           {t("lot.browse", { category: name.toLowerCase() })}
@@ -151,6 +173,7 @@ function Index() {
                 })}
           </div>
         </section>
+
 
         <section>
           <SectionHeading
@@ -237,24 +260,8 @@ function Index() {
         </section>
 
         <section>
-          <dl className="grid gap-6 border-y border-border py-10 sm:grid-cols-2 lg:grid-cols-4">
-            <Stat
-              label={t("home.stats.lotsSold")}
-              value={data ? `${data.stats.lotsSold.toLocaleString()}+` : null}
-            />
-            <Stat
-              label={t("home.stats.certificatesMinted")}
-              value={data ? `${data.stats.certificatesMinted.toLocaleString()}` : null}
-            />
-            <Stat
-              label={t("home.stats.sellThrough")}
-              value={data ? `${data.stats.averageSellThrough}%` : null}
-            />
-            <Stat
-              label={t("home.stats.bidders")}
-              value={data ? `${data.stats.registeredBidders.toLocaleString()}` : null}
-            />
-          </dl>
+          <StatsRow />
+
           <ul className="mt-8 flex flex-wrap justify-center gap-x-10 gap-y-4">
             {trust.map(({ icon: Icon, key }) => (
               <li key={key} className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -311,7 +318,31 @@ function Hero() {
   );
 }
 
+function StatsRow() {
+  const { t } = useTranslation();
+  const { data } = useHomeStats();
+
+  return (
+    <dl className="grid gap-6 border-y border-border py-10 sm:grid-cols-2 lg:grid-cols-4">
+      <Stat
+        label={t("home.stats.lotsSold")}
+        value={data ? data.lotsSold.toLocaleString() : null}
+      />
+      <Stat
+        label={t("home.stats.certificatesMinted")}
+        value={data ? data.certificatesMinted.toLocaleString() : null}
+      />
+      <Stat label={t("home.stats.sellThrough")} value={data ? `${data.sellThrough}%` : null} />
+      <Stat
+        label={t("home.stats.bidsPlaced")}
+        value={data ? data.bidsPlaced.toLocaleString() : null}
+      />
+    </dl>
+  );
+}
+
 function Stat({ label, value }: { label: string; value: string | null }) {
+
   return (
     <div className="text-center">
       <dt className="eyebrow">{label}</dt>
@@ -324,15 +355,17 @@ function Stat({ label, value }: { label: string; value: string | null }) {
 
 function LotGrid({
   lots,
-  urgent,
+  now,
+  imageUrls,
   isPending,
   isError,
   onRetry,
   emptyTitle,
   emptyDescription,
 }: {
-  lots: HomeData["featured"] | undefined;
-  urgent?: boolean;
+  lots: AuctionListItem[];
+  now: number;
+  imageUrls: Record<string, string>;
   isPending: boolean;
   isError: boolean;
   onRetry: () => void;
@@ -341,8 +374,7 @@ function LotGrid({
 }) {
   const { t } = useTranslation();
 
-  if (isPending)
-    return <LoadingState variant="cards" count={3} label={t("home.lots.loading")} />;
+  if (isPending) return <LoadingState variant="cards" count={3} label={t("home.lots.loading")} />;
   if (isError)
     return (
       <ErrorState
@@ -351,14 +383,20 @@ function LotGrid({
         onRetry={onRetry}
       />
     );
-  if (!lots?.length)
+  if (!lots.length)
     return <EmptyState icon={PackageOpen} title={emptyTitle} description={emptyDescription} />;
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {lots.map((lot) => (
-        <LotCard key={lot.id} lot={lot} urgent={urgent ?? false} />
+      {lots.map((auction) => (
+        <AuctionCard
+          key={auction.id}
+          auction={auction}
+          now={now}
+          imageUrl={auction.coverPath ? imageUrls[auction.coverPath] : undefined}
+        />
       ))}
     </div>
   );
 }
+

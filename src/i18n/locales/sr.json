@@ -233,7 +233,8 @@
       "lotsSold": "Prodatih predmeta",
       "certificatesMinted": "Izdatih sertifikata",
       "sellThrough": "Prosečna prodaja",
-      "bidders": "Registrovanih licitanata"
+      "bidders": "Registrovanih licitanata",
+      "bidsPlaced": "Postavljenih ponuda"
     },
     "trust": {
       "vetted": "Predmeti provereni od strane stručnjaka",
