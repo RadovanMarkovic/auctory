@@ -47,11 +47,12 @@ Never surfaced: reserve prices, seller emails or private profile data, bidder id
 **Server functions** — `src/lib/assistant.functions.ts`, all `.middleware([requireSupabaseAuth])`, dynamic-importing the `.server` module inside handlers:
 
 - `listConversations`, `getConversation(conversationId)`, `createConversation`, `deleteConversation`.
-- `sendAssistantMessage({ conversationId?, content })` — validates length, applies the rate limit, persists the user message, runs the agent, persists the assistant reply via `supabaseAdmin`, returns both rows.
+- `sendAssistantMessage({ conversationId?, content })` — validates length, applies the database-backed rate limit, persists the user message, runs the agent, persists the assistant reply via `supabaseAdmin`, returns both rows.
+- **Ownership rule:** every function that accepts a `conversationId` (get, send, retry, delete) first re-reads the conversation with the request-scoped authenticated client and aborts unless `user_id === context.userId`. `user_id` is always taken from the verified token, never from client input. `supabaseAdmin` is used only after that check passes, and only for the assistant-message insert.
 
-**UI** — `src/components/assistant/` (`AssistantChat`, `MessageList`, `MessageBubble`, `Composer`, `ConversationList`, `AssistantLauncher`), consumed by a floating launcher mounted in `AppShell` and by the new `src/routes/_authenticated/assistant.tsx` route (own `head()` metadata). Account menu gains an "Assistant" entry. New `assistant.*` i18n keys in both locale files.
+**Markdown rendering:** assistant content is rendered through a Markdown renderer with raw HTML disabled and output sanitized; links are rendered as plain text/safe anchors only.
 
-**Tests** (`src/lib/assistant/assistant.test.ts`): conversation ownership/RLS shape, protected server access (unauthenticated rejected), language selection EN vs SR, tool selection for search vs rules questions, reserve-price refusal, bid/transaction-action refusal, graceful model-failure fallback.
+**Tests** (`src/lib/assistant/assistant.test.ts`): conversation ownership/RLS shape, protected server access (unauthenticated rejected), cross-user authorization — user B cannot read, send to, retry in, or delete user A's conversation (four cases), language selection EN vs SR, tool selection for search vs rules questions, reserve-price refusal, bid/transaction-action refusal, graceful model-failure fallback, and Markdown sanitization of an HTML/script payload.
 
 **Secret:** `OPENAI_API_KEY` — already configured in the backend, no new secret needed.
 
