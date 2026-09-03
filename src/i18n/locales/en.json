@@ -28,7 +28,8 @@
     },
     "products": "Products",
     "myProducts": "My products",
-    "myAuctions": "My auctions"
+    "myAuctions": "My auctions",
+    "myPurchases": "My purchases"
   },
   "language": {
     "label": "Language",
@@ -762,7 +763,8 @@
       "auctionEnded": "Auction ended with a winning bid",
       "buyerConfirmed": "Buyer confirmed payment arrangements",
       "sellerConfirmed": "Seller confirmed payment receipt and handover",
-      "readyForTransfer": "Ready for certificate transfer"
+      "readyForTransfer": "Ready for certificate transfer",
+      "certificateTransferred": "Certificate transferred to the buyer"
     },
     "disclaimer": {
       "title": "Important notice",
@@ -919,5 +921,19 @@
       "CONTRACT_PAUSED": "The certificate contract is paused.",
       "OPERATOR_MISSING_TRANSFER_ROLE": "The Auctory operator is not allowed to transfer certificates."
     }
+  },
+  "purchases": {
+    "eyebrow": "Buyer",
+    "title": "My purchases",
+    "description": "Items you have won and whose certificate transfer is complete.",
+    "emptyTitle": "No purchases yet",
+    "emptyDescription": "Once you win an auction and both sides confirm, the item appears here with its blockchain certificate.",
+    "pending": "Awaiting certificate transfer",
+    "owned": "Certificate in your wallet",
+    "purchasedOn": "Purchased on",
+    "price": "Final price",
+    "viewTransaction": "View transaction",
+    "viewPassport": "View digital passport",
+    "tokenId": "Token ID"
   }
 }
