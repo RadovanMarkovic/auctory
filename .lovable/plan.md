@@ -25,9 +25,15 @@ New storage bucket `certificate-metadata` (public read, no client writes) with c
 ### 2. Deterministic manifest and hashing
 
 - `productRef = keccak256(utf8("auctory:product:<product-id>"))`.
-- Manifest = snapshot of the final **public** product fields (title, brand, category slug, model, serial number, production year, condition, material, country of origin, provenance notes, box/documents flags, seller wallet, product id, schema version, snapshot timestamp) plus `images: [{ index, sha256/keccak256 of the file bytes }]` in stable sort order. No emails, names, phones or private data.
+- Manifest = snapshot of the final **public** product fields (title, brand, category slug, model, production year, condition, material, country of origin, provenance notes, box/documents flags, seller wallet, product id, schema version, `snapshotAt`) plus `images: [{ index, hash }]` in stable sort order, where each image hash is `keccak256` of the raw file bytes. **keccak256 is used everywhere** — for image bytes and for the canonical manifest; no sha256 anywhere.
+- The full serial number is never published: the manifest carries `serialNumberHash = keccak256(normalized serial number)`, or omits the field when the product has none.
+- No emails, names, phones or private data.
 - Canonical serialization: JSON with keys sorted lexicographically, no insignificant whitespace, UTF-8, numbers as integers/decimal strings. `metadataHash = keccak256(canonicalJSON)`.
+- `snapshotAt` is generated **once**, when the certificate row first moves to pending, and the exact stored manifest is reused for every retry. A pending certificate's manifest is never rebuilt from later product edits.
+- The public token URI is valid ERC-721 metadata: `name`, `description`, `image`, `attributes`, plus the Auctory manifest fields preserved alongside them (the hashed part is exactly this canonical document).
+- Because product images are private, only the final **cover image** is copied server-side into the public certificate bucket at an immutable content-hash path (`sepolia/images/<imageKeccak>.<ext>`); that URL is the `image` field. Public read only, no client writes, no overwrite/upsert.
 - Manifest object stored at `sepolia/<metadataHash>.json`; `metadata_uri` is that public URL.
+
 
 ### 3. Minting (server-only)
 
