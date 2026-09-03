@@ -58,6 +58,21 @@ function MyProductsPage() {
     },
   });
 
+  /** Products whose certificate already moved to the buyer are no longer the seller's. */
+  const soldQuery = useQuery({
+    queryKey: ["my-sold-products", user?.id],
+    enabled: Boolean(user?.id),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("transactions")
+        .select("product_id")
+        .eq("seller_id", user!.id)
+        .eq("status", "completed");
+      if (error) throw error;
+      return new Set((data ?? []).map((row) => row.product_id));
+    },
+  });
+
   const statusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: ProductStatus }) => {
       const { error } = await supabase.from("products").update({ status }).eq("id", id);
