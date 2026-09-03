@@ -47,7 +47,9 @@ export function WalletButton({ className }: { className?: string }) {
   }
 
   const label = !activeAddress
-    ? t("wallet.connect")
+    ? verifiedAddress
+      ? t("wallet.reconnect")
+      : t("wallet.connect")
     : !wallet.onSepolia
       ? t("wallet.wrongNetworkShort")
       : mismatch

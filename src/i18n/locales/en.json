@@ -105,7 +105,8 @@
       "unauthorized": "Please sign in again.",
       "unknown": "Wallet verification failed. Please try again."
     },
-    "mismatchShort": "Account mismatch"
+    "mismatchShort": "Account mismatch",
+    "reconnect": "Reconnect wallet"
   },
   "footer": {
     "tagline": "A bilingual auction house for luxury watches, fine jewelry, collectibles, and limited-edition fashion — with verifiable on-chain certificates of provenance.",
@@ -507,7 +508,9 @@
       "uploaded": "Images uploaded",
       "invalidType": "Only image files are allowed",
       "tooLarge": "Image is too large",
-      "alt": "Product photograph"
+      "alt": "Product photograph",
+      "stagedHint": "Add photographs now — they are uploaded when you save the product.",
+      "remove": "Remove"
     },
     "detail": {
       "information": "Product information",

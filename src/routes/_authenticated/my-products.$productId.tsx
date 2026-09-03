@@ -19,7 +19,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { WalletRequiredNotice } from "@/components/wallet/WalletRequiredNotice";
 import { useAuth } from "@/lib/auth-context";
-import { isSepoliaVerified, useVerifiedWallet } from "@/lib/wallet/verify";
+import { isConnectedVerifiedWallet, useVerifiedWallet } from "@/lib/wallet/verify";
+import { useWallet } from "@/lib/wallet/use-wallet";
 import type { ProductStatus } from "@/lib/products";
 
 const title = "Edit Product — Auctory";
@@ -43,7 +44,9 @@ export const Route = createFileRoute("/_authenticated/my-products/$productId")({
 function EditProductPage() {
   const { productId } = Route.useParams();
   const { t } = useTranslation();
-  const walletVerified = isSepoliaVerified(useVerifiedWallet().data);
+  const verifiedWallet = useVerifiedWallet().data;
+  const wallet = useWallet();
+  const walletVerified = isConnectedVerifiedWallet(verifiedWallet, wallet.address, wallet.onSepolia);
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
@@ -186,7 +189,9 @@ function EditProductPage() {
                     images.length === 0
                       ? t("products.manage.needImage")
                       : !walletVerified
-                        ? t("wallet.required.seller")
+                        ? verifiedWallet?.address
+                          ? t("wallet.required.connectedSeller")
+                          : t("wallet.required.seller")
                         : undefined
                   }
                   onClick={() => statusMutation.mutate("published")}
