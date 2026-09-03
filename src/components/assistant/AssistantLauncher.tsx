@@ -36,7 +36,7 @@ export function AssistantLauncher() {
         <Bot className="h-5 w-5" />
       </Button>
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="right" className="flex w-full flex-col p-0 sm:max-w-md">
+        <SheetContent side="right" className="flex w-full flex-col p-0 sm:max-w-xl">
           <SheetHeader className="border-b px-4 py-3">
             <div className="flex items-center justify-between">
               <SheetTitle className="flex items-center gap-2 text-base">
@@ -54,7 +54,7 @@ export function AssistantLauncher() {
             </div>
           </SheetHeader>
           <div className="flex min-h-0 flex-1">
-            <div className="hidden w-48 border-r sm:block">
+            <div className="hidden w-44 border-r sm:block">
               <ConversationList
                 activeId={conversationId}
                 onSelect={setConversationId}
