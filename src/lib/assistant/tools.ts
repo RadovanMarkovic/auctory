@@ -7,6 +7,14 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/integrations/supabase/types";
+import { assistantStrings, type AssistantLanguage } from "@/lib/assistant/core";
+import {
+  estimateValue,
+  VALUATION_CURRENCY,
+  type ComparableSale,
+  type ValuationResult,
+  type ValuationTarget,
+} from "@/lib/assistant/valuation";
 
 export interface AuctionToolItem {
   id: string;
