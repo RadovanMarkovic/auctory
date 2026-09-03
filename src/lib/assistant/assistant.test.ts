@@ -33,39 +33,43 @@ function fakeSupabase(handlers: {
   rpc?: Record<string, unknown>;
 }) {
   const calls: Call[] = [];
-  function chain(table: string) {
-    const qb: Record<string, unknown> & { calls: Call[] } = { calls } as never;
-    const self = new Proxy(qb, {
-      get(_t, prop: string) {
-        if (prop === "calls") return calls;
-        return (...args: unknown[]) => {
-          calls.push({ table, method: prop, args });
-          if (prop === "maybeSingle" || prop === "single") {
-            const row =
-              table === "blockchain_certificates"
-                ? (handlers.blockchain_certificates ?? null)
-                : table === "products"
-                  ? ((handlers.products ?? [])[0] ?? null)
-                  : ((handlers.public_auctions ?? [])[0] ?? null);
-            return Promise.resolve({ data: row, error: null });
-          }
-          if (prop === "limit" || prop === "order") {
-            const rows =
-              table === "public_auctions"
-                ? (handlers.public_auctions ?? [])
-                : (handlers.products ?? []);
-            return Promise.resolve({ data: rows, error: null });
-          }
-          return self;
-        };
-      },
-    });
-    return self;
+  class Builder implements PromiseLike<{ data: unknown; error: null }> {
+    constructor(private table: string) {}
+    private rows() {
+      return this.table === "public_auctions"
+        ? (handlers.public_auctions ?? [])
+        : this.table === "products"
+          ? (handlers.products ?? [])
+          : [];
+    }
+    private record(method: string, args: unknown[]) {
+      calls.push({ table: this.table, method, args });
+      return this;
+    }
+    select(...a: unknown[]) { return this.record("select", a); }
+    eq(...a: unknown[]) { return this.record("eq", a); }
+    in(...a: unknown[]) { return this.record("in", a); }
+    order(...a: unknown[]) { return this.record("order", a); }
+    limit(...a: unknown[]) { return this.record("limit", a); }
+    then<TResult1 = { data: unknown; error: null }, TResult2 = never>(
+      onfulfilled?: ((v: { data: unknown; error: null }) => TResult1 | PromiseLike<TResult1>) | null,
+      onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null,
+    ) {
+      return Promise.resolve({ data: this.rows(), error: null as null }).then(onfulfilled, onrejected);
+    }
+    maybeSingle() {
+      const row =
+        this.table === "blockchain_certificates"
+          ? (handlers.blockchain_certificates ?? null)
+          : (this.rows()[0] ?? null);
+      calls.push({ table: this.table, method: "maybeSingle", args: [] });
+      return Promise.resolve({ data: row, error: null });
+    }
   }
   return {
     calls,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    from: (table: string) => chain(table) as any,
+    from: (table: string) => new Builder(table) as any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rpc: (name: string) =>
       Promise.resolve({ data: handlers.rpc?.[name] ?? [], error: null }) as any,
@@ -169,7 +173,7 @@ describe("assistant tools", () => {
     const sb = fakeSupabase({ public_auctions: [AUCTION_ROW], products: [PRODUCT_ROW] });
     const items = await searchActiveAuctions(sb, {});
     expect(items).toHaveLength(1);
-    const item = items[0];
+    const item = items[0]!;
     expect(item).not.toHaveProperty("reserve_price");
     expect(item).not.toHaveProperty("highest_bidder_id");
     expect(item.title).toBe("Rolex Submariner");
