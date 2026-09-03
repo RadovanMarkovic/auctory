@@ -793,5 +793,71 @@
       "openedTitle": "Dispute opened",
       "confirmationsBlocked": "Confirmations are blocked while this transaction is disputed."
     }
+  },
+  "certificates": {
+    "panel": {
+      "title": "Blockchain certificate",
+      "description": "Register a data-integrity certificate for this product on the Sepolia test network. The certificate records the listing data exactly as submitted and the ownership history of the token.",
+      "requirement": "A verified Sepolia wallet, the seller role and at least one product image are required. The certificate must be minted before the product can enter a new auction.",
+      "action": "Register certificate",
+      "retry": "Retry registration",
+      "publishFirst": "Publish the product first to register its certificate."
+    },
+    "status": {
+      "none": "Not registered",
+      "pending": "Pending",
+      "minting": "Registering…",
+      "minted": "Registered",
+      "failed": "Failed"
+    },
+    "passport": {
+      "title": "Digital product passport",
+      "disclaimer": "This certificate records data integrity and ownership history on the blockchain. It does not independently prove the physical authenticity of the item.",
+      "metamaskHint": "To view the token in MetaMask, import it manually with contract {{contract}} and token ID {{tokenId}}."
+    },
+    "fields": {
+      "network": "Network",
+      "contract": "Contract",
+      "tokenId": "Token ID",
+      "metadataHash": "Metadata hash",
+      "metadataUri": "Metadata",
+      "openMetadata": "Open metadata",
+      "mintTx": "Mint transaction",
+      "block": "Block",
+      "registeredAt": "Registered",
+      "registeredSeller": "Registered seller wallet",
+      "currentOwner": "Current owner wallet"
+    },
+    "verify": {
+      "action": "Verify record",
+      "running": "Verifying…",
+      "refreshOwner": "Refresh owner",
+      "ok": "Data integrity verified.",
+      "manifestMismatch": "Warning: the stored data snapshot no longer matches the recorded fingerprint.",
+      "chainMismatch": "Warning: the stored fingerprint does not match the fingerprint recorded on the blockchain.",
+      "ownerChanged": "The token owner on the blockchain differs from the stored owner. Ownership has been updated."
+    },
+    "errors": {
+      "MINT_FAILED": "Certificate registration failed. Please try again.",
+      "WALLET_REQUIRED": "Verify and connect your Sepolia wallet first.",
+      "SELLER_ROLE_REQUIRED": "Only approved sellers can register certificates.",
+      "FORBIDDEN": "You do not have access to this product.",
+      "PRODUCT_IMAGE_REQUIRED": "Add at least one product image before registering.",
+      "PRODUCT_IMAGE_UNREADABLE": "A product image could not be read. Re-upload it and try again.",
+      "WRONG_CHAIN": "The certificate service is not connected to the Sepolia network.",
+      "RPC_UNREACHABLE": "The blockchain node is unreachable. Try again shortly.",
+      "CONFIG_MISSING": "The certificate service is not configured.",
+      "CONTRACT_NOT_DEPLOYED": "The certificate contract was not found on Sepolia.",
+      "CONTRACT_PAUSED": "The certificate contract is paused. Try again later.",
+      "OPERATOR_MISSING_MINTER_ROLE": "The certificate service lacks minting permission.",
+      "OPERATOR_MISSING_TRANSFER_ROLE": "The certificate service lacks transfer permission.",
+      "MINT_IN_PROGRESS": "Registration is already in progress.",
+      "MINT_PENDING": "A previous transaction is still pending. Wait for it to settle.",
+      "MINT_TX_REVERTED": "The blockchain transaction was rejected.",
+      "MINT_EVENT_MISSING": "The registration event was not found in the transaction.",
+      "MINT_OWNER_MISMATCH": "The minted token owner does not match your wallet.",
+      "CERTIFICATE_NOT_MINTED": "This certificate has not been registered yet.",
+      "CERTIFICATE_NOT_FOUND": "No certificate exists for this product."
+    }
   }
 }

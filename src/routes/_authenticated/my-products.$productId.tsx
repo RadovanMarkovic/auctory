@@ -10,6 +10,7 @@ import {
   toProductPayload,
   type ProductFormValues,
 } from "@/components/products/ProductForm";
+import { CertificatePanel } from "@/components/certificates/CertificatePanel";
 import { ProductImageManager } from "@/components/products/ProductImageManager";
 import { ProvenanceAttachment } from "@/components/products/ProvenanceAttachment";
 
@@ -222,7 +223,9 @@ function EditProductPage() {
             </>
           }
         />
+        <CertificatePanel productId={product.id} canRegister={product.status === "published"} />
       </div>
+
     </PageContainer>
   );
 }

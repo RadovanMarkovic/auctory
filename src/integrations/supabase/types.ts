@@ -166,6 +166,89 @@ export type Database = {
           },
         ]
       }
+      blockchain_certificates: {
+        Row: {
+          contract_address: string | null
+          created_at: string
+          current_owner_wallet: string | null
+          id: string
+          last_error_code: string | null
+          last_error_message: string | null
+          manifest: Json | null
+          metadata_hash: string | null
+          metadata_uri: string | null
+          mint_block_number: number | null
+          mint_tx_hash: string | null
+          minted_at: string | null
+          network: string
+          product_id: string
+          product_ref: string
+          retry_count: number
+          seller_id: string
+          seller_wallet: string | null
+          snapshot_at: string | null
+          status: Database["public"]["Enums"]["certificate_status"]
+          token_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          contract_address?: string | null
+          created_at?: string
+          current_owner_wallet?: string | null
+          id?: string
+          last_error_code?: string | null
+          last_error_message?: string | null
+          manifest?: Json | null
+          metadata_hash?: string | null
+          metadata_uri?: string | null
+          mint_block_number?: number | null
+          mint_tx_hash?: string | null
+          minted_at?: string | null
+          network?: string
+          product_id: string
+          product_ref: string
+          retry_count?: number
+          seller_id: string
+          seller_wallet?: string | null
+          snapshot_at?: string | null
+          status?: Database["public"]["Enums"]["certificate_status"]
+          token_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          contract_address?: string | null
+          created_at?: string
+          current_owner_wallet?: string | null
+          id?: string
+          last_error_code?: string | null
+          last_error_message?: string | null
+          manifest?: Json | null
+          metadata_hash?: string | null
+          metadata_uri?: string | null
+          mint_block_number?: number | null
+          mint_tx_hash?: string | null
+          minted_at?: string | null
+          network?: string
+          product_id?: string
+          product_ref?: string
+          retry_count?: number
+          seller_id?: string
+          seller_wallet?: string | null
+          snapshot_at?: string | null
+          status?: Database["public"]["Enums"]["certificate_status"]
+          token_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blockchain_certificates_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       brands: {
         Row: {
           created_at: string
@@ -770,6 +853,7 @@ export type Database = {
       account_status: "active" | "pending" | "suspended"
       app_role: "buyer" | "seller" | "admin"
       auction_status: "draft" | "scheduled" | "live" | "ended" | "cancelled"
+      certificate_status: "pending" | "minting" | "minted" | "failed"
       product_status: "draft" | "published" | "archived"
       seller_request_status: "none" | "pending" | "approved" | "rejected"
       transaction_status:
@@ -909,6 +993,7 @@ export const Constants = {
       account_status: ["active", "pending", "suspended"],
       app_role: ["buyer", "seller", "admin"],
       auction_status: ["draft", "scheduled", "live", "ended", "cancelled"],
+      certificate_status: ["pending", "minting", "minted", "failed"],
       product_status: ["draft", "published", "archived"],
       seller_request_status: ["none", "pending", "approved", "rejected"],
       transaction_status: [

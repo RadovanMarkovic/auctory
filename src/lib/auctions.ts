@@ -97,13 +97,26 @@ export function useAuctionableProducts(currentProductId?: string | null) {
         .eq("seller_id", userId!);
       if (soldError) throw soldError;
 
+      // A new auction requires a minted blockchain certificate (enforced in the database too).
+      const { data: certificates, error: certificateError } = await supabase
+        .from("blockchain_certificates")
+        .select("product_id, status")
+        .eq("seller_id", userId!)
+        .eq("status", "minted");
+      if (certificateError) throw certificateError;
+      const minted = new Set((certificates ?? []).map((row) => row.product_id));
+
       const blocked = new Set(
         (taken ?? []).map((row) => row.product_id).filter((id) => id !== currentProductId),
       );
       for (const row of sold ?? []) {
         if (row.product_id !== currentProductId) blocked.add(row.product_id);
       }
-      return (products ?? []).filter((product) => !blocked.has(product.id));
+      return (products ?? []).filter(
+        (product) =>
+          !blocked.has(product.id) && (minted.has(product.id) || product.id === currentProductId),
+      );
+
     },
   });
 }
