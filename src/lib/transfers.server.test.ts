@@ -27,6 +27,7 @@ interface State {
     saleProcessed: boolean;
     submitFails: boolean;
     receiptStatus: 0 | 1 | null;
+    waitStatus: 0 | 1;
     emitEvent: boolean;
     eventBuyer: string;
     calls: string[];
@@ -72,6 +73,7 @@ function freshState(): State {
       saleProcessed: false,
       submitFails: false,
       receiptStatus: 1,
+      waitStatus: 1,
       emitEvent: true,
       eventBuyer: BUYER,
       calls: [],
@@ -197,7 +199,7 @@ vi.mock("@/lib/certificates.server", async (importOriginal) => {
       return {
         hash: "0xtx",
         wait: async () => ({
-          status: state.chain.receiptStatus ?? 1,
+          status: state.chain.waitStatus,
           hash: "0xtx",
           blockNumber: 42,
           logs: [{ topics: ["0x00"], data: "0x" }],
