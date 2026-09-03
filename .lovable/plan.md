@@ -2,7 +2,7 @@
 
 Three grounded additions to the existing assistant. No new agent, no new auth, no new product columns.
 
-Confirmed from the current code before planning: prices have no currency column (everything is EUR, one currency only), completed auctions carry `final_price` + `finalized_at` + `status`, the agent already runs four read-only tools through `src/lib/assistant/tools.ts`, and there is **no watchlist table anywhere in the project**.
+Confirmed from the current schema and finalization logic before planning: prices have no currency column (everything is EUR, one currency only); the `auction_status` enum is `draft, scheduled, live, ended, cancelled` — there is **no `sold` status**, and `finalize_auctions()` marks every expired auction `ended`, setting `winner_id` and `final_price` only when a highest bidder exists and the reserve was met, and inserting exactly one `transactions` row per genuine sale. So the authoritative "sold" signal is: `status = 'ended'` AND `winner_id` not null AND `final_price` not null AND `finalized_at` not null AND a matching `transactions` row exists. The agent already runs four read-only tools through `src/lib/assistant/tools.ts`, and there is **no watchlist table anywhere in the project**.
 
 ## 1. AI-assisted product description (seller form)
 
