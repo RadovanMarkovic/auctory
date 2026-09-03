@@ -11,6 +11,7 @@ Confirmed from the current schema and finalization logic before planning: prices
 - Result appears in a review panel with six editable parts: title suggestion, short SR, short EN, detailed SR, detailed EN, highlighted attributes. Nothing is written to the form until the seller presses "Use this text", and saving stays a separate, explicit action.
 - The panel carries an "AI-assisted — review before saving" notice. The product keeps its single description field: the seller picks which language draft to copy in.
 - The prompt forbids inventing or strengthening claims about authenticity, provenance, ownership, condition, serial number, documents, materials, specifications or accessories; missing facts are omitted or marked as not provided.
+- Input trust rules: when a `productId` is supplied, the server re-loads the product and aborts unless `seller_id` equals the authenticated caller before reading any draft/private field. For an unsaved product the server accepts only a validated whitelist of structured form fields (category, brand, model, year, condition, material, country, box/documents flags, provenance notes, title). `seller_id`, ownership, role or any authorization field coming from the client is rejected outright, never trusted.
 
 ## 2. Transparent value estimate
 
