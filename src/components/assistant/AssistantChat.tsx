@@ -143,16 +143,20 @@ export function AssistantChat({
         <div ref={bottomRef} />
       </div>
 
-      <div className="border-t p-3">
-        <div className="flex items-end gap-2">
+      <div className="border-t p-4">
+        <div
+          className={`flex items-end gap-3 rounded-2xl border bg-background p-3 shadow-sm transition-colors focus-within:border-ring ${
+            variant === "page" ? "md:p-4" : ""
+          }`}
+        >
           <Textarea
             ref={inputRef}
             value={draft}
             maxLength={MAX_INPUT_LENGTH}
             placeholder={t("assistant.placeholder")}
             aria-label={t("assistant.placeholder")}
-            className="max-h-32 min-h-10 flex-1 resize-none"
-            rows={1}
+            className="max-h-52 min-h-16 flex-1 resize-none border-0 bg-transparent px-0 py-0 text-base leading-relaxed shadow-none focus-visible:ring-0"
+            rows={2}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -163,6 +167,7 @@ export function AssistantChat({
           />
           <Button
             size="icon"
+            className="h-10 w-10 shrink-0"
             aria-label={t("assistant.send")}
             disabled={!draft.trim() || send.isPending}
             onClick={submit}
@@ -174,7 +179,7 @@ export function AssistantChat({
             )}
           </Button>
         </div>
-        <p className="mt-1.5 text-xs text-muted-foreground">{t("assistant.disclaimer")}</p>
+        <p className="mt-2 px-1 text-xs text-muted-foreground">{t("assistant.disclaimer")}</p>
       </div>
     </div>
   );
