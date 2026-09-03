@@ -105,7 +105,8 @@
       "unauthorized": "Prijavite se ponovo.",
       "unknown": "Verifikacija novčanika nije uspela. Pokušajte ponovo."
     },
-    "mismatchShort": "Nalog se ne poklapa"
+    "mismatchShort": "Nalog se ne poklapa",
+    "reconnect": "Ponovo poveži novčanik"
   },
   "footer": {
     "tagline": "Dvojezična aukcijska kuća za luksuzne satove, fini nakit, kolekcionarske predmete i modu u ograničenom izdanju — uz proverljive sertifikate porekla na blokčejnu.",
@@ -510,7 +511,9 @@
       "uploaded": "Slike otpremljene",
       "invalidType": "Dozvoljene su samo slike",
       "tooLarge": "Slika je prevelika",
-      "alt": "Fotografija predmeta"
+      "alt": "Fotografija predmeta",
+      "stagedHint": "Dodajte fotografije odmah — biće otpremljene kada sačuvate proizvod.",
+      "remove": "Ukloni"
     },
     "detail": {
       "information": "Podaci o predmetu",
