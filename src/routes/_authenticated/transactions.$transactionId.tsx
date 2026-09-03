@@ -54,6 +54,13 @@ function TransactionPage() {
   const confirmBuyer = useConfirmAsBuyer();
   const confirmSeller = useConfirmAsSeller();
   const dispute = useOpenDispute();
+  const startTransfer = useStartTransfer(transactionId);
+
+  /** After the second confirmation, attempt the transfer immediately. */
+  const attemptTransferAfterConfirm = async () => {
+    const { data } = await query.refetch();
+    if (data?.status === "ready_for_transfer") startTransfer.mutate(undefined);
+  };
 
   const [buyerOpen, setBuyerOpen] = useState(false);
   const [sellerOpen, setSellerOpen] = useState(false);
