@@ -61,6 +61,17 @@ export function AssistantChat({
     bottomRef.current?.scrollIntoView({ block: "end" });
   }, [messages.length, pending]);
 
+  function autoResize() {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 200)}px`;
+  }
+
+  useEffect(() => {
+    autoResize();
+  }, [draft]);
+
   function submit() {
     const content = draft.trim();
     if (!content || send.isPending) return;
