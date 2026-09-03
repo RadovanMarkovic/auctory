@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.guard_certificate_immutability() FROM anon, authenticated, public;
+REVOKE EXECUTE ON FUNCTION public.guard_auction_requires_certificate() FROM anon, authenticated, public;

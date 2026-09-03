@@ -4,6 +4,8 @@ import { BadgeCheck, ImageOff, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { BidPanel } from "@/components/auctions/BidPanel";
+import { ProductPassport } from "@/components/certificates/ProductPassport";
+
 import { EmptyState, ErrorState, LoadingState, PageHeader } from "@/components/common";
 import { PageContainer } from "@/components/layout/PageContainer";
 import { Badge } from "@/components/ui/badge";
@@ -323,16 +325,8 @@ function AuctionDetailPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>{t("auctions.detail.passportTitle")}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                {t("auctions.detail.passportDescription")}
-              </p>
-            </CardContent>
-          </Card>
+          <ProductPassport productId={product.id} />
+
         </aside>
       </div>
     </PageContainer>

@@ -799,5 +799,71 @@
       "openedTitle": "Spor je otvoren",
       "confirmationsBlocked": "Potvrde su blokirane dok je transakcija sporna."
     }
+  },
+  "certificates": {
+    "panel": {
+      "title": "Blockchain sertifikat",
+      "description": "Registrujte sertifikat integriteta podataka za ovaj proizvod na Sepolia test mreži. Sertifikat beleži podatke oglasa tačno onako kako su uneti i istoriju vlasništva tokena.",
+      "requirement": "Potrebni su verifikovan Sepolia novčanik, uloga prodavca i bar jedna fotografija proizvoda. Sertifikat mora biti registrovan pre nego što proizvod uđe u novu aukciju.",
+      "action": "Registruj sertifikat",
+      "retry": "Pokušaj ponovo",
+      "publishFirst": "Prvo objavite proizvod da biste registrovali sertifikat."
+    },
+    "status": {
+      "none": "Nije registrovan",
+      "pending": "Na čekanju",
+      "minting": "Registracija u toku…",
+      "minted": "Registrovan",
+      "failed": "Neuspešno"
+    },
+    "passport": {
+      "title": "Digitalni pasoš proizvoda",
+      "disclaimer": "Ovaj sertifikat beleži integritet podataka i istoriju vlasništva na blockchain-u. On ne dokazuje samostalno fizičku autentičnost predmeta.",
+      "metamaskHint": "Da biste videli token u MetaMask-u, dodajte ga ručno pomoću ugovora {{contract}} i ID-a tokena {{tokenId}}."
+    },
+    "fields": {
+      "network": "Mreža",
+      "contract": "Ugovor",
+      "tokenId": "ID tokena",
+      "metadataHash": "Heš metapodataka",
+      "metadataUri": "Metapodaci",
+      "openMetadata": "Otvori metapodatke",
+      "mintTx": "Transakcija registracije",
+      "block": "Blok",
+      "registeredAt": "Registrovano",
+      "registeredSeller": "Novčanik prodavca",
+      "currentOwner": "Trenutni vlasnik"
+    },
+    "verify": {
+      "action": "Proveri zapis",
+      "running": "Provera u toku…",
+      "refreshOwner": "Osveži vlasnika",
+      "ok": "Integritet podataka je potvrđen.",
+      "manifestMismatch": "Upozorenje: sačuvani snimak podataka više ne odgovara zabeleženom otisku.",
+      "chainMismatch": "Upozorenje: sačuvani otisak ne odgovara otisku zabeleženom na blockchain-u.",
+      "ownerChanged": "Vlasnik tokena na blockchain-u razlikuje se od sačuvanog vlasnika. Vlasništvo je ažurirano."
+    },
+    "errors": {
+      "MINT_FAILED": "Registracija sertifikata nije uspela. Pokušajte ponovo.",
+      "WALLET_REQUIRED": "Prvo verifikujte i povežite svoj Sepolia novčanik.",
+      "SELLER_ROLE_REQUIRED": "Samo odobreni prodavci mogu registrovati sertifikate.",
+      "FORBIDDEN": "Nemate pristup ovom proizvodu.",
+      "PRODUCT_IMAGE_REQUIRED": "Dodajte bar jednu fotografiju proizvoda pre registracije.",
+      "PRODUCT_IMAGE_UNREADABLE": "Fotografija proizvoda ne može da se pročita. Otpremite je ponovo.",
+      "WRONG_CHAIN": "Servis sertifikata nije povezan na Sepolia mrežu.",
+      "RPC_UNREACHABLE": "Blockchain čvor nije dostupan. Pokušajte uskoro ponovo.",
+      "CONFIG_MISSING": "Servis sertifikata nije konfigurisan.",
+      "CONTRACT_NOT_DEPLOYED": "Ugovor sertifikata nije pronađen na Sepoliji.",
+      "CONTRACT_PAUSED": "Ugovor sertifikata je pauziran. Pokušajte kasnije.",
+      "OPERATOR_MISSING_MINTER_ROLE": "Servis sertifikata nema dozvolu za registraciju.",
+      "OPERATOR_MISSING_TRANSFER_ROLE": "Servis sertifikata nema dozvolu za prenos.",
+      "MINT_IN_PROGRESS": "Registracija je već u toku.",
+      "MINT_PENDING": "Prethodna transakcija je još u obradi. Sačekajte da se završi.",
+      "MINT_TX_REVERTED": "Blockchain transakcija je odbijena.",
+      "MINT_EVENT_MISSING": "Događaj registracije nije pronađen u transakciji.",
+      "MINT_OWNER_MISMATCH": "Vlasnik registrovanog tokena ne odgovara vašem novčaniku.",
+      "CERTIFICATE_NOT_MINTED": "Ovaj sertifikat još nije registrovan.",
+      "CERTIFICATE_NOT_FOUND": "Za ovaj proizvod ne postoji sertifikat."
+    }
   }
 }

@@ -30,6 +30,7 @@ import { Route as AuthenticatedMyProductsProductIdRouteImport } from './routes/_
 import { Route as AuthenticatedMyProductsNewRouteImport } from './routes/_authenticated/my-products.new'
 import { Route as AuthenticatedTransactionsIndexRouteImport } from './routes/_authenticated/transactions.index'
 import { Route as AuthenticatedTransactionsTransactionIdRouteImport } from './routes/_authenticated/transactions.$transactionId'
+import { Route as ApiPublicCertificatesSplatRouteImport } from './routes/api/public/certificates/$'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -143,6 +144,12 @@ const AuthenticatedTransactionsTransactionIdRoute =
     path: '/transactions/$transactionId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicCertificatesSplatRoute =
+  ApiPublicCertificatesSplatRouteImport.update({
+    id: '/api/public/certificates/$',
+    path: '/api/public/certificates/$',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/my-auctions/': typeof AuthenticatedMyAuctionsIndexRoute
   '/my-products/': typeof AuthenticatedMyProductsIndexRoute
   '/transactions/': typeof AuthenticatedTransactionsIndexRoute
+  '/api/public/certificates/$': typeof ApiPublicCertificatesSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -187,6 +195,7 @@ export interface FileRoutesByTo {
   '/my-auctions': typeof AuthenticatedMyAuctionsIndexRoute
   '/my-products': typeof AuthenticatedMyProductsIndexRoute
   '/transactions': typeof AuthenticatedTransactionsIndexRoute
+  '/api/public/certificates/$': typeof ApiPublicCertificatesSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -211,6 +220,7 @@ export interface FileRoutesById {
   '/_authenticated/my-auctions/': typeof AuthenticatedMyAuctionsIndexRoute
   '/_authenticated/my-products/': typeof AuthenticatedMyProductsIndexRoute
   '/_authenticated/transactions/': typeof AuthenticatedTransactionsIndexRoute
+  '/api/public/certificates/$': typeof ApiPublicCertificatesSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
     | '/my-auctions/'
     | '/my-products/'
     | '/transactions/'
+    | '/api/public/certificates/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/my-auctions'
     | '/my-products'
     | '/transactions'
+    | '/api/public/certificates/$'
   id:
     | '__root__'
     | '/'
@@ -280,6 +292,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-auctions/'
     | '/_authenticated/my-products/'
     | '/_authenticated/transactions/'
+    | '/api/public/certificates/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -293,6 +306,7 @@ export interface RootRouteChildren {
   SellRoute: typeof SellRoute
   AuctionsAuctionIdRoute: typeof AuctionsAuctionIdRoute
   AuctionsIndexRoute: typeof AuctionsIndexRoute
+  ApiPublicCertificatesSplatRoute: typeof ApiPublicCertificatesSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -444,6 +458,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTransactionsTransactionIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/certificates/$': {
+      id: '/api/public/certificates/$'
+      path: '/api/public/certificates/$'
+      fullPath: '/api/public/certificates/$'
+      preLoaderRoute: typeof ApiPublicCertificatesSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -490,6 +511,7 @@ const rootRouteChildren: RootRouteChildren = {
   SellRoute: SellRoute,
   AuctionsAuctionIdRoute: AuctionsAuctionIdRoute,
   AuctionsIndexRoute: AuctionsIndexRoute,
+  ApiPublicCertificatesSplatRoute: ApiPublicCertificatesSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

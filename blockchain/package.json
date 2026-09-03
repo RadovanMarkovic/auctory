@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "hardhat compile",
     "test": "hardhat test",
-    "export-abi": "hardhat compile && node scripts/export-abi.cjs"
+    "export-abi": "hardhat compile && node scripts/export-abi.cjs",
+    "postinstall": "node scripts/link-openzeppelin.cjs"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "2.0.8",
