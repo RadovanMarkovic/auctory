@@ -23,6 +23,8 @@ import {
   useOpenDispute,
   useTransaction,
 } from "@/lib/transactions";
+import { CertificateTransferPanel } from "@/components/transactions/CertificateTransferPanel";
+import { useStartTransfer } from "@/lib/transfers";
 
 const title = "Transaction — Auctory";
 const description = "Record buyer and seller confirmations for a completed Auctory auction.";
