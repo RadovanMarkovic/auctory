@@ -44,7 +44,9 @@ export const Route = createFileRoute("/_authenticated/my-products/$productId")({
 function EditProductPage() {
   const { productId } = Route.useParams();
   const { t } = useTranslation();
-  const walletVerified = isSepoliaVerified(useVerifiedWallet().data);
+  const verifiedWallet = useVerifiedWallet().data;
+  const wallet = useWallet();
+  const walletVerified = isConnectedVerifiedWallet(verifiedWallet, wallet.address, wallet.onSepolia);
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
