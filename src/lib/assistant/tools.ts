@@ -445,18 +445,24 @@ export async function executeTool(
   supabase: AnySupabase,
   name: string,
   args: Record<string, unknown>,
+  language: AssistantLanguage = "en",
 ): Promise<unknown> {
+  const str = (value: unknown, max: number) =>
+    typeof value === "string" && value.trim() ? value.trim().slice(0, max) : undefined;
+  const num = (value: unknown) =>
+    typeof value === "number" && Number.isFinite(value) ? value : undefined;
+
   switch (name as ToolName | "explainPlatformRules") {
     case "searchActiveAuctions": {
       const parsed: SearchAuctionsArgs = {};
-      const q = args["query"];
-      const c = args["category"];
-      const b = args["brand"];
-      const m = args["maxBudget"];
-      if (typeof q === "string") parsed.query = q.slice(0, 200);
-      if (typeof c === "string") parsed.category = c.slice(0, 100);
-      if (typeof b === "string") parsed.brand = b.slice(0, 100);
-      if (typeof m === "number" && Number.isFinite(m)) parsed.maxBudget = m;
+      const q = str(args["query"], 200);
+      const c = str(args["category"], 100);
+      const b = str(args["brand"], 100);
+      const m = num(args["maxBudget"]);
+      if (q) parsed.query = q;
+      if (c) parsed.category = c;
+      if (b) parsed.brand = b;
+      if (m != null) parsed.maxBudget = m;
       return searchActiveAuctions(supabase, parsed);
     }
     case "getAuctionDetails": {
@@ -469,10 +475,39 @@ export async function executeTool(
       if (typeof id !== "string") return { error: "missing productId" };
       return getProductPassport(supabase, { productId: id.slice(0, 64) });
     }
+    case "estimateProductValue": {
+      const parsed: EstimateArgs = {};
+      const p = str(args["productId"], 64);
+      const c = str(args["category"], 100);
+      const b = str(args["brand"], 100);
+      const m = str(args["model"], 100);
+      const cond = str(args["condition"], 50);
+      const year = num(args["productionYear"]);
+      if (p) parsed.productId = p;
+      if (c) parsed.category = c;
+      if (b) parsed.brand = b;
+      if (m) parsed.model = m;
+      if (cond) parsed.condition = cond;
+      if (year != null) parsed.productionYear = Math.trunc(year);
+      return estimateProductValue(supabase, parsed, language);
+    }
+    case "recommendProducts": {
+      const parsed: RecommendArgs = {};
+      const q = str(args["query"], 200);
+      const c = str(args["category"], 100);
+      const b = str(args["brand"], 100);
+      const m = num(args["maxBudget"]);
+      if (q) parsed.query = q;
+      if (c) parsed.category = c;
+      if (b) parsed.brand = b;
+      if (m != null) parsed.maxBudget = m;
+      return recommendProducts(supabase, parsed, language);
+    }
     default:
       return { error: "unknown tool" };
   }
 }
+
 
 /** OpenAI tool schemas — explainPlatformRules needs no database access. */
 export const TOOL_SCHEMAS = [
