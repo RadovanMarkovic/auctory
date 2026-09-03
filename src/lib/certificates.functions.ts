@@ -25,7 +25,8 @@ async function requestOrigin() {
 
 /** Caller must own the product, hold the seller role and have a verified Sepolia wallet. */
 async function authorizeSeller(
-  supabase: Awaited<ReturnType<typeof requireSupabaseAuth>> extends never ? never : any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabase: any,
   userId: string,
   productId: string,
 ) {

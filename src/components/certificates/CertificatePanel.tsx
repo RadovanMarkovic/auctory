@@ -43,7 +43,7 @@ export function CertificatePanel({
           <ShieldCheck className="size-5" aria-hidden />
           {t("certificates.panel.title")}
         </CardTitle>
-        <Badge variant={status === "failed" ? "destructive" : "secondary"}>
+        <Badge variant={status === "failed" ? "destructive" : status === "minted" ? "success" : "muted"}>
           {t(`certificates.status.${status}`)}
         </Badge>
       </CardHeader>

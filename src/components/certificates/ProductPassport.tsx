@@ -90,7 +90,7 @@ export function ProductPassport({ productId }: { productId: string }) {
           <BadgeCheck className="size-5" aria-hidden />
           {t("certificates.passport.title")}
         </CardTitle>
-        <Badge variant="secondary">{t("certificates.status.minted")}</Badge>
+        <Badge variant="success">{t("certificates.status.minted")}</Badge>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">{t("certificates.passport.disclaimer")}</p>

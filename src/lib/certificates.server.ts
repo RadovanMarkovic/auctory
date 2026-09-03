@@ -220,7 +220,7 @@ async function ensureCertificateRow(params: {
   const { data: updated, error: updateError } = await supabaseAdmin
     .from("blockchain_certificates")
     .update({
-      manifest: manifest as unknown as Record<string, unknown>,
+      manifest: manifest as unknown as Json,
       snapshot_at: snapshotAt,
       metadata_hash: hash,
       metadata_uri: publicUrl(params.origin, metadataPath),
@@ -356,7 +356,7 @@ export async function registerCertificateOnChain(params: {
           return null;
         }
       })
-      .find((parsed) => parsed?.name === "ProductRegistered");
+      .find((parsed: { name: string } | null) => parsed?.name === "ProductRegistered");
     if (!event) throw new CertificateError("MINT_EVENT_MISSING");
 
     const tokenId = (event.args['tokenId'] as bigint).toString();
