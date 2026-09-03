@@ -47,7 +47,9 @@ Flow: claim the row into `minting` with a conditional update (so two concurrent 
 
 Idempotency / reconciliation: before minting a retry, check the saved tx receipt, then `isProductRegistered(productRef)` / `tokenIdOf(productRef)` and the `ProductRegistered` log. If the chain already has it, the database is reconciled from on-chain data instead of minting a second time. A stale `minting` row (older than a timeout) is reclaimable only through the same reconciliation path.
 
-A second function refreshes/verifies an existing certificate: recompute nothing, but re-read `ownerOf` and the on-chain record and compare with the stored hash.
+Two separate follow-up functions:
+- `refreshCertificateOwner` — read-only: re-reads `ownerOf(tokenId)` on chain and synchronizes `current_owner_wallet`. Nothing else.
+- `verifyCertificateIntegrity` — canonicalizes and keccak256-hashes the stored immutable manifest again, then compares that freshly computed hash with both the stored `metadata_hash` and the contract's `ProductRecord.metadataHash`.
 
 ### 4. Product and auction lifecycle
 
