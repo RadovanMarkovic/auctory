@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 import { shortenAddress, sameAddress } from "@/lib/wallet/message";
-import { useWallet } from "@/lib/wallet/use-wallet";
+import { syncWalletConnection, useWallet } from "@/lib/wallet/use-wallet";
 import { useVerifiedWallet } from "@/lib/wallet/verify";
 
 /** Header wallet control: connect, wrong network, or connected account.
