@@ -54,6 +54,9 @@ export function AccountMenu() {
             <DropdownMenuItem asChild>
               <Link to="/my-purchases">{t("nav.myPurchases")}</Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/assistant">{t("account.assistant")}</Link>
+            </DropdownMenuItem>
             {isSeller ? (
               <>
                 <DropdownMenuItem asChild>
