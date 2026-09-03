@@ -303,6 +303,114 @@ export type Database = {
         }
         Relationships: []
       }
+      ownership_transfers: {
+        Row: {
+          auction_id: string
+          block_number: number | null
+          buyer_wallet: string
+          certificate_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          last_error_code: string | null
+          last_error_message: string | null
+          previous_owner_wallet: string
+          product_id: string
+          retry_count: number
+          sale_data_hash: string
+          sale_ref: string
+          sale_snapshot: Json
+          status: Database["public"]["Enums"]["ownership_transfer_status"]
+          submitted_at: string | null
+          token_id: string
+          transaction_id: string
+          tx_hash: string | null
+          updated_at: string
+        }
+        Insert: {
+          auction_id: string
+          block_number?: number | null
+          buyer_wallet: string
+          certificate_id: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_error_code?: string | null
+          last_error_message?: string | null
+          previous_owner_wallet: string
+          product_id: string
+          retry_count?: number
+          sale_data_hash: string
+          sale_ref: string
+          sale_snapshot: Json
+          status?: Database["public"]["Enums"]["ownership_transfer_status"]
+          submitted_at?: string | null
+          token_id: string
+          transaction_id: string
+          tx_hash?: string | null
+          updated_at?: string
+        }
+        Update: {
+          auction_id?: string
+          block_number?: number | null
+          buyer_wallet?: string
+          certificate_id?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          last_error_code?: string | null
+          last_error_message?: string | null
+          previous_owner_wallet?: string
+          product_id?: string
+          retry_count?: number
+          sale_data_hash?: string
+          sale_ref?: string
+          sale_snapshot?: Json
+          status?: Database["public"]["Enums"]["ownership_transfer_status"]
+          submitted_at?: string | null
+          token_id?: string
+          transaction_id?: string
+          tx_hash?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ownership_transfers_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ownership_transfers_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "public_auctions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ownership_transfers_certificate_id_fkey"
+            columns: ["certificate_id"]
+            isOneToOne: false
+            referencedRelation: "blockchain_certificates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ownership_transfers_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ownership_transfers_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: true
+            referencedRelation: "transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_images: {
         Row: {
           caption: string | null
@@ -715,6 +823,49 @@ export type Database = {
         Returns: string
       }
       cancel_auction: { Args: { _auction_id: string }; Returns: undefined }
+      claim_certificate_transfer: {
+        Args: {
+          _auction_id: string
+          _buyer_wallet: string
+          _certificate_id: string
+          _previous_owner_wallet: string
+          _product_id: string
+          _sale_data_hash: string
+          _sale_ref: string
+          _sale_snapshot: Json
+          _token_id: string
+          _transaction_id: string
+        }
+        Returns: {
+          auction_id: string
+          block_number: number | null
+          buyer_wallet: string
+          certificate_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          last_error_code: string | null
+          last_error_message: string | null
+          previous_owner_wallet: string
+          product_id: string
+          retry_count: number
+          sale_data_hash: string
+          sale_ref: string
+          sale_snapshot: Json
+          status: Database["public"]["Enums"]["ownership_transfer_status"]
+          submitted_at: string | null
+          token_id: string
+          transaction_id: string
+          tx_hash: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "ownership_transfers"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       confirm_transaction_buyer: {
         Args: { _transaction_id: string }
         Returns: {
@@ -779,6 +930,43 @@ export type Database = {
         }[]
       }
       finalize_auctions: { Args: never; Returns: undefined }
+      finalize_certificate_transfer: {
+        Args: {
+          _block_number: number
+          _owner_wallet: string
+          _transaction_id: string
+          _tx_hash: string
+        }
+        Returns: {
+          auction_id: string
+          block_number: number | null
+          buyer_wallet: string
+          certificate_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          last_error_code: string | null
+          last_error_message: string | null
+          previous_owner_wallet: string
+          product_id: string
+          retry_count: number
+          sale_data_hash: string
+          sale_ref: string
+          sale_snapshot: Json
+          status: Database["public"]["Enums"]["ownership_transfer_status"]
+          submitted_at: string | null
+          token_id: string
+          transaction_id: string
+          tx_hash: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "ownership_transfers"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -797,6 +985,10 @@ export type Database = {
       }
       link_verified_wallet: {
         Args: { _address: string; _user_id: string }
+        Returns: undefined
+      }
+      mark_certificate_transfer_submitted: {
+        Args: { _transaction_id: string; _tx_hash: string }
         Returns: undefined
       }
       open_transaction_dispute: {
@@ -835,6 +1027,16 @@ export type Database = {
           ends_at: string
         }[]
       }
+      public_certificate_transfer: {
+        Args: { _product_id: string }
+        Returns: {
+          block_number: number
+          buyer_wallet: string
+          completed_at: string
+          previous_owner_wallet: string
+          tx_hash: string
+        }[]
+      }
       public_seller_summary: {
         Args: { _seller_id: string }
         Returns: {
@@ -843,6 +1045,10 @@ export type Database = {
           id: string
           member_since: string
         }[]
+      }
+      release_certificate_transfer: {
+        Args: { _code: string; _message: string; _transaction_id: string }
+        Returns: undefined
       }
       transaction_next_status: {
         Args: { _buyer_at: string; _seller_at: string }
@@ -854,6 +1060,11 @@ export type Database = {
       app_role: "buyer" | "seller" | "admin"
       auction_status: "draft" | "scheduled" | "live" | "ended" | "cancelled"
       certificate_status: "pending" | "minting" | "minted" | "failed"
+      ownership_transfer_status:
+        | "pending"
+        | "submitted"
+        | "completed"
+        | "failed"
       product_status: "draft" | "published" | "archived"
       seller_request_status: "none" | "pending" | "approved" | "rejected"
       transaction_status:
@@ -994,6 +1205,12 @@ export const Constants = {
       app_role: ["buyer", "seller", "admin"],
       auction_status: ["draft", "scheduled", "live", "ended", "cancelled"],
       certificate_status: ["pending", "minting", "minted", "failed"],
+      ownership_transfer_status: [
+        "pending",
+        "submitted",
+        "completed",
+        "failed",
+      ],
       product_status: ["draft", "published", "archived"],
       seller_request_status: ["none", "pending", "approved", "rejected"],
       transaction_status: [
