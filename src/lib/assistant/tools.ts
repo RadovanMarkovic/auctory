@@ -211,14 +211,8 @@ export interface EstimateArgs {
   productionYear?: number | undefined;
 }
 
-interface ProductFacts {
-  categoryId: string | null;
-  brandId: string | null;
-  brandName: string | null;
-  model: string | null;
-  condition: string | null;
-  productionYear: number | null;
-}
+
+
 
 /**
  * Comparable sales = genuinely sold auctions only. `finalize_auctions()` sets
