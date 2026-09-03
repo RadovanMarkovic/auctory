@@ -77,7 +77,7 @@ function NewProductPage() {
     }
     if (accepted.length === 0) return;
     setStaged((current) => [...current, ...accepted]);
-    setCoverId((current) => current ?? accepted[0].id);
+    setCoverId((current) => current ?? accepted[0]!.id);
   }
 
   function removeImage(id: string) {
