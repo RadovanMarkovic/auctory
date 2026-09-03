@@ -347,15 +347,17 @@ function Stat({ label, value }: { label: string; value: string | null }) {
 
 function LotGrid({
   lots,
-  urgent,
+  now,
+  imageUrls,
   isPending,
   isError,
   onRetry,
   emptyTitle,
   emptyDescription,
 }: {
-  lots: HomeData["featured"] | undefined;
-  urgent?: boolean;
+  lots: AuctionListItem[];
+  now: number;
+  imageUrls: Record<string, string>;
   isPending: boolean;
   isError: boolean;
   onRetry: () => void;
@@ -364,8 +366,7 @@ function LotGrid({
 }) {
   const { t } = useTranslation();
 
-  if (isPending)
-    return <LoadingState variant="cards" count={3} label={t("home.lots.loading")} />;
+  if (isPending) return <LoadingState variant="cards" count={3} label={t("home.lots.loading")} />;
   if (isError)
     return (
       <ErrorState
@@ -374,14 +375,20 @@ function LotGrid({
         onRetry={onRetry}
       />
     );
-  if (!lots?.length)
+  if (!lots.length)
     return <EmptyState icon={PackageOpen} title={emptyTitle} description={emptyDescription} />;
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {lots.map((lot) => (
-        <LotCard key={lot.id} lot={lot} urgent={urgent ?? false} />
+      {lots.map((auction) => (
+        <AuctionCard
+          key={auction.id}
+          auction={auction}
+          now={now}
+          imageUrl={auction.coverPath ? imageUrls[auction.coverPath] : undefined}
+        />
       ))}
     </div>
   );
 }
+
