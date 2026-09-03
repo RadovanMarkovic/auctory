@@ -54,7 +54,7 @@ Focused unit tests for: canonical snapshot serialization and hash stability, sal
 
 ## Technical notes
 
-- Migration: `ownership_transfers` (+ enum for its status) with GRANT SELECT to `authenticated`, GRANT ALL to `service_role`, RLS select policy for buyer/seller/admin via the transaction, `updated_at` trigger, immutability trigger, unique constraints on `transaction_id` and `sale_ref`.
+- Migration: `ownership_transfers` (+ enum for its status) with GRANT SELECT to `authenticated`, GRANT ALL to `service_role`, RLS select policy for buyer/seller/admin via the transaction, `updated_at` trigger, immutability trigger, unique constraints on `transaction_id` and `sale_ref`. Same migration adds the transactional security-definer functions `claim_certificate_transfer`, `finalize_certificate_transfer`, `release_certificate_transfer`, and a read-only `public_certificate_transfer(product_id)` for the passport subset.
 - New `src/lib/transfers.server.ts` (chain + service-role logic, reusing `getChain`/`preflight`/ABI from the certificate server modules) and `src/lib/transfers.functions.ts` exposing `startCertificateTransfer` and `reconcileCertificateTransfer`, both `requireSupabaseAuth` and validating only a transaction id.
 - Sale-snapshot helpers added next to the existing manifest module so canonicalization and keccak256 are shared, not duplicated.
 - Client hooks in `src/lib/transfers.ts` following the `certificates.ts` pattern; secrets are read inside handlers only and never logged.
