@@ -102,6 +102,7 @@ export async function runAssistant(
               supabase,
               call.name,
               (call.args ?? {}) as Record<string, unknown>,
+              language,
             );
           } catch {
             result = { error: "tool_unavailable" };
