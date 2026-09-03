@@ -28,10 +28,10 @@ export interface AuctionToolItem {
 }
 
 export interface SearchAuctionsArgs {
-  query?: string;
-  category?: string;
-  brand?: string;
-  maxBudget?: number;
+  query?: string | undefined;
+  category?: string | undefined;
+  brand?: string | undefined;
+  maxBudget?: number | undefined;
 }
 
 /** eslint-disable-next-line @typescript-eslint/no-explicit-any */
@@ -198,19 +198,28 @@ export async function executeTool(
   args: Record<string, unknown>,
 ): Promise<unknown> {
   switch (name as ToolName | "explainPlatformRules") {
-    case "searchActiveAuctions":
-      return searchActiveAuctions(supabase, {
-        query: typeof args.query === "string" ? args.query.slice(0, 200) : undefined,
-        category: typeof args.category === "string" ? args.category.slice(0, 100) : undefined,
-        brand: typeof args.brand === "string" ? args.brand.slice(0, 100) : undefined,
-        maxBudget: typeof args.maxBudget === "number" ? args.maxBudget : undefined,
-      });
-    case "getAuctionDetails":
-      if (typeof args.auctionId !== "string") return { error: "missing auctionId" };
-      return getAuctionDetails(supabase, { auctionId: args.auctionId.slice(0, 64) });
-    case "getProductPassport":
-      if (typeof args.productId !== "string") return { error: "missing productId" };
-      return getProductPassport(supabase, { productId: args.productId.slice(0, 64) });
+    case "searchActiveAuctions": {
+      const parsed: SearchAuctionsArgs = {};
+      const q = args["query"];
+      const c = args["category"];
+      const b = args["brand"];
+      const m = args["maxBudget"];
+      if (typeof q === "string") parsed.query = q.slice(0, 200);
+      if (typeof c === "string") parsed.category = c.slice(0, 100);
+      if (typeof b === "string") parsed.brand = b.slice(0, 100);
+      if (typeof m === "number" && Number.isFinite(m)) parsed.maxBudget = m;
+      return searchActiveAuctions(supabase, parsed);
+    }
+    case "getAuctionDetails": {
+      const id = args["auctionId"];
+      if (typeof id !== "string") return { error: "missing auctionId" };
+      return getAuctionDetails(supabase, { auctionId: id.slice(0, 64) });
+    }
+    case "getProductPassport": {
+      const id = args["productId"];
+      if (typeof id !== "string") return { error: "missing productId" };
+      return getProductPassport(supabase, { productId: id.slice(0, 64) });
+    }
     default:
       return { error: "unknown tool" };
   }
