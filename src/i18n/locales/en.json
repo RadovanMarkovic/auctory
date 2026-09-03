@@ -70,7 +70,8 @@
       "active": "Active",
       "pending": "Pending",
       "suspended": "Suspended"
-    }
+    },
+    "assistant": "Assistant"
   },
   "wallet": {
     "connect": "Connect wallet",
@@ -935,5 +936,21 @@
     "viewTransaction": "View transaction",
     "viewPassport": "View digital passport",
     "tokenId": "Token ID"
+  },
+  "assistant": {
+    "title": "Auctory Assistant",
+    "open": "Open assistant",
+    "close": "Close assistant",
+    "placeholder": "Ask about auctions, products or how Auctory works…",
+    "send": "Send message",
+    "empty": "Ask about active auctions, a product passport, or how the platform works.",
+    "loadError": "Couldn't load this conversation. Try again.",
+    "sendError": "The message couldn't be sent.",
+    "retry": "Retry",
+    "newConversation": "New conversation",
+    "noConversations": "No conversations yet",
+    "untitled": "Conversation",
+    "deleteConversation": "Delete conversation",
+    "disclaimer": "Informational assistant only — it never bids, confirms transactions, or confirms item authenticity."
   }
 }
