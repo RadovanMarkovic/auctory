@@ -17,7 +17,7 @@ Confirmed from the current schema and finalization logic before planning: prices
 New read-only agent tool `estimateProductValue`. All numbers are computed in code **before** the model is called; the model may only explain them.
 
 Method (documented in code and returned as `method`):
-1. Load completed auctions that actually sold (`status = ended`, a winner exists, `final_price` not null) and join their product's category, brand, model, condition and production year.
+1. Load only genuinely sold auctions — `status = 'ended'`, `winner_id` not null, `final_price` not null, `finalized_at` not null, and an existing `transactions` row for that auction — and join their product's category, brand, model, condition and production year. Unsold, cancelled and merely expired auctions are excluded. No participant, bidder, winner or transaction detail leaves the tool; only the final price is used.
 2. Score comparables: same category required; brand match, model match, same condition, production year within 5 years each add weight. Keep the 20 best.
 3. Fewer than 3 comparables → return `insufficientData: true` with no range.
 4. Otherwise sort final prices and return `estimatedMin` = 25th percentile, `estimatedMax` = 75th percentile, plus `currency: "EUR"`, `comparableCount`, `confidence` (low/medium/high by count and match quality), `factors` (what drove the range), `method`, and a localized disclaimer.
