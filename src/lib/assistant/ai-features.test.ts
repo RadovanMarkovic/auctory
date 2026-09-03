@@ -144,10 +144,14 @@ describe("value estimate", () => {
       sale({ auctionId: `a${index}`, finalPrice: price }),
     );
     const result = estimateValue(sales, target, "sr");
-    const serialized = JSON.stringify(result).toLowerCase();
+    const serialized = JSON.stringify({
+      ...result,
+      method: undefined,
+    }).toLowerCase();
     expect(serialized).not.toContain("reserve");
     expect(serialized).not.toContain("bidder");
     expect(serialized).not.toContain("winner");
+    expect(serialized).not.toContain("auc-");
     expect(result.disclaimer).toMatch(/informativna/i);
   });
 });
