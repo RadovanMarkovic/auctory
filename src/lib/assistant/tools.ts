@@ -555,4 +555,40 @@ export const TOOL_SCHEMAS = [
       parameters: { type: "object", properties: {} },
     },
   },
+  {
+    type: "function" as const,
+    function: {
+      name: "estimateProductValue",
+      description:
+        "Deterministic informational value estimate computed from completed Auctory sales only. Provide a productId, or free-text criteria (category, brand, model, condition, productionYear). Never modify the returned numbers.",
+      parameters: {
+        type: "object",
+        properties: {
+          productId: { type: "string" },
+          category: { type: "string" },
+          brand: { type: "string" },
+          model: { type: "string" },
+          condition: { type: "string" },
+          productionYear: { type: "number" },
+        },
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "recommendProducts",
+      description:
+        "Recommend up to five live or upcoming public auctions filtered by budget, category and brand. Returns a reason per item and a disclaimer.",
+      parameters: {
+        type: "object",
+        properties: {
+          maxBudget: { type: "number", description: "Maximum budget in EUR" },
+          category: { type: "string" },
+          brand: { type: "string" },
+          query: { type: "string" },
+        },
+      },
+    },
+  },
 ];
