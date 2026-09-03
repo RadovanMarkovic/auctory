@@ -18,7 +18,7 @@ New table `public.blockchain_certificates`, one row per product (unique `product
 Access rules in plain language:
 - The product's seller and admins can read their certificate; anyone can read certificates of products that are publicly visible through an auction (so the passport works for buyers/visitors).
 - Nobody can insert, update or delete certificate rows directly from the app. Only the trusted server flow writes them.
-- A guard blocks any change to the manifest, hash, product ref, token id and tx once set.
+- Immutability guard: `product_ref`, `manifest`, `snapshot_at` and `metadata_hash` can never change once created. `token_id` and the successful mint transaction hash become immutable once status reaches `minted`. A retry may store a new transaction hash only when the previous receipt is proven failed; if the previous outcome is unknown, the flow reconciles instead of submitting another transaction.
 
 New storage bucket `certificate-metadata` (public read, no client writes) with content-hash paths — the same content always lands on the same path and an existing object is never overwritten.
 
@@ -47,7 +47,9 @@ Flow: claim the row into `minting` with a conditional update (so two concurrent 
 
 Idempotency / reconciliation: before minting a retry, check the saved tx receipt, then `isProductRegistered(productRef)` / `tokenIdOf(productRef)` and the `ProductRegistered` log. If the chain already has it, the database is reconciled from on-chain data instead of minting a second time. A stale `minting` row (older than a timeout) is reclaimable only through the same reconciliation path.
 
-A second function refreshes/verifies an existing certificate: recompute nothing, but re-read `ownerOf` and the on-chain record and compare with the stored hash.
+Two separate follow-up functions:
+- `refreshCertificateOwner` — read-only: re-reads `ownerOf(tokenId)` on chain and synchronizes `current_owner_wallet`. Nothing else.
+- `verifyCertificateIntegrity` — canonicalizes and keccak256-hashes the stored immutable manifest again, then compares that freshly computed hash with both the stored `metadata_hash` and the contract's `ProductRecord.metadataHash`.
 
 ### 4. Product and auction lifecycle
 
