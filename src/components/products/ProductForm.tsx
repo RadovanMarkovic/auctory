@@ -17,6 +17,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { COUNTRIES } from "@/lib/countries";
 import { PRODUCT_CONDITIONS, categoryName, useBrands, useCategories } from "@/lib/products";
 import { RequiredMark } from "@/components/ui/required-mark";
+import {
+  DescriptionAssistant,
+  type DescriptionDraftFacts,
+} from "@/components/products/DescriptionAssistant";
 
 export interface ProductFormValues {
   category_id: string | null;
@@ -76,8 +80,11 @@ export function ProductForm({
   actions,
   provenanceSlot,
   footerSlot,
+  productId,
 }: {
   initialValues: ProductFormValues;
+  /** Existing product id, when editing a saved product. */
+  productId?: string;
   submitting?: boolean;
   onSubmit: (values: ProductFormValues) => void;
   /** Extra buttons rendered next to the save button. */
