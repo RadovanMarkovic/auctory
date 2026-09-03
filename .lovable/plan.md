@@ -18,7 +18,7 @@ New table `public.blockchain_certificates`, one row per product (unique `product
 Access rules in plain language:
 - The product's seller and admins can read their certificate; anyone can read certificates of products that are publicly visible through an auction (so the passport works for buyers/visitors).
 - Nobody can insert, update or delete certificate rows directly from the app. Only the trusted server flow writes them.
-- A guard blocks any change to the manifest, hash, product ref, token id and tx once set.
+- Immutability guard: `product_ref`, `manifest`, `snapshot_at` and `metadata_hash` can never change once created. `token_id` and the successful mint transaction hash become immutable once status reaches `minted`. A retry may store a new transaction hash only when the previous receipt is proven failed; if the previous outcome is unknown, the flow reconciles instead of submitting another transaction.
 
 New storage bucket `certificate-metadata` (public read, no client writes) with content-hash paths — the same content always lands on the same path and an existing object is never overwritten.
 
