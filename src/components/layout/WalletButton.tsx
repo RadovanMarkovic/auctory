@@ -25,6 +25,12 @@ export function WalletButton({ className }: { className?: string }) {
     activeAddress && verifiedAddress && !sameAddress(activeAddress, verifiedAddress),
   );
 
+  // After sign-in, silently re-adopt an already-authorized MetaMask account so
+  // the header shows the connected address instead of a reconnect prompt.
+  useEffect(() => {
+    if (isAuthenticated && wallet.dismissed) void syncWalletConnection();
+  }, [isAuthenticated, wallet.dismissed]);
+
   // Warn as soon as MetaMask switches to an account other than the verified one.
   useEffect(() => {
     if (mismatch) toast.warning(t("wallet.mismatch"));
