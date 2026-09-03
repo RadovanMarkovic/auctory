@@ -116,10 +116,17 @@ export function useWallet() {
   }, []);
 
   const connect = useCallback(async () => {
-    const forcePicker = state.dismissed;
     setState({ connecting: true, error: null });
     try {
-      const address = await connectWallet(forcePicker);
+      // If MetaMask already authorizes an account, adopt it silently — only
+      // open the account picker when nothing is connected.
+      const existing = await getConnectedAccounts();
+      if (existing[0]) {
+        const chainId = await getChainId();
+        setState({ address: existing[0], chainId, dismissed: false });
+        return existing[0];
+      }
+      const address = await connectWallet(state.dismissed);
       const chainId = await getChainId();
       setState({ address, chainId, dismissed: false });
       return address;
