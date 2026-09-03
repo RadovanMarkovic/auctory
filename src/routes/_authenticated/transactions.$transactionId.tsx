@@ -23,6 +23,8 @@ import {
   useOpenDispute,
   useTransaction,
 } from "@/lib/transactions";
+import { CertificateTransferPanel } from "@/components/transactions/CertificateTransferPanel";
+import { useStartTransfer } from "@/lib/transfers";
 
 const title = "Transaction — Auctory";
 const description = "Record buyer and seller confirmations for a completed Auctory auction.";
@@ -52,6 +54,13 @@ function TransactionPage() {
   const confirmBuyer = useConfirmAsBuyer();
   const confirmSeller = useConfirmAsSeller();
   const dispute = useOpenDispute();
+  const startTransfer = useStartTransfer(transactionId);
+
+  /** After the second confirmation, attempt the transfer immediately. */
+  const attemptTransferAfterConfirm = async () => {
+    const { data } = await query.refetch();
+    if (data?.status === "ready_for_transfer") startTransfer.mutate(undefined);
+  };
 
   const [buyerOpen, setBuyerOpen] = useState(false);
   const [sellerOpen, setSellerOpen] = useState(false);
@@ -140,6 +149,13 @@ function TransactionPage() {
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-6">
+          <CertificateTransferPanel
+            transactionId={transaction.id}
+            status={transaction.status}
+            isParticipant={isBuyer || isSeller}
+            locale={locale}
+          />
+
           <Card>
             <CardHeader>
               <CardTitle className="font-display text-2xl">
@@ -283,6 +299,7 @@ function TransactionPage() {
                     try {
                       await confirmBuyer.mutateAsync(transaction.id);
                       toast.success(t("transactions.actions.confirmed"));
+                      void attemptTransferAfterConfirm();
                     } catch {
                       toast.error(t("transactions.actions.failed"));
                     }
@@ -330,6 +347,7 @@ function TransactionPage() {
                     try {
                       await confirmSeller.mutateAsync(transaction.id);
                       toast.success(t("transactions.actions.confirmed"));
+                      void attemptTransferAfterConfirm();
                     } catch {
                       toast.error(t("transactions.actions.failed"));
                     }

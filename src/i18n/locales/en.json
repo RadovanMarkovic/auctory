@@ -862,5 +862,62 @@
       "CERTIFICATE_NOT_MINTED": "This certificate has not been registered yet.",
       "CERTIFICATE_NOT_FOUND": "No certificate exists for this product."
     }
+  },
+  "transfers": {
+    "title": "Certificate ownership transfer",
+    "description": "After both confirmations, Auctory moves the blockchain certificate to the buyer's verified wallet. The operator pays the network fee — you never sign or pay anything on-chain.",
+    "completedNotice": "The certificate now belongs to the buyer's verified wallet. Payment and delivery remain outside Auctory.",
+    "stage": {
+      "ready": "Ready to transfer",
+      "submitting": "Submitting",
+      "confirming": "Confirming on-chain",
+      "completed": "Transferred"
+    },
+    "fields": {
+      "previousOwner": "Previous owner",
+      "newOwner": "New owner",
+      "txHash": "Transaction",
+      "block": "Block",
+      "completedAt": "Confirmed at",
+      "retries": "Attempts"
+    },
+    "actions": {
+      "transfer": "Transfer certificate",
+      "reconcile": "Check status / retry"
+    },
+    "passport": {
+      "title": "Ownership change",
+      "transferred": "Certificate transferred to the buyer's wallet."
+    },
+    "errors": {
+      "TRANSFER_FAILED": "The certificate transfer could not be completed. Please try again.",
+      "FORBIDDEN": "You do not have access to this transaction.",
+      "INVALID_TRANSACTION": "Invalid transaction.",
+      "TRANSACTION_NOT_FOUND": "Transaction not found.",
+      "TRANSACTION_DISPUTED": "A dispute is open, so the certificate cannot be transferred.",
+      "CONFIRMATIONS_MISSING": "Both the buyer and the seller must confirm first.",
+      "AUCTION_NOT_SOLD": "This auction has no confirmed winner.",
+      "BUYER_WALLET_REQUIRED": "The buyer must verify a Sepolia wallet before the certificate can be transferred.",
+      "CERTIFICATE_NOT_FOUND": "This product has no certificate.",
+      "CERTIFICATE_NOT_MINTED": "The certificate has not been registered on the blockchain yet.",
+      "CONTRACT_MISMATCH": "The certificate belongs to a different contract.",
+      "OWNER_MISMATCH": "The on-chain owner does not match the stored certificate owner.",
+      "TRANSFER_NOT_CLAIMABLE": "This transaction is not ready for transfer.",
+      "TRANSFER_IN_PROGRESS": "A transfer is already in progress.",
+      "TRANSFER_PENDING": "A blockchain transaction is still pending. Check the status again shortly.",
+      "TRANSFER_TX_REVERTED": "The blockchain transaction failed. You can retry.",
+      "TRANSFER_EVENT_MISSING": "The blockchain confirmation could not be validated.",
+      "TRANSFER_EVENT_MISMATCH": "The blockchain confirmation did not match the sale record.",
+      "TRANSFER_OWNER_MISMATCH": "Ownership was not updated as expected on-chain.",
+      "TRANSFER_FINALIZE_FAILED": "The transfer was confirmed on-chain but could not be saved. Try checking the status again.",
+      "TRANSFER_RETRY": "Ready to retry.",
+      "TRANSFER_CLAIM_FAILED": "The transfer could not be started.",
+      "WRONG_CHAIN": "The service is not connected to the Sepolia network.",
+      "RPC_UNREACHABLE": "The blockchain network is unreachable right now.",
+      "CONFIG_MISSING": "The blockchain service is not configured.",
+      "CONTRACT_NOT_DEPLOYED": "The certificate contract was not found.",
+      "CONTRACT_PAUSED": "The certificate contract is paused.",
+      "OPERATOR_MISSING_TRANSFER_ROLE": "The Auctory operator is not allowed to transfer certificates."
+    }
   }
 }

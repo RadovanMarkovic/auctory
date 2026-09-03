@@ -868,5 +868,62 @@
       "CERTIFICATE_NOT_MINTED": "Ovaj sertifikat još nije registrovan.",
       "CERTIFICATE_NOT_FOUND": "Za ovaj proizvod ne postoji sertifikat."
     }
+  },
+  "transfers": {
+    "title": "Prenos vlasništva nad sertifikatom",
+    "description": "Nakon obe potvrde, Auctory prenosi blockchain sertifikat u verifikovani novčanik kupca. Mrežnu naknadu plaća operator — ne potpisujete i ne plaćate ništa na lancu.",
+    "completedNotice": "Sertifikat sada pripada verifikovanom novčaniku kupca. Plaćanje i isporuka i dalje se obavljaju van Auctory platforme.",
+    "stage": {
+      "ready": "Spremno za prenos",
+      "submitting": "Slanje",
+      "confirming": "Potvrđivanje na lancu",
+      "completed": "Preneto"
+    },
+    "fields": {
+      "previousOwner": "Prethodni vlasnik",
+      "newOwner": "Novi vlasnik",
+      "txHash": "Transakcija",
+      "block": "Blok",
+      "completedAt": "Potvrđeno",
+      "retries": "Pokušaji"
+    },
+    "actions": {
+      "transfer": "Prenesi sertifikat",
+      "reconcile": "Proveri status / pokušaj ponovo"
+    },
+    "passport": {
+      "title": "Promena vlasništva",
+      "transferred": "Sertifikat je prenet u novčanik kupca."
+    },
+    "errors": {
+      "TRANSFER_FAILED": "Prenos sertifikata nije uspeo. Pokušajte ponovo.",
+      "FORBIDDEN": "Nemate pristup ovoj transakciji.",
+      "INVALID_TRANSACTION": "Neispravna transakcija.",
+      "TRANSACTION_NOT_FOUND": "Transakcija nije pronađena.",
+      "TRANSACTION_DISPUTED": "Otvoren je spor, pa sertifikat ne može biti prenet.",
+      "CONFIRMATIONS_MISSING": "Prvo moraju da potvrde i kupac i prodavac.",
+      "AUCTION_NOT_SOLD": "Ova aukcija nema potvrđenog pobednika.",
+      "BUYER_WALLET_REQUIRED": "Kupac mora da verifikuje Sepolia novčanik pre prenosa sertifikata.",
+      "CERTIFICATE_NOT_FOUND": "Ovaj proizvod nema sertifikat.",
+      "CERTIFICATE_NOT_MINTED": "Sertifikat još nije registrovan na blockchainu.",
+      "CONTRACT_MISMATCH": "Sertifikat pripada drugom ugovoru.",
+      "OWNER_MISMATCH": "Vlasnik na lancu ne odgovara sačuvanom vlasniku sertifikata.",
+      "TRANSFER_NOT_CLAIMABLE": "Ova transakcija nije spremna za prenos.",
+      "TRANSFER_IN_PROGRESS": "Prenos je već u toku.",
+      "TRANSFER_PENDING": "Blockchain transakcija je još u obradi. Proverite status ponovo za koji trenutak.",
+      "TRANSFER_TX_REVERTED": "Blockchain transakcija nije uspela. Možete pokušati ponovo.",
+      "TRANSFER_EVENT_MISSING": "Potvrda sa blockchaina nije mogla da se validira.",
+      "TRANSFER_EVENT_MISMATCH": "Potvrda sa blockchaina ne odgovara zapisu o prodaji.",
+      "TRANSFER_OWNER_MISMATCH": "Vlasništvo nije ažurirano kako je očekivano na lancu.",
+      "TRANSFER_FINALIZE_FAILED": "Prenos je potvrđen na lancu, ali nije sačuvan. Pokušajte ponovo proveru statusa.",
+      "TRANSFER_RETRY": "Spremno za ponovni pokušaj.",
+      "TRANSFER_CLAIM_FAILED": "Prenos nije mogao da se pokrene.",
+      "WRONG_CHAIN": "Servis nije povezan na Sepolia mrežu.",
+      "RPC_UNREACHABLE": "Blockchain mreža trenutno nije dostupna.",
+      "CONFIG_MISSING": "Blockchain servis nije konfigurisan.",
+      "CONTRACT_NOT_DEPLOYED": "Ugovor sertifikata nije pronađen.",
+      "CONTRACT_PAUSED": "Ugovor sertifikata je pauziran.",
+      "OPERATOR_MISSING_TRANSFER_ROLE": "Auctory operator nema dozvolu za prenos sertifikata."
+    }
   }
 }

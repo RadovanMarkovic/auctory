@@ -18,6 +18,7 @@ import {
   type CertificateRow,
 } from "@/lib/certificates";
 import { useAuth } from "@/lib/auth-context";
+import { usePublicTransfer } from "@/lib/transfers";
 import { shortenAddress } from "@/lib/wallet/message";
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
@@ -55,6 +56,7 @@ export function ProductPassport({ productId }: { productId: string }) {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { data, isLoading } = useCertificate(productId);
+  const { data: transfer } = usePublicTransfer(productId);
   const verify = useVerifyCertificate(productId);
   const refresh = useRefreshCertificateOwner(productId);
   const [result, setResult] = useState<VerifyResult | null>(null);
@@ -153,6 +155,39 @@ export function ProductPassport({ productId }: { productId: string }) {
             </Row>
           ) : null}
         </div>
+
+        {transfer ? (
+          <div className="rounded-md border border-border p-4">
+            <p className="text-sm font-medium">{t("transfers.passport.title")}</p>
+            <div className="mt-2 divide-y divide-border">
+              <Row label={t("transfers.fields.previousOwner")}>
+                <Ext href={explorerAddressUrl(transfer.previous_owner_wallet)}>
+                  {shortenAddress(transfer.previous_owner_wallet)}
+                </Ext>
+              </Row>
+              <Row label={t("transfers.fields.newOwner")}>
+                <Ext href={explorerAddressUrl(transfer.buyer_wallet)}>
+                  {shortenAddress(transfer.buyer_wallet)}
+                </Ext>
+              </Row>
+              {transfer.tx_hash ? (
+                <Row label={t("transfers.fields.txHash")}>
+                  <Ext href={explorerTxUrl(transfer.tx_hash)}>
+                    {shortenAddress(transfer.tx_hash)}
+                  </Ext>
+                </Row>
+              ) : null}
+              {transfer.block_number ? (
+                <Row label={t("transfers.fields.block")}>{transfer.block_number}</Row>
+              ) : null}
+              {transfer.completed_at ? (
+                <Row label={t("transfers.fields.completedAt")}>
+                  {new Date(transfer.completed_at).toLocaleString()}
+                </Row>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
 
         <div className="flex flex-wrap gap-2">
           <Button size="sm" variant="outline" onClick={runVerify} disabled={verify.isPending}>
