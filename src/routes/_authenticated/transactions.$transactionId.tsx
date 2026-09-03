@@ -149,6 +149,13 @@ function TransactionPage() {
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-6">
+          <CertificateTransferPanel
+            transactionId={transaction.id}
+            status={transaction.status}
+            isParticipant={isBuyer || isSeller}
+            locale={locale}
+          />
+
           <Card>
             <CardHeader>
               <CardTitle className="font-display text-2xl">
