@@ -160,6 +160,7 @@ function EditProductPage() {
       <div className="mt-10 space-y-8">
         <ProductForm
           key={product.updated_at}
+          productId={product.id}
           initialValues={initialValues}
           submitting={saveMutation.isPending}
           onSubmit={(values) => saveMutation.mutate(values)}
