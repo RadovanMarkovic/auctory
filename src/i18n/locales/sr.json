@@ -562,7 +562,7 @@
       "tooLarge": "Fajl je prevelik"
     },
     "ai": {
-      "generate": "AI generiši opis",
+      "generate": "Generiši opis pomoću AI",
       "generating": "Generisanje…",
       "error": "Generisanje nije uspelo.",
       "dismiss": "Odbaci nacrt",
