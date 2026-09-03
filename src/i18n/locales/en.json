@@ -558,7 +558,7 @@
       "tooLarge": "File is too large"
     },
     "ai": {
-      "generate": "AI generate description",
+      "generate": "Generate description with AI",
       "generating": "Generating…",
       "error": "Generation failed.",
       "dismiss": "Discard draft",
