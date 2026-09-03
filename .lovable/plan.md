@@ -18,24 +18,34 @@ One row per post-auction transaction (unique on `transaction_id`, and unique on 
 Read access: buyer, seller and admin only. No insert/update/delete grants for authenticated users — every write happens through server-side service-role logic, and an immutability trigger rejects changes to `sale_ref`, `sale_data_hash`, token id, and to the tx hash once completed.
 
 ### 2. Canonical sale snapshot
-An immutable snapshot is built once and stored on the transfer row: transaction id, auction id, product id and productRef, token id, seller wallet, buyer wallet, final price, currency, final bid-history hash, buyer and seller confirmation timestamps. Serialized with the same documented canonical JSON rules already used for the certificate manifest (lexicographically sorted keys, no insignificant whitespace, numbers as numbers), hashed with keccak256 → `sale_data_hash`. `saleRef = keccak256(utf8("auctory:sale:<transaction-id>"))`. Retries reuse the stored snapshot byte-for-byte.
+An immutable snapshot is built once and stored on the transfer row: transaction id, auction id, product id and productRef, token id, seller wallet, buyer wallet, final price, currency, final bid-history hash, buyer and seller confirmation timestamps. Serialized with the same documented canonical JSON rules already used for the certificate manifest (lexicographically sorted keys, no insignificant whitespace), hashed with keccak256 → `sale_data_hash`. `saleRef = keccak256(utf8("auctory:sale:<transaction-id>"))`. Retries reuse the stored snapshot byte-for-byte.
+
+The final price is stored as a normalized decimal string (fixed scale, taken from the database numeric, never a JavaScript float) so the hash is deterministic. Wallet addresses in the snapshot are stored in one normalized on-chain form; `previousOwnerWallet` comes from `ownerOf(tokenId)` and must match `blockchain_certificates.current_owner_wallet` before submission.
 
 ### 3. Eligibility gate (server-side only)
-A transfer starts only when all hold: auction sold with a winner; transaction is `ready_for_transfer`; both confirmations present; no dispute; certificate status `minted`; buyer has a server-verified Sepolia wallet; preflight passes (chain id 11155111, contract bytecode present, not paused, operator holds TRANSFER_ROLE, configured contract matches the certificate's contract); and `ownerOf(tokenId)` equals the certificate's expected current owner. Every authoritative value — wallets, token id, refs, hashes — is derived server-side from existing rows; the browser sends only a transaction id.
+A transfer starts only when all hold: auction sold with a winner; transaction is `ready_for_transfer`; both confirmations present; no dispute; certificate status `minted`; buyer has a server-verified Sepolia wallet; preflight passes (chain id 11155111, contract bytecode present, not paused, operator holds **TRANSFER_ROLE only** — MINTER_ROLE is not required, configured contract matches the certificate's contract); and `ownerOf(tokenId)` equals the certificate's expected current owner. Every authoritative value — wallets, token id, refs, hashes — is derived server-side from existing rows; the browser sends only a transaction id.
 
-### 4. Transfer execution
-`ready_for_transfer → transferring_certificate` is claimed atomically (conditional update) so two concurrent calls cannot both proceed. The tx hash is persisted before waiting on the receipt. On success the receipt's `SaleCompleted` event is validated (saleRef, productRef, tokenId, buyer, saleDataHash) and `ownerOf(tokenId)` is re-read and must equal the buyer wallet; only then are the certificate owner, the transfer record, and the transaction status (`completed`) updated together in one server-side step.
+### 4. How a transfer starts
+Once a transaction reaches `ready_for_transfer`, both buyer and seller see a "Transfer certificate" action; either may trigger it. In addition, the second confirmation immediately attempts the transfer automatically, with the manual action as a safe fallback if that attempt does not start or fails early. Because starting is guarded by an atomic claim on the transaction and a unique transfer row, refreshing the page, closing the browser or clicking twice can never create a second transfer.
+
+### 5. Transfer execution (atomic state changes)
+Two transactional security-definer database functions own all state changes:
+- **claim**: in one transaction, move `ready_for_transfer → transferring_certificate` and create-or-claim the `ownership_transfers` row (conditional on the current status, so a concurrent caller gets nothing);
+- **finalize**: in one transaction, set `blockchain_certificates.current_owner_wallet`, `ownership_transfers` status/tx hash/block/timestamps, and `transactions.status = completed`. A partial update is impossible — either all three land or none do.
+
+The tx hash is persisted before waiting on the receipt. On success the receipt's `SaleCompleted` event is validated (saleRef, productRef, tokenId, seller, buyer, saleDataHash) and `ownerOf(tokenId)` is re-read and must equal the buyer wallet; only then is finalize called.
 
 Failure handling:
-- submission fails before a hash exists → transfer row marked failed, transaction returns to `ready_for_transfer`, retry allowed;
+- submission fails before a hash exists → transfer row marked failed and the transaction is released back to `ready_for_transfer` (also in one transactional function), retry allowed;
 - a hash exists or the outcome is unknown → stays `transferring_certificate` until reconciliation.
 
-### 5. Idempotency and reconcile/retry
-A protected retry action first reconciles: inspect the saved receipt, `isSaleProcessed(saleRef)`, `getSale(saleRef)`, `ownerOf(tokenId)` and the historical `SaleCompleted` event. If the chain already shows the sale, the database is reconciled to `completed` — no second transaction is ever sent. Only a proven-failed receipt allows a new submission with a new hash.
+### 6. Idempotency and reconcile/retry
+A protected retry action always reconciles first: inspect the saved receipt, `isSaleProcessed(saleRef)`, `getSale(saleRef)`, `ownerOf(tokenId)` and the historical `SaleCompleted` event. If the chain already shows the sale, the database is reconciled to `completed` — no second transaction is sent. While a previous transaction is still pending or its outcome is unknown, the action only reports status; a new submission is allowed **only** after a receipt explicitly shows failure.
 
-### 6. UI
-- Transaction page: transfer progress (ready → submitting → confirming → completed), previous and new owner, tx hash with Sepolia Etherscan link, block, timestamp, error and retry state, and a retry/reconcile button for participants. The existing outside-payment disclaimer stays exactly as it is.
-- Digital passport: shows the ownership change (previous owner, current owner, sale transaction link) once completed.
+
+### 7. UI and public passport access
+- Transaction page: a "Transfer certificate" action for buyer and seller at `ready_for_transfer`, transfer progress (ready → submitting → confirming → completed), previous and new owner, tx hash with Sepolia Etherscan link, block, timestamp, error and retry state, and a retry/reconcile button for participants. The existing outside-payment disclaimer stays exactly as it is.
+- `ownership_transfers` stays readable only by buyer, seller and admin. The public `ProductPassport` gets a safe public subset of completed transfer data (previous owner wallet, new owner wallet, tx hash, block, completion timestamp) through a trusted read-only server function limited to products of publicly visible auctions. No internal error text, no private transaction data.
 - Both parties see an in-app notice (the existing action-required notice pattern, extended) once the transfer confirms. No email is sent — the project has no email infrastructure.
 - All new strings added to EN and SR locale files.
 
@@ -44,7 +54,7 @@ Focused unit tests for: canonical snapshot serialization and hash stability, sal
 
 ## Technical notes
 
-- Migration: `ownership_transfers` (+ enum for its status) with GRANT SELECT to `authenticated`, GRANT ALL to `service_role`, RLS select policy for buyer/seller/admin via the transaction, `updated_at` trigger, immutability trigger, unique constraints on `transaction_id` and `sale_ref`.
+- Migration: `ownership_transfers` (+ enum for its status) with GRANT SELECT to `authenticated`, GRANT ALL to `service_role`, RLS select policy for buyer/seller/admin via the transaction, `updated_at` trigger, immutability trigger, unique constraints on `transaction_id` and `sale_ref`. Same migration adds the transactional security-definer functions `claim_certificate_transfer`, `finalize_certificate_transfer`, `release_certificate_transfer`, and a read-only `public_certificate_transfer(product_id)` for the passport subset.
 - New `src/lib/transfers.server.ts` (chain + service-role logic, reusing `getChain`/`preflight`/ABI from the certificate server modules) and `src/lib/transfers.functions.ts` exposing `startCertificateTransfer` and `reconcileCertificateTransfer`, both `requireSupabaseAuth` and validating only a transaction id.
 - Sale-snapshot helpers added next to the existing manifest module so canonicalization and keccak256 are shared, not duplicated.
 - Client hooks in `src/lib/transfers.ts` following the `certificates.ts` pattern; secrets are read inside handlers only and never logged.
