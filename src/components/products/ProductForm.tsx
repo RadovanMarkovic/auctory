@@ -220,15 +220,44 @@ export function ProductForm({
           </div>
 
 
-          <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="description">{t("products.fields.description")}</Label>
-            <Textarea
-              id="description"
-              rows={6}
-              value={values.description}
-              onChange={(event) => set("description", event.target.value)}
+          <div className="space-y-4 sm:col-span-2">
+            <div className="space-y-2">
+              <Label htmlFor="description">{t("products.fields.description")}</Label>
+              <Textarea
+                id="description"
+                rows={6}
+                value={values.description}
+                onChange={(event) => set("description", event.target.value)}
+              />
+            </div>
+            <DescriptionAssistant
+              facts={() => {
+                const category = (categoriesQuery.data ?? []).find(
+                  (item) => item.id === values.category_id,
+                );
+                const brand = (brandsQuery.data ?? []).find((item) => item.id === values.brand_id);
+                const year = Number.parseInt(values.production_year, 10);
+                const facts: DescriptionDraftFacts = {
+                  hasOriginalBox: values.has_original_box,
+                  hasDocuments: values.has_documents,
+                };
+                if (productId) facts.productId = productId;
+                if (values.title.trim()) facts.title = values.title.trim();
+                if (category) facts.category = category.name_en;
+                if (brand) facts.brand = brand.name;
+                if (values.model.trim()) facts.model = values.model.trim();
+                if (Number.isFinite(year)) facts.productionYear = year;
+                if (values.condition) facts.condition = values.condition;
+                if (values.material.trim()) facts.material = values.material.trim();
+                if (values.country_of_origin) facts.countryOfOrigin = values.country_of_origin;
+                if (values.provenance_notes.trim())
+                  facts.provenanceNotes = values.provenance_notes.trim();
+                return facts;
+              }}
+              onAccept={(text) => set("description", text)}
             />
           </div>
+
         </CardContent>
       </Card>
 
