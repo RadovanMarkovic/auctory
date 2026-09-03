@@ -318,7 +318,31 @@ function Hero() {
   );
 }
 
+function StatsRow() {
+  const { t } = useTranslation();
+  const { data } = useHomeStats();
+
+  return (
+    <dl className="grid gap-6 border-y border-border py-10 sm:grid-cols-2 lg:grid-cols-4">
+      <Stat
+        label={t("home.stats.lotsSold")}
+        value={data ? data.lotsSold.toLocaleString() : null}
+      />
+      <Stat
+        label={t("home.stats.certificatesMinted")}
+        value={data ? data.certificatesMinted.toLocaleString() : null}
+      />
+      <Stat label={t("home.stats.sellThrough")} value={data ? `${data.sellThrough}%` : null} />
+      <Stat
+        label={t("home.stats.bidsPlaced")}
+        value={data ? data.bidsPlaced.toLocaleString() : null}
+      />
+    </dl>
+  );
+}
+
 function Stat({ label, value }: { label: string; value: string | null }) {
+
   return (
     <div className="text-center">
       <dt className="eyebrow">{label}</dt>
