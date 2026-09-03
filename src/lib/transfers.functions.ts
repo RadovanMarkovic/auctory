@@ -31,7 +31,18 @@ async function authorizeParticipant(
   if (!data) throw new Error("FORBIDDEN");
 }
 
-async function run(fn: () => Promise<unknown>, fallback: string) {
+export interface TransferStatusResult {
+  status: "completed" | "submitted" | "pending" | "failed";
+  txHash?: string | null;
+  blockNumber?: number | null;
+  previousOwner?: string | null;
+  newOwner?: string | null;
+}
+
+async function run(
+  fn: () => Promise<TransferStatusResult>,
+  fallback: string,
+): Promise<TransferStatusResult> {
   const { TransferError } = await import("@/lib/transfers.server");
   try {
     return await fn();

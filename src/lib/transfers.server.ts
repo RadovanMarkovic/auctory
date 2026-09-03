@@ -225,8 +225,8 @@ async function finalize(params: {
 }): Promise<TransferResult> {
   const { error } = await supabaseAdmin.rpc("finalize_certificate_transfer", {
     _transaction_id: params.transactionId,
-    _tx_hash: params.txHash,
-    _block_number: params.blockNumber,
+    _tx_hash: params.txHash as string,
+    _block_number: params.blockNumber as number,
     _owner_wallet: params.owner,
   });
   if (error) throw new CertificateError("TRANSFER_FINALIZE_FAILED", error.message);
