@@ -138,7 +138,9 @@ describe("ABI copy", () => {
   });
 
   it("exposes the functions and events the mint flow relies on", () => {
-    const names = new Set(AUCTORY_CERTIFICATE_ABI.map((entry) => entry.name));
+    const names = new Set(
+      AUCTORY_CERTIFICATE_ABI.map((entry) => ("name" in entry ? entry.name : "")),
+    );
     for (const required of [
       "registerProduct",
       "isProductRegistered",
