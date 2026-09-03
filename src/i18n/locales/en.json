@@ -556,6 +556,21 @@
       "uploaded": "Attachment uploaded",
       "deleted": "Attachment removed",
       "tooLarge": "File is too large"
+    },
+    "ai": {
+      "generate": "AI generate description",
+      "generating": "Generating…",
+      "error": "Generation failed.",
+      "dismiss": "Discard draft",
+      "draftTitle": "AI-generated draft",
+      "notice": "AI-assisted — review before saving. Nothing is saved until you accept a version and save the product.",
+      "titleSuggestion": "Title suggestion",
+      "shortSr": "Short description (Serbian)",
+      "shortEn": "Short description (English)",
+      "detailedSr": "Detailed description (Serbian)",
+      "detailedEn": "Detailed description (English)",
+      "highlights": "Highlighted attributes",
+      "use": "Use this text"
     }
   },
   "auctions": {
