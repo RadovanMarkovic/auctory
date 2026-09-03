@@ -19,7 +19,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { WalletRequiredNotice } from "@/components/wallet/WalletRequiredNotice";
 import { useAuth } from "@/lib/auth-context";
-import { isSepoliaVerified, useVerifiedWallet } from "@/lib/wallet/verify";
+import { isConnectedVerifiedWallet, useVerifiedWallet } from "@/lib/wallet/verify";
+import { useWallet } from "@/lib/wallet/use-wallet";
 import type { ProductStatus } from "@/lib/products";
 
 const title = "Edit Product — Auctory";
