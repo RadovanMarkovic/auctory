@@ -189,7 +189,9 @@ function EditProductPage() {
                     images.length === 0
                       ? t("products.manage.needImage")
                       : !walletVerified
-                        ? t("wallet.required.seller")
+                        ? verifiedWallet?.address
+                          ? t("wallet.required.connectedSeller")
+                          : t("wallet.required.seller")
                         : undefined
                   }
                   onClick={() => statusMutation.mutate("published")}
