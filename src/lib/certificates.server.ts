@@ -9,6 +9,7 @@
 import { Contract, JsonRpcProvider, Wallet, getAddress, isAddress } from "ethers";
 
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import type { Database, Json } from "@/integrations/supabase/types";
 import { AUCTORY_CERTIFICATE_ABI } from "@/lib/certificates/abi.server";
 import {
   CERTIFICATE_NETWORK,
@@ -256,7 +257,7 @@ export async function reconcileFromChain(row: CertificateRow) {
   const record = await contract['getProduct']!(row.product_ref);
   const owner: string = await contract['ownerOf']!(tokenId);
 
-  const update: Record<string, unknown> = {
+  const update: Database["public"]["Tables"]["blockchain_certificates"]["Update"] = {
     status: "minted",
     token_id: tokenId.toString(),
     contract_address: contractAddress,
