@@ -560,6 +560,21 @@
       "uploaded": "Prilog je otpremljen",
       "deleted": "Prilog je uklonjen",
       "tooLarge": "Fajl je prevelik"
+    },
+    "ai": {
+      "generate": "AI generiši opis",
+      "generating": "Generisanje…",
+      "error": "Generisanje nije uspelo.",
+      "dismiss": "Odbaci nacrt",
+      "draftTitle": "AI nacrt opisa",
+      "notice": "Uz pomoć AI — proveri pre čuvanja. Ništa se ne čuva dok ne prihvatiš verziju i sačuvaš proizvod.",
+      "titleSuggestion": "Predlog naslova",
+      "shortSr": "Kratak opis (srpski)",
+      "shortEn": "Kratak opis (engleski)",
+      "detailedSr": "Detaljan opis (srpski)",
+      "detailedEn": "Detaljan opis (engleski)",
+      "highlights": "Istaknute karakteristike",
+      "use": "Koristi ovaj tekst"
     }
   },
   "auctions": {

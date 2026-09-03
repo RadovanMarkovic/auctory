@@ -7,6 +7,14 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "@/integrations/supabase/types";
+import { assistantStrings, type AssistantLanguage } from "@/lib/assistant/core";
+import {
+  estimateValue,
+  VALUATION_CURRENCY,
+  type ComparableSale,
+  type ValuationResult,
+  type ValuationTarget,
+} from "@/lib/assistant/valuation";
 
 export interface AuctionToolItem {
   id: string;
@@ -190,24 +198,265 @@ export async function getProductPassport(
   };
 }
 
-export type ToolName = "searchActiveAuctions" | "getAuctionDetails" | "getProductPassport";
+/* ------------------------------------------------------------------ */
+/* Value estimate (deterministic; the model only explains the numbers)  */
+/* ------------------------------------------------------------------ */
+
+export interface EstimateArgs {
+  productId?: string | undefined;
+  category?: string | undefined;
+  brand?: string | undefined;
+  model?: string | undefined;
+  condition?: string | undefined;
+  productionYear?: number | undefined;
+}
+
+
+
+
+/**
+ * Comparable sales = genuinely sold auctions only. `finalize_auctions()` sets
+ * `final_price` + `finalized_at` + `winner_id` together, and only when a
+ * highest bidder exists and the reserve was met, so `status = 'ended'` with a
+ * non-null final price and finalization timestamp is exactly the sold set.
+ * Unsold, cancelled and merely expired auctions are excluded, and no bidder,
+ * winner, reserve or transaction data is read.
+ */
+async function loadSoldComparables(supabase: AnySupabase): Promise<ComparableSale[]> {
+  const { data, error } = await supabase
+    .from("public_auctions")
+    .select("id, product_id, status, final_price, finalized_at")
+    .eq("status", "ended")
+    .not("final_price", "is", null)
+    .not("finalized_at", "is", null)
+    .order("finalized_at", { ascending: false })
+    .limit(300);
+  if (error) throw error;
+
+  const rows = (data ?? []).filter((r) => r.id && r.product_id && Number(r.final_price) > 0);
+  const productIds = Array.from(new Set(rows.map((r) => r.product_id as string)));
+  if (productIds.length === 0) return [];
+
+  const { data: products } = await supabase
+    .from("products")
+    .select("id, model, condition, production_year, category_id, brand_id, brands(name)")
+    .in("id", productIds);
+  type Row = {
+    id: string;
+    model: string | null;
+    condition: string | null;
+    production_year: number | null;
+    category_id: string | null;
+    brand_id: string | null;
+    brands: { name: string } | null;
+  };
+  const byId = new Map(((products ?? []) as unknown as Row[]).map((p) => [p.id, p]));
+
+  return rows.flatMap((row) => {
+    const product = byId.get(row.product_id as string);
+    if (!product) return [];
+    return [
+      {
+        auctionId: row.id as string,
+        finalPrice: Number(row.final_price),
+        currency: VALUATION_CURRENCY,
+        categoryId: product.category_id,
+        brandId: product.brand_id,
+        brandName: product.brands?.name ?? null,
+        model: product.model,
+        condition: product.condition,
+        productionYear: product.production_year,
+      } satisfies ComparableSale,
+    ];
+  });
+}
+
+async function resolveTarget(
+  supabase: AnySupabase,
+  args: EstimateArgs,
+): Promise<ValuationTarget & { productTitle?: string | null }> {
+  if (args.productId) {
+    const { data } = await supabase
+      .from("products")
+      .select("id, title, model, condition, production_year, category_id, brand_id, brands(name)")
+      .eq("id", args.productId)
+      .maybeSingle();
+    if (data) {
+      const p = data as unknown as {
+        title: string;
+        model: string | null;
+        condition: string | null;
+        production_year: number | null;
+        category_id: string | null;
+        brand_id: string | null;
+        brands: { name: string } | null;
+      };
+      return {
+        categoryId: p.category_id,
+        brandId: p.brand_id,
+        brandName: p.brands?.name ?? null,
+        model: p.model,
+        condition: p.condition,
+        productionYear: p.production_year,
+        productTitle: p.title,
+      };
+    }
+  }
+
+
+  // Free-text criteria: resolve names to ids so scoring can match precisely.
+  let categoryId: string | null = null;
+  if (args.category) {
+    const { data } = await supabase.from("categories").select("id, name_en, name_sr, slug");
+    const needle = args.category.toLowerCase();
+    categoryId =
+      (data ?? []).find(
+        (c: { id: string; name_en: string; name_sr: string; slug: string }) =>
+          c.name_en.toLowerCase().includes(needle) ||
+          c.name_sr.toLowerCase().includes(needle) ||
+          c.slug.toLowerCase().includes(needle),
+      )?.id ?? null;
+  }
+  let brandId: string | null = null;
+  if (args.brand) {
+    const { data } = await supabase.from("brands").select("id, name");
+    const needle = args.brand.toLowerCase();
+    brandId =
+      (data ?? []).find((b: { id: string; name: string }) => b.name.toLowerCase().includes(needle))
+        ?.id ?? null;
+  }
+
+  return {
+    categoryId,
+    brandId,
+    brandName: args.brand ?? null,
+    model: args.model ?? null,
+    condition: args.condition ?? null,
+    productionYear: args.productionYear ?? null,
+  };
+}
+
+export async function estimateProductValue(
+  supabase: AnySupabase,
+  args: EstimateArgs,
+  language: AssistantLanguage,
+): Promise<ValuationResult & { basis: string }> {
+  const target = await resolveTarget(supabase, args);
+  const sales = await loadSoldComparables(supabase);
+  const result = estimateValue(sales, target, language);
+  return { ...result, basis: "completed Auctory sales only" };
+}
+
+/* ------------------------------------------------------------------ */
+/* Recommendations                                                      */
+/* ------------------------------------------------------------------ */
+
+export interface RecommendArgs {
+  maxBudget?: number | undefined;
+  category?: string | undefined;
+  brand?: string | undefined;
+  query?: string | undefined;
+}
+
+export interface RecommendationResult {
+  items: (AuctionToolItem & { reason: string })[];
+  withinBudget: boolean;
+  noExactMatches: boolean;
+  disclaimer: string;
+}
+
+export async function recommendProducts(
+  supabase: AnySupabase,
+  args: RecommendArgs,
+  language: AssistantLanguage,
+): Promise<RecommendationResult> {
+  const sr = language === "sr";
+  const disclaimer = assistantStrings(language).disclaimer;
+
+  const base: SearchAuctionsArgs = {};
+  if (args.query) base.query = args.query;
+  if (args.category) base.category = args.category;
+  if (args.brand) base.brand = args.brand;
+
+  const budgeted =
+    args.maxBudget != null
+      ? await searchActiveAuctions(supabase, { ...base, maxBudget: args.maxBudget })
+      : await searchActiveAuctions(supabase, base);
+
+  let pool = budgeted;
+  let noExactMatches = false;
+  let withinBudget = true;
+
+  if (pool.length === 0) {
+    // No match within the stated budget/criteria: say so explicitly and only
+    // then widen the search.
+    noExactMatches = true;
+    withinBudget = false;
+    pool = await searchActiveAuctions(supabase, base);
+    if (pool.length === 0) pool = await searchActiveAuctions(supabase, {});
+  }
+
+  const ranked = pool
+    .filter((item) => item.status === "live" || item.status === "scheduled")
+    .sort((a, b) => {
+      const endA = Date.parse(a.endsAt) || Number.MAX_SAFE_INTEGER;
+      const endB = Date.parse(b.endsAt) || Number.MAX_SAFE_INTEGER;
+      return endA - endB || a.id.localeCompare(b.id);
+    })
+    .slice(0, 5);
+
+  const items = ranked.map((item) => {
+    const bits: string[] = [];
+    if (args.brand && item.brand) bits.push(sr ? `brend ${item.brand}` : `brand ${item.brand}`);
+    if (args.category) {
+      const name = sr ? item.categorySr : item.categoryEn;
+      if (name) bits.push(sr ? `kategorija ${name}` : `category ${name}`);
+    }
+    if (args.maxBudget != null && item.minimumNextBid <= args.maxBudget) {
+      bits.push(sr ? "u okviru budžeta" : "within budget");
+    } else if (args.maxBudget != null) {
+      bits.push(sr ? "iznad navedenog budžeta" : "above the stated budget");
+    }
+    bits.push(
+      sr
+        ? `trenutna cena ${item.currentPrice} EUR, ${item.bidCount} ponuda`
+        : `current price ${item.currentPrice} EUR, ${item.bidCount} bids`,
+    );
+    return { ...item, reason: bits.join(", ") };
+  });
+
+  return { items, withinBudget, noExactMatches, disclaimer };
+}
+
+export type ToolName =
+  | "searchActiveAuctions"
+  | "getAuctionDetails"
+  | "getProductPassport"
+  | "estimateProductValue"
+  | "recommendProducts";
 
 export async function executeTool(
   supabase: AnySupabase,
   name: string,
   args: Record<string, unknown>,
+  language: AssistantLanguage = "en",
 ): Promise<unknown> {
+  const str = (value: unknown, max: number) =>
+    typeof value === "string" && value.trim() ? value.trim().slice(0, max) : undefined;
+  const num = (value: unknown) =>
+    typeof value === "number" && Number.isFinite(value) ? value : undefined;
+
   switch (name as ToolName | "explainPlatformRules") {
     case "searchActiveAuctions": {
       const parsed: SearchAuctionsArgs = {};
-      const q = args["query"];
-      const c = args["category"];
-      const b = args["brand"];
-      const m = args["maxBudget"];
-      if (typeof q === "string") parsed.query = q.slice(0, 200);
-      if (typeof c === "string") parsed.category = c.slice(0, 100);
-      if (typeof b === "string") parsed.brand = b.slice(0, 100);
-      if (typeof m === "number" && Number.isFinite(m)) parsed.maxBudget = m;
+      const q = str(args["query"], 200);
+      const c = str(args["category"], 100);
+      const b = str(args["brand"], 100);
+      const m = num(args["maxBudget"]);
+      if (q) parsed.query = q;
+      if (c) parsed.category = c;
+      if (b) parsed.brand = b;
+      if (m != null) parsed.maxBudget = m;
       return searchActiveAuctions(supabase, parsed);
     }
     case "getAuctionDetails": {
@@ -220,10 +469,39 @@ export async function executeTool(
       if (typeof id !== "string") return { error: "missing productId" };
       return getProductPassport(supabase, { productId: id.slice(0, 64) });
     }
+    case "estimateProductValue": {
+      const parsed: EstimateArgs = {};
+      const p = str(args["productId"], 64);
+      const c = str(args["category"], 100);
+      const b = str(args["brand"], 100);
+      const m = str(args["model"], 100);
+      const cond = str(args["condition"], 50);
+      const year = num(args["productionYear"]);
+      if (p) parsed.productId = p;
+      if (c) parsed.category = c;
+      if (b) parsed.brand = b;
+      if (m) parsed.model = m;
+      if (cond) parsed.condition = cond;
+      if (year != null) parsed.productionYear = Math.trunc(year);
+      return estimateProductValue(supabase, parsed, language);
+    }
+    case "recommendProducts": {
+      const parsed: RecommendArgs = {};
+      const q = str(args["query"], 200);
+      const c = str(args["category"], 100);
+      const b = str(args["brand"], 100);
+      const m = num(args["maxBudget"]);
+      if (q) parsed.query = q;
+      if (c) parsed.category = c;
+      if (b) parsed.brand = b;
+      if (m != null) parsed.maxBudget = m;
+      return recommendProducts(supabase, parsed, language);
+    }
     default:
       return { error: "unknown tool" };
   }
 }
+
 
 /** OpenAI tool schemas — explainPlatformRules needs no database access. */
 export const TOOL_SCHEMAS = [
@@ -275,6 +553,42 @@ export const TOOL_SCHEMAS = [
       description:
         "Answer questions about how Auctory works: auctions, bidding, wallets, confirmations, certificates.",
       parameters: { type: "object", properties: {} },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "estimateProductValue",
+      description:
+        "Deterministic informational value estimate computed from completed Auctory sales only. Provide a productId, or free-text criteria (category, brand, model, condition, productionYear). Never modify the returned numbers.",
+      parameters: {
+        type: "object",
+        properties: {
+          productId: { type: "string" },
+          category: { type: "string" },
+          brand: { type: "string" },
+          model: { type: "string" },
+          condition: { type: "string" },
+          productionYear: { type: "number" },
+        },
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "recommendProducts",
+      description:
+        "Recommend up to five live or upcoming public auctions filtered by budget, category and brand. Returns a reason per item and a disclaimer.",
+      parameters: {
+        type: "object",
+        properties: {
+          maxBudget: { type: "number", description: "Maximum budget in EUR" },
+          category: { type: "string" },
+          brand: { type: "string" },
+          query: { type: "string" },
+        },
+      },
     },
   },
 ];

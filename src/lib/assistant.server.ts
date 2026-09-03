@@ -24,6 +24,13 @@ import {
   type AssistantLanguage,
 } from "@/lib/assistant/core";
 import { executeTool, TOOL_SCHEMAS } from "@/lib/assistant/tools";
+import {
+  buildDescriptionPrompt,
+  DESCRIPTION_SYSTEM_PROMPT,
+  parseGeneratedDescription,
+  type DescriptionFacts,
+  type GeneratedDescription,
+} from "@/lib/assistant/description";
 
 export class AssistantUnavailableError extends Error {
   readonly language: AssistantLanguage;
@@ -102,6 +109,7 @@ export async function runAssistant(
               supabase,
               call.name,
               (call.args ?? {}) as Record<string, unknown>,
+              language,
             );
           } catch {
             result = { error: "tool_unavailable" };
@@ -132,3 +140,44 @@ export function fallbackMessage(language: AssistantLanguage): string {
 }
 
 export { detectLanguage };
+
+/* ------------------------------------------------------------------ */
+/* Seller description generation (structured, grounded, review-only)    */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Generates listing copy from seller-entered facts only. The result is a
+ * draft: it is never written to the product by this function.
+ */
+export async function generateDescription(
+  facts: DescriptionFacts,
+): Promise<GeneratedDescription> {
+  const apiKey = process.env["OPENAI_API_KEY"];
+  if (!apiKey) throw new AssistantUnavailableError("en", new Error("missing OPENAI_API_KEY"));
+
+  const model = new ChatOpenAI({
+    model: "gpt-4o-mini",
+    temperature: 0.3,
+    apiKey,
+    timeout: MODEL_TIMEOUT_MS,
+    maxTokens: 1200,
+  });
+
+  try {
+    const response = (await withTimeout(
+      model.invoke([
+        new SystemMessage(DESCRIPTION_SYSTEM_PROMPT),
+        new HumanMessage(buildDescriptionPrompt(facts)),
+      ]),
+      MODEL_TIMEOUT_MS,
+    )) as AIMessage;
+    const text = typeof response.content === "string" ? response.content : "";
+    return parseGeneratedDescription(text);
+  } catch (error) {
+    console.error(
+      "[assistant] description generation failed:",
+      error instanceof Error ? error.message : error,
+    );
+    throw new AssistantUnavailableError("en", error);
+  }
+}

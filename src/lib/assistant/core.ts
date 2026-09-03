@@ -23,7 +23,7 @@ export function detectLanguage(text: string): AssistantLanguage {
 const RESERVE_REQUEST =
   /\b(reserve|rezerv\w+|резерв\w+)\s*(price|cena|cenu|cijena)?\b/i;
 const ACTION_REQUEST =
-  /\b(place|make|submit|put|ponudi|licitiraj|postavi|unesi)\b.{0,40}\b(bid|ponudu|понуду)\b|\b(confirm|potvrdi|потврди)\b.{0,40}\b(transaction|transakcij\w+|трансакциј\w+)\b|\b(transfer|prenesi|пренеси)\b.{0,40}\b(certificate|sertifikat|сертификат)\b|\b(promeni|izmeni|obriši|ukloni|change|edit|delete|cancel|otkaži)\b.{0,40}\b(auction|aukcij\w+|product|proizvod|rolu|role)\b/i;
+  /\b(place|make|submit|put|ponudi|licitiraj|postavi|unesi)\b.{0,40}\b(bid|ponudu|понуду)\b|\b(ponudi|licitiraj|ponudim|licitiram)\b.{0,40}(\d+|\baukcij\w+)|\b(confirm|potvrdi|потврди)\b.{0,40}\b(transaction|transakcij\w+|трансакциј\w+)\b|\b(transfer|prenesi|пренеси)\b.{0,40}\b(certificate|sertifikat|сертификат)\b|\b(promeni|izmeni|obriši|ukloni|change|edit|delete|cancel|otkaži)\b.{0,40}\b(auction|aukcij\w+|product|proizvod|rolu|role)\b/i;
 
 export function isReservePriceRequest(text: string) {
   return RESERVE_REQUEST.test(text);
