@@ -59,7 +59,7 @@ A second function refreshes/verifies an existing certificate: recompute nothing,
 
 A `ProductPassport` component used on the public auction detail page (and the seller's product page) showing: network, contract address, token id, metadata hash and URI, mint transaction, block number, registration date, registered seller wallet, current owner wallet, with Sepolia Etherscan links for address/token/tx.
 
-- **Verify record** button: re-checks the stored manifest hash against the on-chain record and reads current `ownerOf`, then shows "Data integrity verified" or a mismatch warning.
+- **Verify record** button: fetches the stored immutable manifest, canonicalizes and keccak256-hashes it again server-side, and compares that freshly computed hash with **both** the stored `metadata_hash` and the contract's `ProductRecord.metadataHash` — never a plain string comparison of two stored values. It also reads current `ownerOf`. Result: "Data integrity verified" or a specific mismatch warning (manifest vs. database, database vs. chain, owner changed).
 - Explicit wording: the certificate records data integrity and ownership history; it does **not** independently prove the physical authenticity of the item. Never the phrase "physical authenticity verified".
 - A short "Add to MetaMask manually" note with contract address and token id.
 - Full EN/SR strings for loading, pending, minting, success, failure, wallet required, wrong network, retry, and verification states.
