@@ -28,7 +28,8 @@
     },
     "products": "Predmeti",
     "myProducts": "Moji predmeti",
-    "myAuctions": "Moje aukcije"
+    "myAuctions": "Moje aukcije",
+    "myPurchases": "Moje kupovine"
   },
   "language": {
     "label": "Jezik",
@@ -768,7 +769,8 @@
       "auctionEnded": "Aukcija je završena pobedničkom ponudom",
       "buyerConfirmed": "Kupac je potvrdio dogovor o plaćanju",
       "sellerConfirmed": "Prodavac je potvrdio prijem uplate i predaju",
-      "readyForTransfer": "Spremno za prenos sertifikata"
+      "readyForTransfer": "Spremno za prenos sertifikata",
+      "certificateTransferred": "Sertifikat prenet kupcu"
     },
     "disclaimer": {
       "title": "Važno obaveštenje",
@@ -925,5 +927,19 @@
       "CONTRACT_PAUSED": "Ugovor sertifikata je pauziran.",
       "OPERATOR_MISSING_TRANSFER_ROLE": "Auctory operator nema dozvolu za prenos sertifikata."
     }
+  },
+  "purchases": {
+    "eyebrow": "Kupac",
+    "title": "Moje kupovine",
+    "description": "Predmeti koje ste osvojili i čiji je prenos sertifikata završen.",
+    "emptyTitle": "Još nema kupovina",
+    "emptyDescription": "Kada osvojite aukciju i obe strane potvrde, predmet se pojavljuje ovde zajedno sa blockchain sertifikatom.",
+    "pending": "Čeka se prenos sertifikata",
+    "owned": "Sertifikat je u vašem novčaniku",
+    "purchasedOn": "Datum kupovine",
+    "price": "Konačna cena",
+    "viewTransaction": "Pogledaj transakciju",
+    "viewPassport": "Pogledaj digitalni pasoš",
+    "tokenId": "Token ID"
   }
 }

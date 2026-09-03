@@ -124,7 +124,16 @@ function TransactionPage() {
       key: "ready",
       label: t("transactions.timeline.readyForTransfer"),
       at: null,
-      done: transaction.status === "ready_for_transfer",
+      done:
+        transaction.status === "ready_for_transfer" ||
+        transaction.status === "transferring_certificate" ||
+        transaction.status === "completed",
+    },
+    {
+      key: "transferred",
+      label: t("transactions.timeline.certificateTransferred"),
+      at: null,
+      done: transaction.status === "completed",
     },
   ];
 
