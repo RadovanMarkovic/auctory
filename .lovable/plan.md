@@ -47,8 +47,10 @@ Never surfaced: reserve prices, seller emails or private profile data, bidder id
 **Server functions** — `src/lib/assistant.functions.ts`, all `.middleware([requireSupabaseAuth])`, dynamic-importing the `.server` module inside handlers:
 
 - `listConversations`, `getConversation(conversationId)`, `createConversation`, `deleteConversation`.
-- `sendAssistantMessage({ conversationId?, content })` — validates length, applies the database-backed rate limit, persists the user message, runs the agent, persists the assistant reply via `supabaseAdmin`, returns both rows.
-- **Ownership rule:** every function that accepts a `conversationId` (get, send, retry, delete) first re-reads the conversation with the request-scoped authenticated client and aborts unless `user_id === context.userId`. `user_id` is always taken from the verified token, never from client input. `supabaseAdmin` is used only after that check passes, and only for the assistant-message insert.
+- `sendAssistantMessage({ conversationId?, content })` — validates length, applies the database-backed rate limit, persists the user message, runs the agent, persists the assistant reply, returns both rows.
+- **Ownership rule:** every function that accepts a `conversationId` (get, send, retry, delete) first re-reads the conversation with the request-scoped authenticated client and aborts unless `user_id === context.userId`. `user_id` is always taken from the verified token, never from client input.
+- **Message writes:** because `ai_messages` has no client INSERT policy, both the user message and the assistant message are inserted with `supabaseAdmin` after ownership verification. The server sets `role`, `conversation_id`, `language` and timestamps itself — the client may only provide `conversationId` and `content`, never `user_id` or `role`. For a new conversation it is created first with `user_id = context.userId` and the generated id is used for the messages.
+- **Retry idempotency:** retrying never duplicates the persisted user message — the server regenerates a reply for the latest unanswered user message (unique `client_request_id` on `ai_messages` as a second guard against double submissions).
 
 **Markdown rendering:** assistant content is rendered through a Markdown renderer with raw HTML disabled and output sanitized; links are rendered as plain text/safe anchors only.
 
