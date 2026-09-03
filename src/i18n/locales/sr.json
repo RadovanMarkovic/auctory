@@ -70,7 +70,8 @@
       "active": "Aktivan",
       "pending": "Na čekanju",
       "suspended": "Suspendovan"
-    }
+    },
+    "assistant": "Asistent"
   },
   "wallet": {
     "connect": "Poveži novčanik",
@@ -941,5 +942,21 @@
     "viewTransaction": "Pogledaj transakciju",
     "viewPassport": "Pogledaj digitalni pasoš",
     "tokenId": "Token ID"
+  },
+  "assistant": {
+    "title": "Auctory asistent",
+    "open": "Otvori asistenta",
+    "close": "Zatvori asistenta",
+    "placeholder": "Pitaj o aukcijama, proizvodima ili kako Auctory funkcioniše…",
+    "send": "Pošalji poruku",
+    "empty": "Pitaj o aktivnim aukcijama, digitalnom pasošu proizvoda ili o tome kako platforma radi.",
+    "loadError": "Razgovor nije mogao da se učita. Pokušaj ponovo.",
+    "sendError": "Poruka nije mogla da se pošalje.",
+    "retry": "Pokušaj ponovo",
+    "newConversation": "Novi razgovor",
+    "noConversations": "Još nema razgovora",
+    "untitled": "Razgovor",
+    "deleteConversation": "Obriši razgovor",
+    "disclaimer": "Samo informativni asistent — ne licitira, ne potvrđuje transakcije i ne potvrđuje autentičnost predmeta."
   }
 }

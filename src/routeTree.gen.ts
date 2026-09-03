@@ -19,6 +19,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAssistantRouteImport } from './routes/_authenticated/assistant'
 import { Route as AuthenticatedMyPurchasesRouteImport } from './routes/_authenticated/my-purchases'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuctionsIndexRouteImport } from './routes/auctions.index'
@@ -80,6 +81,11 @@ const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAssistantRoute = AuthenticatedAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMyPurchasesRoute =
@@ -168,6 +174,7 @@ export interface FileRoutesByFullPath {
   '/sell': typeof SellRoute
   '/account': typeof AuthenticatedAccountRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/assistant': typeof AuthenticatedAssistantRoute
   '/my-purchases': typeof AuthenticatedMyPurchasesRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
@@ -192,6 +199,7 @@ export interface FileRoutesByTo {
   '/sell': typeof SellRoute
   '/account': typeof AuthenticatedAccountRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/assistant': typeof AuthenticatedAssistantRoute
   '/my-purchases': typeof AuthenticatedMyPurchasesRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/sell': typeof SellRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/assistant': typeof AuthenticatedAssistantRoute
   '/_authenticated/my-purchases': typeof AuthenticatedMyPurchasesRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/auctions/$auctionId': typeof AuctionsAuctionIdRoute
@@ -244,6 +253,7 @@ export interface FileRouteTypes {
     | '/sell'
     | '/account'
     | '/admin'
+    | '/assistant'
     | '/my-purchases'
     | '/profile'
     | '/auctions/$auctionId'
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/sell'
     | '/account'
     | '/admin'
+    | '/assistant'
     | '/my-purchases'
     | '/profile'
     | '/auctions/$auctionId'
@@ -293,6 +304,7 @@ export interface FileRouteTypes {
     | '/sell'
     | '/_authenticated/account'
     | '/_authenticated/admin'
+    | '/_authenticated/assistant'
     | '/_authenticated/my-purchases'
     | '/_authenticated/profile'
     | '/auctions/$auctionId'
@@ -394,6 +406,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/assistant': {
+      id: '/_authenticated/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AuthenticatedAssistantRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/my-purchases': {
       id: '/_authenticated/my-purchases'
       path: '/my-purchases'
@@ -491,6 +510,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAssistantRoute: typeof AuthenticatedAssistantRoute
   AuthenticatedMyPurchasesRoute: typeof AuthenticatedMyPurchasesRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedMyAuctionsAuctionIdRoute: typeof AuthenticatedMyAuctionsAuctionIdRoute
@@ -506,6 +526,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAssistantRoute: AuthenticatedAssistantRoute,
   AuthenticatedMyPurchasesRoute: AuthenticatedMyPurchasesRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedMyAuctionsAuctionIdRoute: AuthenticatedMyAuctionsAuctionIdRoute,

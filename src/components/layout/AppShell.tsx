@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { AssistantLauncher } from "@/components/assistant/AssistantLauncher";
+
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
@@ -9,6 +11,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <AssistantLauncher />
     </div>
   );
 }
