@@ -260,24 +260,8 @@ function Index() {
         </section>
 
         <section>
-          <dl className="grid gap-6 border-y border-border py-10 sm:grid-cols-2 lg:grid-cols-4">
-            <Stat
-              label={t("home.stats.lotsSold")}
-              value={data ? `${data.stats.lotsSold.toLocaleString()}+` : null}
-            />
-            <Stat
-              label={t("home.stats.certificatesMinted")}
-              value={data ? `${data.stats.certificatesMinted.toLocaleString()}` : null}
-            />
-            <Stat
-              label={t("home.stats.sellThrough")}
-              value={data ? `${data.stats.averageSellThrough}%` : null}
-            />
-            <Stat
-              label={t("home.stats.bidders")}
-              value={data ? `${data.stats.registeredBidders.toLocaleString()}` : null}
-            />
-          </dl>
+          <StatsRow />
+
           <ul className="mt-8 flex flex-wrap justify-center gap-x-10 gap-y-4">
             {trust.map(({ icon: Icon, key }) => (
               <li key={key} className="flex items-center gap-2 text-sm text-muted-foreground">
