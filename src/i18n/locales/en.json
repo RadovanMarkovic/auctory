@@ -230,7 +230,8 @@
       "lotsSold": "Lots sold",
       "certificatesMinted": "Certificates minted",
       "sellThrough": "Average sell-through",
-      "bidders": "Registered bidders"
+      "bidders": "Registered bidders",
+      "bidsPlaced": "Bids placed"
     },
     "trust": {
       "vetted": "Specialist-vetted lots",
