@@ -19,7 +19,7 @@ export function useHomeStats() {
     queryFn: async (): Promise<HomeStats> => {
       const [{ data: ended, error: endedError }, { count: minted, error: mintedError }] =
         await Promise.all([
-          supabase.from("public_auctions").select("final_price, bid_count").limit(1000),
+          supabase.from("public_auctions").select("status, final_price, bid_count").limit(1000),
           supabase
             .from("blockchain_certificates")
             .select("id", { count: "exact", head: true })
@@ -30,15 +30,13 @@ export function useHomeStats() {
 
       const rows = ended ?? [];
       const bidsPlaced = rows.reduce((total, row) => total + (row.bid_count ?? 0), 0);
-      const sold = rows.filter((row) => row.final_price !== null).length;
-      const finished = rows.filter(
-        (row) => row.final_price !== null || row.bid_count !== null,
-      ).length;
+      const finished = rows.filter((row) => row.status === "ended");
+      const sold = finished.filter((row) => row.final_price !== null).length;
 
       return {
         lotsSold: sold,
         certificatesMinted: minted ?? 0,
-        sellThrough: finished > 0 ? Math.round((sold / finished) * 100) : 0,
+        sellThrough: finished.length > 0 ? Math.round((sold / finished.length) * 100) : 0,
         bidsPlaced,
       };
     },
