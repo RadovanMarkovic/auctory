@@ -25,9 +25,15 @@ New storage bucket `certificate-metadata` (public read, no client writes) with c
 ### 2. Deterministic manifest and hashing
 
 - `productRef = keccak256(utf8("auctory:product:<product-id>"))`.
-- Manifest = snapshot of the final **public** product fields (title, brand, category slug, model, serial number, production year, condition, material, country of origin, provenance notes, box/documents flags, seller wallet, product id, schema version, snapshot timestamp) plus `images: [{ index, sha256/keccak256 of the file bytes }]` in stable sort order. No emails, names, phones or private data.
+- Manifest = snapshot of the final **public** product fields (title, brand, category slug, model, production year, condition, material, country of origin, provenance notes, box/documents flags, seller wallet, product id, schema version, `snapshotAt`) plus `images: [{ index, hash }]` in stable sort order, where each image hash is `keccak256` of the raw file bytes. **keccak256 is used everywhere** — for image bytes and for the canonical manifest; no sha256 anywhere.
+- The full serial number is never published: the manifest carries `serialNumberHash = keccak256(normalized serial number)`, or omits the field when the product has none.
+- No emails, names, phones or private data.
 - Canonical serialization: JSON with keys sorted lexicographically, no insignificant whitespace, UTF-8, numbers as integers/decimal strings. `metadataHash = keccak256(canonicalJSON)`.
+- `snapshotAt` is generated **once**, when the certificate row first moves to pending, and the exact stored manifest is reused for every retry. A pending certificate's manifest is never rebuilt from later product edits.
+- The public token URI is valid ERC-721 metadata: `name`, `description`, `image`, `attributes`, plus the Auctory manifest fields preserved alongside them (the hashed part is exactly this canonical document).
+- Because product images are private, only the final **cover image** is copied server-side into the public certificate bucket at an immutable content-hash path (`sepolia/images/<imageKeccak>.<ext>`); that URL is the `image` field. Public read only, no client writes, no overwrite/upsert.
 - Manifest object stored at `sepolia/<metadataHash>.json`; `metadata_uri` is that public URL.
+
 
 ### 3. Minting (server-only)
 
@@ -53,7 +59,7 @@ A second function refreshes/verifies an existing certificate: recompute nothing,
 
 A `ProductPassport` component used on the public auction detail page (and the seller's product page) showing: network, contract address, token id, metadata hash and URI, mint transaction, block number, registration date, registered seller wallet, current owner wallet, with Sepolia Etherscan links for address/token/tx.
 
-- **Verify record** button: re-checks the stored manifest hash against the on-chain record and reads current `ownerOf`, then shows "Data integrity verified" or a mismatch warning.
+- **Verify record** button: fetches the stored immutable manifest, canonicalizes and keccak256-hashes it again server-side, and compares that freshly computed hash with **both** the stored `metadata_hash` and the contract's `ProductRecord.metadataHash` — never a plain string comparison of two stored values. It also reads current `ownerOf`. Result: "Data integrity verified" or a specific mismatch warning (manifest vs. database, database vs. chain, owner changed).
 - Explicit wording: the certificate records data integrity and ownership history; it does **not** independently prove the physical authenticity of the item. Never the phrase "physical authenticity verified".
 - A short "Add to MetaMask manually" note with contract address and token id.
 - Full EN/SR strings for loading, pending, minting, success, failure, wallet required, wrong network, retry, and verification states.
@@ -64,7 +70,7 @@ Vitest coverage for: canonical serialization + hash determinism and `productRef`
 
 ## Technical notes
 
-- `ethers` v6 is already a dependency; the JSON ABI at `blockchain/abi/AuctoryCertificate.json` is imported server-side.
+- `ethers` v6 is already a dependency. `blockchain/` is outside the app build graph, so the ABI is not imported from there: the generated ABI is copied **unchanged** into a server-only application module (`src/lib/certificates/abi.server.ts`) so it is guaranteed to be part of the deployed server bundle. A test asserts the copy still matches `blockchain/abi/AuctoryCertificate.json`.
 - Secrets are read with `process.env[...]` **inside** handler bodies only, never at module scope, never returned or logged. Only the derived operator *address* may surface in server logs.
 - Server-only chain code lives in a `*.server.ts` module imported dynamically inside handlers, so it never reaches the browser bundle.
 - Certificate transfer on sale is explicitly **not** part of this step.
