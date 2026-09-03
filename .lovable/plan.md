@@ -23,7 +23,8 @@ Never surfaced: reserve prices, seller emails or private profile data, bidder id
 
 ## Hard limits
 
-- Sign-in required; 2,000-character input cap; per-user rate limit (20 messages / 10 minutes); model call timeout (~30s) with a graceful localized fallback message.
+- Sign-in required; 2,000-character input cap; per-user rate limit (20 messages / 10 minutes) counted from persisted message rows in the database, not process memory, so restarts and multiple instances cannot reset it; model call timeout (~30s) with a graceful localized fallback message.
+- Assistant replies rendered as Markdown are sanitized with raw HTML disabled, so no script or HTML injection is possible.
 - The system prompt forbids bidding, confirming transactions, editing products or auctions, transferring certificates, changing roles, and any claim that a physical item is authentic.
 - No embeddings, vector store, web browsing, voice, uploads, admin analytics or autonomous actions.
 
