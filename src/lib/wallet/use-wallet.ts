@@ -68,6 +68,17 @@ export function resetWalletConnection() {
   setState({ address: null, chainId: null, connecting: false, error: null, dismissed: true });
 }
 
+/** Silently adopt an already-authorized MetaMask account (no account picker).
+ * Used after sign-in so a still-connected wallet shows its address instead of
+ * a "reconnect" prompt. Does nothing when MetaMask has no authorized account. */
+export async function syncWalletConnection() {
+  if (!hasMetaMask()) return;
+  const [accounts, chainId] = await Promise.all([getConnectedAccounts(), getChainId()]);
+  if (accounts[0]) {
+    setState({ address: accounts[0], chainId, dismissed: false });
+  }
+}
+
 export function useWallet() {
   const snapshot = useSyncExternalStore(
     subscribe,
@@ -105,10 +116,17 @@ export function useWallet() {
   }, []);
 
   const connect = useCallback(async () => {
-    const forcePicker = state.dismissed;
     setState({ connecting: true, error: null });
     try {
-      const address = await connectWallet(forcePicker);
+      // If MetaMask already authorizes an account, adopt it silently — only
+      // open the account picker when nothing is connected.
+      const existing = await getConnectedAccounts();
+      if (existing[0]) {
+        const chainId = await getChainId();
+        setState({ address: existing[0], chainId, dismissed: false });
+        return existing[0];
+      }
+      const address = await connectWallet(state.dismissed);
       const chainId = await getChainId();
       setState({ address, chainId, dismissed: false });
       return address;

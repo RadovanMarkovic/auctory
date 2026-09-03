@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 import { shortenAddress, sameAddress } from "@/lib/wallet/message";
-import { useWallet } from "@/lib/wallet/use-wallet";
+import { syncWalletConnection, useWallet } from "@/lib/wallet/use-wallet";
 import { useVerifiedWallet } from "@/lib/wallet/verify";
 
 /** Header wallet control: connect, wrong network, or connected account.
@@ -24,6 +24,12 @@ export function WalletButton({ className }: { className?: string }) {
   const mismatch = Boolean(
     activeAddress && verifiedAddress && !sameAddress(activeAddress, verifiedAddress),
   );
+
+  // After sign-in, silently re-adopt an already-authorized MetaMask account so
+  // the header shows the connected address instead of a reconnect prompt.
+  useEffect(() => {
+    if (isAuthenticated && wallet.dismissed) void syncWalletConnection();
+  }, [isAuthenticated, wallet.dismissed]);
 
   // Warn as soon as MetaMask switches to an account other than the verified one.
   useEffect(() => {
